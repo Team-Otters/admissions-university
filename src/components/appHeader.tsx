@@ -22,6 +22,8 @@ const AppHeader = () => {
     false,
     false,
     false,
+    false,
+    false,
   ]);
   const [sidebarVisible, setSidebarVisible] = useState(false);
   const handleButtonClick1 = () => {
@@ -30,7 +32,6 @@ const AppHeader = () => {
   const handleButtonClick = () => {
     setSidebarVisible(!sidebarVisible);
   };
-
 
   const handleMouseEnter = (index: number) => {
     setHoveredLinks((prevHoveredLinks) => {
@@ -48,7 +49,7 @@ const AppHeader = () => {
     });
   };
   return (
-    <Navbar className="bg-dark" sticky="top">
+    <Navbar className="bg-white" sticky="top">
       <Container>
         <Row className="w-100">
           <Col className="col-auto">
@@ -59,7 +60,7 @@ const AppHeader = () => {
                 onMouseEnter={() => handleMouseEnter(0)}
                 onMouseLeave={() => handleMouseLeave(0)}
               >
-                Home
+                Trang Chủ
               </Nav.Link>
               <Nav.Link
                 href="/store"
@@ -67,7 +68,7 @@ const AppHeader = () => {
                 onMouseEnter={() => handleMouseEnter(1)}
                 onMouseLeave={() => handleMouseLeave(1)}
               >
-                Products
+                Giới thiệu
               </Nav.Link>
               <Nav.Link
                 href="/user/history"
@@ -75,7 +76,7 @@ const AppHeader = () => {
                 onMouseEnter={() => handleMouseEnter(2)}
                 onMouseLeave={() => handleMouseLeave(2)}
               >
-                History
+                Thành Tựu
               </Nav.Link>
               <Nav.Link
                 href="/shoppingcart"
@@ -83,7 +84,7 @@ const AppHeader = () => {
                 onMouseEnter={() => handleMouseEnter(3)}
                 onMouseLeave={() => handleMouseLeave(3)}
               >
-                Shopping Cart
+                Tra Cứu
               </Nav.Link>
               <Nav.Link
                 href="/user"
@@ -91,21 +92,29 @@ const AppHeader = () => {
                 onMouseEnter={() => handleMouseEnter(4)}
                 onMouseLeave={() => handleMouseLeave(4)}
               >
-                Personal
+                Tin Tức
               </Nav.Link>
             </Nav>
           </Col>
           <Col className="col-auto ml-auto">
-            <ImageActionButton
-              imageUrl="/Group.png"
-              onClick={handleButtonClick1}
-              alt="Buttonsdadasdas Image"
-            />
-            <ImageActionButton
-              imageUrl="/Cart.png"
-              onClick={handleButtonClick}
-              alt="Button Image"
-            />
+            <Nav>
+              <Nav.Link
+                href="/user"
+                style={{ color: hoveredLinks[5] ? "#FFFFFF" : "#999999" }}
+                onMouseEnter={() => handleMouseEnter(5)}
+                onMouseLeave={() => handleMouseLeave(5)}
+              >
+                Đăng Nhập
+              </Nav.Link>
+              <Nav.Link
+                href="/user"
+                style={{ color: hoveredLinks[6] ? "#FFFFFF" : "#999999" }}
+                onMouseEnter={() => handleMouseEnter(6)}
+                onMouseLeave={() => handleMouseLeave(6)}
+              >
+                Đăng Ký
+              </Nav.Link>
+            </Nav>
           </Col>
         </Row>
       </Container>
