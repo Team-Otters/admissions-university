@@ -23,6 +23,7 @@ const config: Config = {
 
       fontFamily: {
         notoSerif: ["Noto", "serif"],
+        notoSans: ["Noto Sans", "sans-serif"],
       },
     },
   },

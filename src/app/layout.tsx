@@ -1,13 +1,14 @@
-'use client'
+"use client";
 //import type { Metadata } from 'next'
-import "./globals.css"
-import { Inter } from 'next/font/google'
-import 'bootstrap/dist/css/bootstrap.min.css';
+import "./globals.css";
+import { Inter } from "next/font/google";
+import "bootstrap/dist/css/bootstrap.min.css";
 import AppHeader from "@/components/appHeader";
-import Container from 'react-bootstrap/Container';
+import Sidebar from "@/components/sidebar";
+import Container from "react-bootstrap/Container";
 //import './globals.css'
 
-const inter = Inter({ subsets: ['latin'] })
+const inter = Inter({ subsets: ["latin"] });
 
 // export const metadata = {
 //   title: 'Create Next App',
@@ -17,17 +18,18 @@ const inter = Inter({ subsets: ['latin'] })
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
   return (
     <html lang="en">
       <body className={inter.className}>
-        <AppHeader/>
-        <Container>
-          {children}
-        </Container>  
+        <AppHeader />
+        <div className="flex flex-1">
+          <Sidebar route="Khach" />
+          <Container>{children}</Container>
+        </div>
         {/* <AppFooter/>       */}
-        </body>
+      </body>
     </html>
-  )
+  );
 }
