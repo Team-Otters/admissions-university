@@ -1,341 +1,90 @@
 "use client";
 import React from "react";
-import Form from "react-bootstrap/Form";
-import Col from "react-bootstrap/Col";
-import Row from "react-bootstrap/Row";
-import Button from "react-bootstrap/Button";
-import { Container } from "react-bootstrap";
-interface IFormData {
-  fullName: string;
-  idNumber: string;
-  dateOfBirth: string;
-  gender: string;
-  permanentResidence1: string;
-  permanentResidence2: string;
-  permanentResidence3: string;
-  householdAddress1: string;
-  householdAddress2: string;
-  householdAddress3: string;
-  placeOfBirth: string;
-  ethnicity: string;
-  idImage: string;
-  secondSchool: string;
-  phoneNumber: string;
-  email: string;
-}
+import { Button, Container } from "react-bootstrap";
 
 const WishlistPage: React.FC = () => {
-  const [formData, setFormData] = React.useState<IFormData>({
-    fullName: "",
-    idNumber: "",
-    dateOfBirth: "",
-    gender: "",
-    permanentResidence1: "",
-    permanentResidence2: "",
-    permanentResidence3: "",
-    householdAddress1: "",
-    householdAddress2: "",
-    householdAddress3: "",
-    placeOfBirth: "",
-    ethnicity: "",
-    idImage: "",
-    secondSchool: "",
-    phoneNumber: "",
-    email: "",
-  });
+  const [wishlistData, setWishlistData] = React.useState<string[]>([
+    "Toán",
+    "Tin",
+  ]);
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
-    setFormData({ ...formData, [event.target.name]: event.target.value });
-  };
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files && event.target.files[0]) {
-      const reader = new FileReader();
-      reader.onload = (e: ProgressEvent<FileReader>) => {
-        setFormData({ ...formData, idImage: e.target?.result as string });
-      };
-      reader.readAsDataURL(event.target.files[0]);
-    }
-  };
+  // const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
+  //   setFormData({ ...formData, [event.target.name]: event.target.value });
+  // };
+  // const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   if (event.target.files && event.target.files[0]) {
+  //     const reader = new FileReader();
+  //     reader.onload = (e: ProgressEvent<FileReader>) => {
+  //       setFormData({ ...formData, idImage: e.target?.result as string });
+  //     };
+  //     reader.readAsDataURL(event.target.files[0]);
+  //   }
+  // };
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    // handle form submission here
-    console.log(formData);
-    setFormData({
-      fullName: "",
-      idNumber: "",
-      dateOfBirth: "",
-      gender: "",
-      permanentResidence1: "",
-      permanentResidence2: "",
-      permanentResidence3: "",
-      householdAddress1: "",
-      householdAddress2: "",
-      householdAddress3: "",
-      placeOfBirth: "",
-      ethnicity: "",
-      idImage: "",
-      secondSchool: "",
-      phoneNumber: "",
-      email: "",
-    });
-  };
+  // const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  //   event.preventDefault();
+  //   // handle form submission here
+  //   console.log(formData);
+  //   setFormData({
+  //     fullName: "",
+  //     idNumber: "",
+  //     dateOfBirth: "",
+  //     gender: "",
+  //     permanentResidence1: "",
+  //     permanentResidence2: "",
+  //     permanentResidence3: "",
+  //     householdAddress1: "",
+  //     householdAddress2: "",
+  //     householdAddress3: "",
+  //     placeOfBirth: "",
+  //     ethnicity: "",
+  //     idImage: "",
+  //     secondSchool: "",
+  //     phoneNumber: "",
+  //     email: "",
+  //   });
+  // };
 
+  // const handleChangeWish;
+  const handleClear = (): void => {
+    setWishlistData([]);
+  };
   return (
-    <Container fluid style={{ height: "100vh", paddingTop: "50px" }}>
-      <h1>Đăng ký hồ sơ</h1>
-      <Form onSubmit={handleSubmit}>
-        <Row className="mb-3">
-          <Col>
-            <Form.Group controlId="formFullName">
-              <Form.Label>Họ tên</Form.Label>
-              <Form.Control
-                type="text"
-                name="fullName"
-                placeholder="Nhập họ tên"
-                value={formData.fullName}
-                onChange={handleChange}
-                required
-              />
-            </Form.Group>
-          </Col>
-          <Col>
-            <Form.Group controlId="formIdNumber">
-              <Form.Label>CMND/CCCD</Form.Label>
-              <Form.Control
-                type="text"
-                name="idNumber"
-                placeholder="Nhập CMND/CCCD"
-                value={formData.idNumber}
-                onChange={handleChange}
-                required
-              />
-            </Form.Group>
-          </Col>
-          <Col>
-            <Form.Group controlId="formHouseholdAddress1">
-              <Form.Label>Địa chỉ hộ khẩu</Form.Label>
-              <Form.Control
-                type="text"
-                name="householdAddress1"
-                placeholder="Nhập địa chỉ"
-                value={formData.householdAddress1}
-                onChange={handleChange}
-                required
-              />
-            </Form.Group>
-          </Col>
-          <Col>
-            <Form.Group controlId="formPermanentResidence1">
-              <Form.Label>Địa chỉ thường trú</Form.Label>
-              <Form.Control
-                type="text"
-                name="permanentResidence1"
-                placeholder="Nhập địa chỉ"
-                value={formData.permanentResidence1}
-                onChange={handleChange}
-                required
-              />
-            </Form.Group>
-          </Col>
-        </Row>
-        <Row className="mb-3">
-          <Col />
-          <Col />
-          <Col>
-            <Form.Group controlId="formHouseholdAddress2">
-              <Form.Label></Form.Label>
-              <Form.Control
-                type="text"
-                name="householdAddress2"
-                placeholder="Nhập địa chỉ"
-                value={formData.householdAddress2}
-                onChange={handleChange}
-                required
-              />
-            </Form.Group>
-          </Col>
-          <Col>
-            <Form.Group controlId="formPermanentResidence2">
-              <Form.Label></Form.Label>
-              <Form.Control
-                type="text"
-                name="permanentResidence2"
-                placeholder="Nhập địa chỉ"
-                value={formData.permanentResidence2}
-                onChange={handleChange}
-                required
-              />
-            </Form.Group>
-          </Col>
-        </Row>
-        <Row className="mb-3">
-          <Col>
-            <Form.Group controlId="formDateOfBirth">
-              <Form.Label>Ngày sinh</Form.Label>
-              <Form.Control
-                type="date"
-                name="dateOfBirth"
-                value={formData.dateOfBirth}
-                onChange={handleChange}
-                required
-              />
-            </Form.Group>
-          </Col>
-          <Col>
-            <Form.Group controlId="formGender">
-              <Form.Label>Giới tính</Form.Label>
-              <div className="d-flex flex-wrap">
-                <Form.Check
-                  className="me-md-3 mb-2"
-                  inline
-                  type="checkbox"
-                  label="Nam"
-                  name="gender"
-                  value="Nam"
-                  checked={formData.gender === "Nam"}
-                  onChange={handleChange}
-                />
-                <Form.Check
-                  className="me-md-3 mb-2"
-                  inline
-                  type="checkbox"
-                  label="Nữ"
-                  name="gender"
-                  value="Nữ"
-                  checked={formData.gender === "Nữ"}
-                  onChange={handleChange}
-                />
-              </div>
-            </Form.Group>
-          </Col>
-          <Col>
-            <Form.Group controlId="formHouseholdAddress3">
-              <Form.Label></Form.Label>
-              <Form.Control
-                type="text"
-                name="householdAddress3"
-                placeholder="Nhập địa chỉ"
-                value={formData.householdAddress3}
-                onChange={handleChange}
-                required
-              />
-            </Form.Group>
-          </Col>
-          <Col>
-            <Form.Group controlId="formPermanentResidence3">
-              <Form.Label></Form.Label>
-              <Form.Control
-                type="text"
-                name="permanentResidence3"
-                placeholder="Nhập địa chỉ"
-                value={formData.permanentResidence3}
-                onChange={handleChange}
-                required
-              />
-            </Form.Group>
-          </Col>
-        </Row>
-        <Row className="mb-3">
-          <Col>
-            <Form.Group controlId="formPlaceOfBirth">
-              <Form.Label>Nơi sinh</Form.Label>
-              <Form.Control
-                type="text"
-                name="placeOfBirth"
-                placeholder="Nhập nơi sinh"
-                value={formData.placeOfBirth}
-                onChange={handleChange}
-                required
-              />
-            </Form.Group>
-          </Col>
-          <Col>
-            <Form.Group controlId="formEthnicity">
-              <Form.Label>Dân tộc</Form.Label>
-              <Form.Control
-                type="text"
-                name="ethnicity"
-                placeholder="Nhập dân tộc"
-                value={formData.ethnicity}
-                onChange={handleChange}
-                required
-              />
-            </Form.Group>
-          </Col>
-          <Col>
-            <Form.Group controlId="formSecondSchool">
-              <Form.Label>Trường THCS</Form.Label>
-              <Form.Control
-                type="text"
-                name="secondSchool"
-                placeholder="Nhập trường THCS"
-                value={formData.secondSchool}
-                onChange={handleChange}
-                required
-              />
-            </Form.Group>
-          </Col>
-          <Col />
-        </Row>
-        <Row className="mb-3">
-          <Col>
-            <Form.Group controlId="formPhoneNumber">
-              <Form.Label>Số Điện Thoại</Form.Label>
-              <Form.Control
-                type="text"
-                name="phoneNumber"
-                placeholder="Nhập SĐT"
-                value={formData.phoneNumber}
-                onChange={handleChange}
-                required
-              />
-            </Form.Group>
-          </Col>
-          <Col>
-            <Form.Group controlId="formEmail">
-              <Form.Label>Email</Form.Label>
-              <Form.Control
-                type="text"
-                name="email"
-                placeholder="Nhập email"
-                value={formData.email}
-                onChange={handleChange}
-                required
-              />
-            </Form.Group>
-          </Col>
-          <Col>
-            <Form.Group
-              controlId="formIDImage"
-              style={{ display: "flex", alignItems: "center" }}
-            >
-              <div style={{ marginRight: "10px" }}>
-                <Form.Label>Ảnh CCCD/CMND</Form.Label>
-                <Form.Control
-                  type="file"
-                  onChange={handleFileChange}
-                  accept="image/*"
-                />
-              </div>
-              {formData.idImage && (
-                <img
-                  src={formData.idImage}
-                  alt="Uploaded Image"
-                  style={{ maxWidth: "100px", maxHeight: "100px" }}
-                />
-              )}
-            </Form.Group>
-          </Col>
-        </Row>
-        <Row className="justify-content-center">
-          <Col xs="auto">
-            <Button variant="primary" type="submit">
-              Submit
-            </Button>
-          </Col>
-        </Row>
-      </Form>
+    <Container
+      fluid
+      style={{ height: "100vh", paddingTop: "50px" }}
+      className="font-notoSans"
+    >
+      <div className="p-4 bg-white mb-4">
+        <h2 className="text-3xl">Danh sách nguyện vọng</h2>
+        <table className="w-11/12 mx-auto mt-8 border-collapse border border-gray text-lg">
+          <thead>
+            <tr className="border border-gray text-center">
+              <th className="w-2/12 lg:w-1/12">STT</th>
+              <th>Tên môn</th>
+            </tr>
+          </thead>
+          <tbody>
+            {wishlistData?.map((item, index) => {
+              return (
+                <tr className="border border-gray" key={index}>
+                  <td className="px-2 py-1 text-center">{index + 1}</td>
+                  <td className="px-2 py-1">{item}</td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+        <div className="flex justify-around mt-4 w-11/12 lg:w-8/12 xl:w-6/12 2xl:4/12 mx-auto">
+          <Button
+            className="bg-white border-black text-black"
+            onClick={handleClear}
+          >
+            Xóa tất cả
+          </Button>
+          <Button className="bg-mainBlue">Thêm nguyện vọng</Button>
+        </div>
+      </div>
     </Container>
   );
 };
