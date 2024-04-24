@@ -89,3 +89,11 @@ body {
   bottom: 0;
   width: 100%;
 }
+
+.custom-container {
+  max-height: 90%; /* Container will adjust its width based on content */
+  background-color: white;
+  max-width: 90%; /* Adjust the width as needed */
+  margin: 0 auto; /* Center the container horizontally */
+  margin-top: 50px;
+}
