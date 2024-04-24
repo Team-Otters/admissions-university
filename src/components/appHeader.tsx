@@ -51,12 +51,46 @@ const AppHeader = () => {
   return (
     <Navbar className="bg-white" sticky="top">
       <Container>
-        <Row className="w-100">
+        <Row className="w-100 align-items-center">
+          <Col className="col-auto">
+            <Navbar
+              expand="lg"
+              style={{ maxHeight: "60px", maxWidth: "400px" }}
+            >
+              <Container>
+                <Navbar.Brand
+                  href="/"
+                  style={{
+                    maxWidth: "100%",
+                    display: "flex",
+                    alignItems: "center",
+                  }}
+                >
+                  <img
+                    alt=""
+                    src="src\public\icon.png"
+                    width="40"
+                    height="40"
+                    className="d-inline-block align-top mr-2"
+                    style={{ marginRight: "10px" }}
+                  />
+                  <span style={{ fontSize: "20px", whiteSpace: "normal" }}>
+                    Trường Trung học Phổ thông Chuyên UIT{" "}
+                  </span>
+                </Navbar.Brand>
+              </Container>
+            </Navbar>
+          </Col>
+
           <Col className="col-auto">
             <Nav defaultActiveKey="/home">
               <Nav.Link
                 href="/"
-                style={{ color: hoveredLinks[0] ? "#FFFFFF" : "#999999" }}
+                style={{
+                  color: hoveredLinks[0]
+                    ? "var(--mainBlueColor)"
+                    : "var(--dustyGray)",
+                }}
                 onMouseEnter={() => handleMouseEnter(0)}
                 onMouseLeave={() => handleMouseLeave(0)}
               >
@@ -64,7 +98,11 @@ const AppHeader = () => {
               </Nav.Link>
               <Nav.Link
                 href="/store"
-                style={{ color: hoveredLinks[1] ? "#FFFFFF" : "#999999" }}
+                style={{
+                  color: hoveredLinks[1]
+                    ? "var(--mainBlueColor)"
+                    : "var(--dustyGray)",
+                }}
                 onMouseEnter={() => handleMouseEnter(1)}
                 onMouseLeave={() => handleMouseLeave(1)}
               >
@@ -72,7 +110,11 @@ const AppHeader = () => {
               </Nav.Link>
               <Nav.Link
                 href="/user/history"
-                style={{ color: hoveredLinks[2] ? "#FFFFFF" : "#999999" }}
+                style={{
+                  color: hoveredLinks[2]
+                    ? "var(--mainBlueColor)"
+                    : "var(--dustyGray)",
+                }}
                 onMouseEnter={() => handleMouseEnter(2)}
                 onMouseLeave={() => handleMouseLeave(2)}
               >
@@ -80,7 +122,11 @@ const AppHeader = () => {
               </Nav.Link>
               <Nav.Link
                 href="/shoppingcart"
-                style={{ color: hoveredLinks[3] ? "#FFFFFF" : "#999999" }}
+                style={{
+                  color: hoveredLinks[3]
+                    ? "var(--mainBlueColor)"
+                    : "var(--dustyGray)",
+                }}
                 onMouseEnter={() => handleMouseEnter(3)}
                 onMouseLeave={() => handleMouseLeave(3)}
               >
@@ -88,7 +134,11 @@ const AppHeader = () => {
               </Nav.Link>
               <Nav.Link
                 href="/user"
-                style={{ color: hoveredLinks[4] ? "#FFFFFF" : "#999999" }}
+                style={{
+                  color: hoveredLinks[4]
+                    ? "var(--mainBlueColor)"
+                    : "var(--dustyGray)",
+                }}
                 onMouseEnter={() => handleMouseEnter(4)}
                 onMouseLeave={() => handleMouseLeave(4)}
               >
@@ -100,7 +150,11 @@ const AppHeader = () => {
             <Nav>
               <Nav.Link
                 href="/user"
-                style={{ color: hoveredLinks[5] ? "#FFFFFF" : "#999999" }}
+                style={{
+                  color: hoveredLinks[5]
+                    ? "var(--mainBlueColor)"
+                    : "var(--dustyGray)",
+                }}
                 onMouseEnter={() => handleMouseEnter(5)}
                 onMouseLeave={() => handleMouseLeave(5)}
               >
@@ -108,7 +162,11 @@ const AppHeader = () => {
               </Nav.Link>
               <Nav.Link
                 href="/user"
-                style={{ color: hoveredLinks[6] ? "#FFFFFF" : "#999999" }}
+                style={{
+                  color: hoveredLinks[6]
+                    ? "var(--mainBlueColor)"
+                    : "var(--dustyGray)",
+                }}
                 onMouseEnter={() => handleMouseEnter(6)}
                 onMouseLeave={() => handleMouseLeave(6)}
               >
