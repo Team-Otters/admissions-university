@@ -1,11 +1,22 @@
 "use client";
-import React from "react";
+import FormWish from "@/components/formWish";
+import React, { useState } from "react";
 import { Button, Container } from "react-bootstrap";
+import { Edit } from "feather-icons";
 
 const WishlistPage: React.FC = () => {
-  const [wishlistData, setWishlistData] = React.useState<string[]>([
-    "Toán",
-    "Tin",
+  const [isOpenForm, setIsOpenForm] = React.useState<boolean>(false);
+  const [wishlistData, setWishlistData] = React.useState<Wish[]>([
+    {
+      id: "NV001",
+      name: "Toán",
+      priority: 1,
+    },
+    {
+      id: "NV002",
+      name: "Tin",
+      priority: 2,
+    },
   ]);
 
   // const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
@@ -49,6 +60,12 @@ const WishlistPage: React.FC = () => {
   const handleClear = (): void => {
     setWishlistData([]);
   };
+
+  const handleSubmit = (newWish: Wish): void => {
+    let temp = wishlistData;
+    temp.push(newWish);
+    setWishlistData(temp);
+  };
   return (
     <Container
       fluid
@@ -62,17 +79,33 @@ const WishlistPage: React.FC = () => {
             <tr className="border border-gray text-center">
               <th className="w-2/12 lg:w-1/12">STT</th>
               <th>Tên môn</th>
+              <th className="w-2/12">Edit</th>
             </tr>
           </thead>
           <tbody>
-            {wishlistData?.map((item, index) => {
-              return (
-                <tr className="border border-gray" key={index}>
-                  <td className="px-2 py-1 text-center">{index + 1}</td>
-                  <td className="px-2 py-1">{item}</td>
-                </tr>
-              );
-            })}
+            {wishlistData
+              ?.sort((a, b) => b.priority - a.priority)
+              .map((item, index) => {
+                return (
+                  <tr className="border border-gray" key={index}>
+                    <td className="px-2 py-1 text-center">{index + 1}</td>
+                    <td className="px-2 py-1">{item.name}</td>
+                    <td className="flex flex-row justify-center">
+                      <text
+                        className="cursor-pointer"
+                        onClick={() => {
+                          setIsOpenForm(true);
+                        }}
+                      >
+                        e--
+                      </text>
+                      <text className="cursor-pointer" onClick={() => {}}>
+                        d
+                      </text>
+                    </td>
+                  </tr>
+                );
+              })}
           </tbody>
         </table>
         <div className="flex justify-around mt-4 w-11/12 lg:w-8/12 xl:w-6/12 2xl:4/12 mx-auto">
@@ -82,8 +115,24 @@ const WishlistPage: React.FC = () => {
           >
             Xóa tất cả
           </Button>
-          <Button className="bg-mainBlue">Thêm nguyện vọng</Button>
+          <Button
+            className="bg-mainBlue"
+            onClick={() => {
+              setIsOpenForm(true);
+            }}
+          >
+            Thêm nguyện vọng
+          </Button>
         </div>
+        {isOpenForm && (
+          <div className="absolute inset-0 flex justify-center items-center bg-black bg-opacity-50 z-50">
+            <FormWish
+              closeModal={() => setIsOpenForm(false)}
+              onSubmit={handleSubmit}
+              defaultValue={{ id: "", name: "", priority: 1 }}
+            />
+          </div>
+        )}
       </div>
     </Container>
   );
