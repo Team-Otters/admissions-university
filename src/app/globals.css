@@ -3,6 +3,7 @@
 @tailwind utilities;
 @import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Noto+Serif:ital,wght@0,100..900;1,100..900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('../styles/variables.css');
 
 :root {
   --foreground-rgb: 255, 255, 255;
@@ -37,35 +38,7 @@ body {
   scrollbar-width: none;
 }
 
-.cart-item {
-  display: flex;
-  align-items: center;
-  margin-bottom: 10px;
-}
 
-.cart-item-image {
-  width: 50px; /* Adjust the width as needed */
-  height: auto; /* Maintain aspect ratio */
-  margin-right: 10px;
-}
-
-.cart-item-details {
-  flex: 1;
-}
-
-.cart-item-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.cart-item-delete {
-  cursor: pointer;
-  color: red;
-  font-weight: bold;
-}
-
-/* Add this to your styles */
 .fixed-right {
   position: fixed;
   top: 0;
@@ -74,16 +47,16 @@ body {
   margin-right: 0;
 }
 
-/* Adjust the width and other styles as needed */
+
 .fixed-right .modal-content {
   height: 100%;
-  width: 300px; /* Set the desired width */
+  width: 300px; 
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
 }
 
 .fixed-right .modal-body {
-  height: calc(100% - 56px); /* Adjust for modal header and footer height */
+  height: calc(100% - 56px); 
   overflow-y: auto;
 }
 
@@ -107,7 +80,7 @@ body {
 }
 
 .full-height .modal-body {
-  height: calc(100% - 56px); /* Adjust for modal header and footer height */
+  height: calc(100% - 56px); 
   overflow-y: auto;
 }
 
@@ -115,4 +88,12 @@ body {
   position: absolute;
   bottom: 0;
   width: 100%;
+}
+
+.custom-container {
+  max-height: 90%; /* Container will adjust its width based on content */
+  background-color: white;
+  max-width: 90%; /* Adjust the width as needed */
+  margin: 0 auto; /* Center the container horizontally */
+  margin-top: 50px;
 }
