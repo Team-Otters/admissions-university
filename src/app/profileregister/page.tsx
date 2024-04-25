@@ -82,7 +82,7 @@ const ProfileRegisterPage: React.FC = () => {
   };
 
   return (
-    <Container fluid style={{ height: "100vh", paddingTop: "50px" }}>
+    <Container fluid className="custom-container" style={{ height: "100vh", paddingTop: "20px" }}>
       <h1>Đăng ký hồ sơ</h1>
       <Form onSubmit={handleSubmit}>
         <Row className="mb-3">

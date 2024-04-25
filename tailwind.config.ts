@@ -12,6 +12,7 @@ const config: Config = {
       blueTitle: "#111FA0",
       gray: "#d9d9d9",
       iconStroke: "#5B5B58",
+      amaranth: "#e6325c",
     },
 
     extend: {
