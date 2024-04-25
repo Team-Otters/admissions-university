@@ -49,7 +49,7 @@ const AppHeader = () => {
     });
   };
   return (
-    <Navbar className="bg-white" sticky="top">
+    <Navbar className="bg-white font-notoSans shadow-md" sticky="top">
       <Container>
         <Row className="w-100 align-items-center">
           <Col className="col-auto">
@@ -68,7 +68,7 @@ const AppHeader = () => {
                 >
                   <img
                     alt=""
-                    src="src\public\icon.png"
+                    src="/images/icon.png"
                     width="40"
                     height="40"
                     className="d-inline-block align-top mr-2"

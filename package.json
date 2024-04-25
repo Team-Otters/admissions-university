@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@nextui-org/modal": "^2.0.33",
     "bootstrap": "^5.3.3",
     "feather-icons": "^4.29.1",
     "next": "14.1.3",
