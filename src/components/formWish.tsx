@@ -11,23 +11,23 @@ const FormWish: React.FC<{
     defaultValue || {
       id: "",
       name: "",
-      priority: "",
+      priority: -1,
     }
   );
   const [errors, setErrors] = useState("");
 
   const validateForm = () => {
-    if (formState.id && formState.name && formState.priority) {
+    if (formState.name) {
       setErrors("");
       return true;
     } else {
-      let errorFields = [];
-      for (const [key, value] of Object.entries(formState)) {
-        if (!value) {
-          errorFields.push(key);
-        }
-      }
-      setErrors(errorFields.join(", "));
+      // let errorFields = [];
+      // // for (const [key, value] of Object.entries(formState)) {
+      // if (!formState.name) {
+      //   errorFields.push(formState.name);
+      // }
+      // // }
+      setErrors("Tên nguyện vọng");
       return false;
     }
   };
@@ -49,7 +49,7 @@ const FormWish: React.FC<{
   return (
     <div
       //   className="w-1/2 h-1/2 bg-white border border-black font-notoSans justify-center p-2 "
-      className="z-20 w-5/6 sm:w-1/2 lg:w-1/3 h-1/4 bg-white flex items-center justify-center"
+      className="z-20 w-5/6 sm:w-1/2 lg:w-1/3 h-1/4 bg-white flex items-center justify-center font-notoSans"
       onClick={(e) => {
         // if (e.target.className === "modal-container") closeModal();
       }}
@@ -66,10 +66,17 @@ const FormWish: React.FC<{
             value={formState.name}
           />
         </div>
-        {errors && <div className="error">{`Please include: ${errors}`}</div>}
-        <Button type="submit" className="mt-2" onClick={handleSubmit}>
-          Lưu
-        </Button>
+        {errors && (
+          <div className="error">{`Không được để trống: ${errors}`}</div>
+        )}
+        <div className="flex flex-row w-1/2 justify-around">
+          <Button type="submit" className="mt-2" onClick={closeModal}>
+            Thoát
+          </Button>
+          <Button type="submit" className="mt-2 ml-4" onClick={handleSubmit}>
+            Lưu
+          </Button>
+        </div>
       </form>
     </div>
     // </div>

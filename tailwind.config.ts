@@ -26,6 +26,14 @@ const config: Config = {
         iconStroke: "#5B5B58",
         amaranth: "#e6325c",
       },
+
+      boxShadow: {
+        tableShadow: "0 0 20px -10px rgb(50, 133, 230)",
+      },
+
+      // borderRadius: {
+      //   tableLine: ""
+      // }
     },
   },
   plugins: [],
