@@ -2,10 +2,21 @@
 import FormWish from "@/components/formWish";
 import React, { useState } from "react";
 import { Button, Container } from "react-bootstrap";
-import { Edit } from "feather-icons";
+import { FaPencil } from "react-icons/fa6";
+import { MdDelete } from "react-icons/md";
+import {
+  Table,
+  TableHeader,
+  TableBody,
+  TableColumn,
+  TableRow,
+  TableCell,
+} from "@nextui-org/table";
 
 const WishlistPage: React.FC = () => {
   const [isOpenForm, setIsOpenForm] = React.useState<boolean>(false);
+  const [isEdit, setIsEdit] = React.useState<boolean>(false);
+  const [rowToEdit, setRowToEdit] = React.useState<Wish>();
   const [wishlistData, setWishlistData] = React.useState<Wish[]>([
     {
       id: "NV001",
@@ -61,10 +72,26 @@ const WishlistPage: React.FC = () => {
     setWishlistData([]);
   };
 
+  const handleClearRow = (id: string): void => {
+    let temp = wishlistData;
+    let idx = 0;
+    temp = temp.filter((value) => {
+      if (value.id !== id) {
+        return value;
+      }
+    });
+    setWishlistData(temp);
+  };
+
   const handleSubmit = (newWish: Wish): void => {
     let temp = wishlistData;
     temp.push(newWish);
     setWishlistData(temp);
+  };
+
+  const handleEditRow = (w: Wish): void => {
+    setRowToEdit(w);
+    setIsOpenForm(true);
   };
   return (
     <Container
@@ -74,12 +101,14 @@ const WishlistPage: React.FC = () => {
     >
       <div className="p-4 bg-white mb-4">
         <h2 className="text-3xl">Danh sách nguyện vọng</h2>
-        <table className="w-11/12 mx-auto mt-8 border-collapse border border-gray text-lg">
+        <table className="w-11/12 mx-auto mt-8 text-lg shadow-tableShadow border-collapse rounded-3xl">
           <thead>
-            <tr className="border border-gray text-center">
-              <th className="w-2/12 lg:w-1/12">STT</th>
-              <th>Tên môn</th>
-              <th className="w-2/12">Edit</th>
+            <tr className="text-center text-blueTitle border-b border-gray">
+              <th className="border-gray w-2/12 lg:w-1/12 rounded-t-lg p-2">
+                STT
+              </th>
+              <th className="border-l border-gray p-2">Tên môn</th>
+              <th className="w-2/12 border-gray p-2"></th>
             </tr>
           </thead>
           <tbody>
@@ -87,21 +116,31 @@ const WishlistPage: React.FC = () => {
               ?.sort((a, b) => b.priority - a.priority)
               .map((item, index) => {
                 return (
-                  <tr className="border border-gray" key={index}>
-                    <td className="px-2 py-1 text-center">{index + 1}</td>
+                  <tr
+                    className="border-b border-gray rounded-b-lg last:border-none"
+                    key={index}
+                  >
+                    <td className="px-2 py-1 text-center border-r">
+                      {index + 1}
+                    </td>
                     <td className="px-2 py-1">{item.name}</td>
-                    <td className="flex flex-row justify-center">
-                      <text
+                    <td className="flex flex-row justify-center h-9 self-center justify-self-center">
+                      <button
                         className="cursor-pointer"
                         onClick={() => {
-                          setIsOpenForm(true);
+                          handleEditRow(item);
                         }}
                       >
-                        e--
-                      </text>
-                      <text className="cursor-pointer" onClick={() => {}}>
-                        d
-                      </text>
+                        <FaPencil size={18} />
+                      </button>
+                      <button
+                        className="cursor-pointer ml-1"
+                        onClick={() => {
+                          handleClearRow(item.id);
+                        }}
+                      >
+                        <MdDelete size={24} />
+                      </button>
                     </td>
                   </tr>
                 );
@@ -118,6 +157,7 @@ const WishlistPage: React.FC = () => {
           <Button
             className="bg-mainBlue"
             onClick={() => {
+              setRowToEdit(undefined);
               setIsOpenForm(true);
             }}
           >
@@ -129,7 +169,11 @@ const WishlistPage: React.FC = () => {
             <FormWish
               closeModal={() => setIsOpenForm(false)}
               onSubmit={handleSubmit}
-              defaultValue={{ id: "", name: "", priority: 1 }}
+              defaultValue={
+                rowToEdit === undefined
+                  ? { id: "", name: "", priority: -1 }
+                  : rowToEdit
+              }
             />
           </div>
         )}
