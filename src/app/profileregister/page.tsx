@@ -113,18 +113,22 @@ const ProfileRegisterPage: React.FC = () => {
             </Form.Group>
           </Col>
           <Col>
-            <Form.Group controlId="formHouseholdAddress1">
-              <Form.Label>Địa chỉ hộ khẩu</Form.Label>
-              <Form.Control
-                type="text"
-                name="householdAddress1"
-                placeholder="Nhập địa chỉ"
-                value={formData.householdAddress1}
-                onChange={handleChange}
-                required
-              />
-            </Form.Group>
-          </Col>
+              <Form.Group controlId="formHouseholdAddress1">
+                <Form.Label>Địa chỉ hộ khẩu</Form.Label>
+                <Form.Control
+                  as="select"
+                  name="householdAddress1"
+                  value={formData.householdAddress1}
+                  onChange={handleChange}
+                  required
+                >
+                  <option value="">-- Chọn địa chỉ --</option>
+                  <option value="Address1">Địa chỉ 1</option>
+                  <option value="Address2">Địa chỉ 2</option>
+
+                </Form.Control>
+              </Form.Group>
+            </Col>
           <Col>
             <Form.Group controlId="formPermanentResidence1">
               <Form.Label>Địa chỉ thường trú</Form.Label>
@@ -143,18 +147,22 @@ const ProfileRegisterPage: React.FC = () => {
           <Col />
           <Col />
           <Col>
-            <Form.Group controlId="formHouseholdAddress2">
-              <Form.Label></Form.Label>
-              <Form.Control
-                type="text"
-                name="householdAddress2"
-                placeholder="Nhập địa chỉ"
-                value={formData.householdAddress2}
-                onChange={handleChange}
-                required
-              />
-            </Form.Group>
-          </Col>
+              <Form.Group controlId="formHouseholdAddress1">
+                <Form.Label>Địa chỉ hộ khẩu</Form.Label>
+                <Form.Control
+                  as="select"
+                  name="householdAddress2"
+                  value={formData.householdAddress1}
+                  onChange={handleChange}
+                  required
+                >
+                  <option value="">-- Chọn địa chỉ --</option>
+                  <option value="Address1">Địa chỉ 1</option>
+                  <option value="Address2">Địa chỉ 2</option>
+
+                </Form.Control>
+              </Form.Group>
+            </Col>
           <Col>
             <Form.Group controlId="formPermanentResidence2">
               <Form.Label></Form.Label>
@@ -210,18 +218,22 @@ const ProfileRegisterPage: React.FC = () => {
             </Form.Group>
           </Col>
           <Col>
-            <Form.Group controlId="formHouseholdAddress3">
-              <Form.Label></Form.Label>
-              <Form.Control
-                type="text"
-                name="householdAddress3"
-                placeholder="Nhập địa chỉ"
-                value={formData.householdAddress3}
-                onChange={handleChange}
-                required
-              />
-            </Form.Group>
-          </Col>
+              <Form.Group controlId="formHouseholdAddress1">
+                <Form.Label>Địa chỉ hộ khẩu</Form.Label>
+                <Form.Control
+                  as="select"
+                  name="householdAddress3"
+                  value={formData.householdAddress1}
+                  onChange={handleChange}
+                  required
+                >
+                  <option value="">-- Chọn địa chỉ --</option>
+                  <option value="Address1">Địa chỉ 1</option>
+                  <option value="Address2">Địa chỉ 2</option>
+
+                </Form.Control>
+              </Form.Group>
+            </Col>
           <Col>
             <Form.Group controlId="formPermanentResidence3">
               <Form.Label></Form.Label>
