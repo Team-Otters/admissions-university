@@ -7,14 +7,6 @@ const config: Config = {
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
-    colors: {
-      mainBlue: "#3285E6",
-      blueTitle: "#111FA0",
-      gray: "#d9d9d9",
-      iconStroke: "#5B5B58",
-      amaranth: "#e6325c",
-    },
-
     extend: {
       // backgroundImage: {
       //   "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
@@ -26,6 +18,22 @@ const config: Config = {
         notoSerif: ["Noto", "serif"],
         notoSans: ["Noto Sans", "sans-serif"],
       },
+
+      colors: {
+        mainBlue: "#3285E6",
+        blueTitle: "#111FA0",
+        gray: "#d9d9d9",
+        iconStroke: "#5B5B58",
+        amaranth: "#e6325c",
+      },
+
+      boxShadow: {
+        tableShadow: "0 0 20px -10px rgb(50, 133, 230)",
+      },
+
+      // borderRadius: {
+      //   tableLine: ""
+      // }
     },
   },
   plugins: [],
