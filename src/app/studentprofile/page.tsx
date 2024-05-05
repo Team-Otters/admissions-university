@@ -24,7 +24,7 @@ interface IFormData {
   email: string;
 }
 
-const ProfileRegisterPage: React.FC = () => {
+const StudentProfilePage: React.FC = () => {
   const [formData, setFormData] = React.useState<IFormData>({
     fullName: "",
     idNumber: "",
@@ -366,4 +366,4 @@ const ProfileRegisterPage: React.FC = () => {
   );
 };
 
-export default ProfileRegisterPage;
+export default StudentProfilePage;
