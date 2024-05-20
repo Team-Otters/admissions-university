@@ -10,8 +10,8 @@ const Sidebar: React.FC<{ route: string }> = ({ route }) => {
   };
   route = "Admin";
   return (
-    <div className="text-black text-xl flex-col font-notoSans flex">
-      <div className="bg-white h-full lg:w-52 xl:w-52 2xl:w-52 hidden lg:flex xl:flex 2xl:flex fixed top-20 bottom-0">
+    <div className="text-black text-xl flex-col font-notoSans flex mr-0 lg:mr-52">
+      <div className="bg-white h-full lg:w-52 lg:mt-8 xl:mt-0 hidden lg:flex xl:flex 2xl:flex fixed top-20 bottom-0">
         {/* <div className={`px-4 py-2 ${isOpen ? "hidden" : "block"}`}> */}
         {route === "Khach" ? (
           <></>

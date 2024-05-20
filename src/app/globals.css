@@ -28,6 +28,8 @@ body {
       rgb(var(--background-end-rgb))
     )
     rgb(var(--background-start-rgb));
+  background-repeat: no-repeat;
+  background-attachment: fixed;
 }
 .hideScrollBar::-webkit-scrollbar{
   display: none;
@@ -116,7 +118,7 @@ body {
   left: 0;
   width: 100%;
   z-index: 1000; /* Ensure it stays on top */
-  margin-bottom: 100px; 
+  /* margin-bottom: 100px;  */
 }
 
 .header-wrapper .navbar {
