@@ -23,12 +23,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <AppHeader />
-        <div className="flex flex-1 h-full">
-          <Sidebar route="Khach" />
-          <Container>{children}</Container>
+        <div className="app-wrapper">
+          <AppHeader />
+          <div className="flex flex-1 main-content">
+            <Sidebar route="Khach" />
+            <Container>{children}</Container>
+          </div>
         </div>
-        {/* <AppFooter/>       */}
       </body>
     </html>
   );
