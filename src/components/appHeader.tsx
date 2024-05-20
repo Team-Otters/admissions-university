@@ -49,134 +49,136 @@ const AppHeader = () => {
     });
   };
   return (
-    <Navbar className="bg-white font-notoSans shadow-md" sticky="top">
-      <Container>
-        <Row className="w-100 align-items-center">
-          <Col className="col-auto">
-            <Navbar
-              expand="lg"
-              style={{ maxHeight: "60px", maxWidth: "400px" }}
-            >
-              <Container>
-                <Navbar.Brand
+    <div className="header-wrapper">
+      <Navbar className="bg-white font-notoSans shadow-md" sticky="top">
+        <Container>
+          <Row className="w-100 align-items-center">
+            <Col className="col-auto">
+              <Navbar
+                expand="lg"
+                style={{ maxHeight: "60px", maxWidth: "400px" }}
+              >
+                <Container>
+                  <Navbar.Brand
+                    href="/"
+                    style={{
+                      maxWidth: "100%",
+                      display: "flex",
+                      alignItems: "center",
+                    }}
+                  >
+                    <img
+                      alt=""
+                      src="/images/icon.png"
+                      width="40"
+                      height="40"
+                      className="d-inline-block align-top mr-2"
+                      style={{ marginRight: "10px" }}
+                    />
+                    <span style={{ fontSize: "20px", whiteSpace: "normal" }}>
+                      Trường Trung học Phổ thông Chuyên UIT{" "}
+                    </span>
+                  </Navbar.Brand>
+                </Container>
+              </Navbar>
+            </Col>
+
+            <Col className="col-auto">
+              <Nav defaultActiveKey="/home">
+                <Nav.Link
                   href="/"
                   style={{
-                    maxWidth: "100%",
-                    display: "flex",
-                    alignItems: "center",
+                    color: hoveredLinks[0]
+                      ? "var(--mainBlueColor)"
+                      : "var(--dustyGray)",
                   }}
+                  onMouseEnter={() => handleMouseEnter(0)}
+                  onMouseLeave={() => handleMouseLeave(0)}
                 >
-                  <img
-                    alt=""
-                    src="/images/icon.png"
-                    width="40"
-                    height="40"
-                    className="d-inline-block align-top mr-2"
-                    style={{ marginRight: "10px" }}
-                  />
-                  <span style={{ fontSize: "20px", whiteSpace: "normal" }}>
-                    Trường Trung học Phổ thông Chuyên UIT{" "}
-                  </span>
-                </Navbar.Brand>
-              </Container>
-            </Navbar>
-          </Col>
-
-          <Col className="col-auto">
-            <Nav defaultActiveKey="/home">
-              <Nav.Link
-                href="/"
-                style={{
-                  color: hoveredLinks[0]
-                    ? "var(--mainBlueColor)"
-                    : "var(--dustyGray)",
-                }}
-                onMouseEnter={() => handleMouseEnter(0)}
-                onMouseLeave={() => handleMouseLeave(0)}
-              >
-                Trang Chủ
-              </Nav.Link>
-              <Nav.Link
-                href="/store"
-                style={{
-                  color: hoveredLinks[1]
-                    ? "var(--mainBlueColor)"
-                    : "var(--dustyGray)",
-                }}
-                onMouseEnter={() => handleMouseEnter(1)}
-                onMouseLeave={() => handleMouseLeave(1)}
-              >
-                Giới thiệu
-              </Nav.Link>
-              <Nav.Link
-                href="/user/history"
-                style={{
-                  color: hoveredLinks[2]
-                    ? "var(--mainBlueColor)"
-                    : "var(--dustyGray)",
-                }}
-                onMouseEnter={() => handleMouseEnter(2)}
-                onMouseLeave={() => handleMouseLeave(2)}
-              >
-                Thành Tựu
-              </Nav.Link>
-              <Nav.Link
-                href="/shoppingcart"
-                style={{
-                  color: hoveredLinks[3]
-                    ? "var(--mainBlueColor)"
-                    : "var(--dustyGray)",
-                }}
-                onMouseEnter={() => handleMouseEnter(3)}
-                onMouseLeave={() => handleMouseLeave(3)}
-              >
-                Tra Cứu
-              </Nav.Link>
-              <Nav.Link
-                href="/user"
-                style={{
-                  color: hoveredLinks[4]
-                    ? "var(--mainBlueColor)"
-                    : "var(--dustyGray)",
-                }}
-                onMouseEnter={() => handleMouseEnter(4)}
-                onMouseLeave={() => handleMouseLeave(4)}
-              >
-                Tin Tức
-              </Nav.Link>
-            </Nav>
-          </Col>
-          <Col className="col-auto ml-auto">
-            <Nav>
-              <Nav.Link
-                href="/user"
-                style={{
-                  color: hoveredLinks[5]
-                    ? "var(--mainBlueColor)"
-                    : "var(--dustyGray)",
-                }}
-                onMouseEnter={() => handleMouseEnter(5)}
-                onMouseLeave={() => handleMouseLeave(5)}
-              >
-                Đăng Nhập
-              </Nav.Link>
-              <Nav.Link
-                href="/user"
-                style={{
-                  color: hoveredLinks[6]
-                    ? "var(--mainBlueColor)"
-                    : "var(--dustyGray)",
-                }}
-                onMouseEnter={() => handleMouseEnter(6)}
-                onMouseLeave={() => handleMouseLeave(6)}
-              >
-                Đăng Ký
-              </Nav.Link>
-            </Nav>
-          </Col>
-        </Row>
-      </Container>
-    </Navbar>
+                  Trang Chủ
+                </Nav.Link>
+                <Nav.Link
+                  href="/store"
+                  style={{
+                    color: hoveredLinks[1]
+                      ? "var(--mainBlueColor)"
+                      : "var(--dustyGray)",
+                  }}
+                  onMouseEnter={() => handleMouseEnter(1)}
+                  onMouseLeave={() => handleMouseLeave(1)}
+                >
+                  Giới thiệu
+                </Nav.Link>
+                <Nav.Link
+                  href="/user/history"
+                  style={{
+                    color: hoveredLinks[2]
+                      ? "var(--mainBlueColor)"
+                      : "var(--dustyGray)",
+                  }}
+                  onMouseEnter={() => handleMouseEnter(2)}
+                  onMouseLeave={() => handleMouseLeave(2)}
+                >
+                  Thành Tựu
+                </Nav.Link>
+                <Nav.Link
+                  href="/shoppingcart"
+                  style={{
+                    color: hoveredLinks[3]
+                      ? "var(--mainBlueColor)"
+                      : "var(--dustyGray)",
+                  }}
+                  onMouseEnter={() => handleMouseEnter(3)}
+                  onMouseLeave={() => handleMouseLeave(3)}
+                >
+                  Tra Cứu
+                </Nav.Link>
+                <Nav.Link
+                  href="/user"
+                  style={{
+                    color: hoveredLinks[4]
+                      ? "var(--mainBlueColor)"
+                      : "var(--dustyGray)",
+                  }}
+                  onMouseEnter={() => handleMouseEnter(4)}
+                  onMouseLeave={() => handleMouseLeave(4)}
+                >
+                  Tin Tức
+                </Nav.Link>
+              </Nav>
+            </Col>
+            <Col className="col-auto ml-auto">
+              <Nav>
+                <Nav.Link
+                  href="/user"
+                  style={{
+                    color: hoveredLinks[5]
+                      ? "var(--mainBlueColor)"
+                      : "var(--dustyGray)",
+                  }}
+                  onMouseEnter={() => handleMouseEnter(5)}
+                  onMouseLeave={() => handleMouseLeave(5)}
+                >
+                  Đăng Nhập
+                </Nav.Link>
+                <Nav.Link
+                  href="/user"
+                  style={{
+                    color: hoveredLinks[6]
+                      ? "var(--mainBlueColor)"
+                      : "var(--dustyGray)",
+                  }}
+                  onMouseEnter={() => handleMouseEnter(6)}
+                  onMouseLeave={() => handleMouseLeave(6)}
+                >
+                  Đăng Ký
+                </Nav.Link>
+              </Nav>
+            </Col>
+          </Row>
+        </Container>
+      </Navbar>
+    </div>
   );
 };
 
