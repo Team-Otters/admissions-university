@@ -10,7 +10,7 @@ const Sidebar: React.FC<{ route: string }> = ({ route }) => {
   };
   route = "Admin";
   return (
-    <div className="text-black text-xl flex-col font-notoSans flex">
+    <div className="text-black text-xl flex-col font-notoSans flex h-screen min-h-screen">
       <div className="bg-white h-full lg:w-52 xl:w-52 2xl:w-52 hidden lg:flex xl:flex 2xl:flex h-fullscreen">
         {/* <div className={`px-4 py-2 ${isOpen ? "hidden" : "block"}`}> */}
         {route === "Khach" ? (
@@ -132,7 +132,7 @@ const Sidebar: React.FC<{ route: string }> = ({ route }) => {
       </div>
       {/* Mobile Toggle Button */}
       <div
-        className={`w-16 h-12 absolute top-24 bg-blueTitle lg:hidden  ${
+        className={`w-16 h-12 absolute md:top-28 sm:top-32 top-40 bg-blueTitle lg:hidden  ${
           isOpen ? "hidden" : ""
         } cursor-pointer`}
         onClick={toggleMenu}

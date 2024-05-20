@@ -24,7 +24,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <AppHeader />
-        <div className="flex flex-1">
+        <div className="flex flex-1 h-full">
           <Sidebar route="Khach" />
           <Container>{children}</Container>
         </div>
