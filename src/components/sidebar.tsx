@@ -8,8 +8,11 @@ const Sidebar: React.FC<{ route: string }> = ({ route }) => {
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
-  route = "Admin";
+  //route = "Admin";
   return (
+    route === "Khach" ? (
+      <></>
+    ) :
     <div className="text-black text-xl flex-col font-notoSans flex">
       <div className="bg-white h-full lg:w-52 xl:w-52 2xl:w-52 hidden lg:flex xl:flex 2xl:flex h-fullscreen">
         {/* <div className={`px-4 py-2 ${isOpen ? "hidden" : "block"}`}> */}

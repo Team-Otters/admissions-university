@@ -26,7 +26,7 @@ export default function RootLayout({
         <AppHeader />
         <div className="flex flex-1">
           <Sidebar route="Khach" />
-          <Container>{children}</Container>
+          <Container className="custom-container">{children}</Container>
         </div>
         {/* <AppFooter/>       */}
       </body>
