@@ -4,14 +4,6 @@ import React, { useState } from "react";
 import { Button, Container } from "react-bootstrap";
 import { FaPencil } from "react-icons/fa6";
 import { MdDelete } from "react-icons/md";
-import {
-  Table,
-  TableHeader,
-  TableBody,
-  TableColumn,
-  TableRow,
-  TableCell,
-} from "@nextui-org/table";
 
 const WishlistPage: React.FC = () => {
   const [isOpenForm, setIsOpenForm] = React.useState<boolean>(false);
@@ -74,7 +66,6 @@ const WishlistPage: React.FC = () => {
 
   const handleClearRow = (id: string): void => {
     let temp = wishlistData;
-    let idx = 0;
     temp = temp.filter((value) => {
       if (value.id !== id) {
         return value;
@@ -101,7 +92,10 @@ const WishlistPage: React.FC = () => {
     >
       <div className="p-4 mb-4">
         <h2 className="text-3xl">Danh sách nguyện vọng</h2>
-        <table className="w-11/12 mx-auto mt-8 text-lg shadow-tableShadow border-collapse rounded-3xl bg-white">
+        <div className="w-11/12 mx-auto font-notoSans font-bold mt-6 align-center text-lg">
+          Tổng: {wishlistData.length}
+        </div>
+        <table className="w-11/12 mx-auto text-lg shadow-tableShadow border-collapse rounded-3xl bg-white">
           <thead>
             <tr className="text-center text-blueTitle border-b border-gray">
               <th className="border-gray w-2/12 lg:w-1/12 rounded-t-lg p-2">

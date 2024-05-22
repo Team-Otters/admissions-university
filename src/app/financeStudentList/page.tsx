@@ -1,11 +1,11 @@
 "use client";
-import FormWish from "@/components/formWish";
 import React, { useEffect, useState } from "react";
-import { Button, Container, Dropdown, DropdownItem } from "react-bootstrap";
+import { Container } from "react-bootstrap";
 import { FaPencil } from "react-icons/fa6";
 import { MdDelete, MdOutlineFilterAlt } from "react-icons/md";
 import { FaSearch } from "react-icons/fa";
 import { debounce } from "lodash";
+import useDebounce from "@/hooks/useDebounce";
 
 const FinanceStudentManagermentPage: React.FC = () => {
   const [isInputFocused, setIsInputFocused] = useState(false);
@@ -293,14 +293,14 @@ const FinanceStudentManagermentPage: React.FC = () => {
   //     setWishlistData(temp);
   //   };
 
-  const handleEditRow = (w: Wish): void => {
+  const handleEditRow = (w: Student): void => {
     setRowToEdit(w);
     setIsOpenForm(true);
   };
 
   const search = (text: string): Student[] => {
-    let temp: Student[] = searchStudentList.filter((student) => {
-      console.log(recentFilterGroupList);
+    console.log(recentFilterGroupList);
+    let temp: Student[] = studentList.filter((student) => {
       for (const element of recentFilterGroupList) {
         switch (element) {
           case "All":
@@ -363,6 +363,9 @@ const FinanceStudentManagermentPage: React.FC = () => {
             }
             break;
           case "CCCD":
+            console.log(
+              student.CCCD.toLowerCase().includes(text.toLowerCase())
+            );
             if (student.CCCD.toLowerCase().includes(text.toLowerCase())) {
               return student;
             }
@@ -389,17 +392,25 @@ const FinanceStudentManagermentPage: React.FC = () => {
     return temp;
   };
 
-  const debouncedSearch = React.useRef(
-    debounce(async (criteria) => {
-      setSearchStudentList(await search(criteria));
-    }, 500)
-  ).current;
+  const debounceSearch = useDebounce(searchText, 500);
+  useEffect(() => {
+    // if (debounceSearch == ''){
+    //     setSearchExam({mostRelevant: [], albums: [], tracks: [], artists: []});
+    // }
+    // else {
+    //     executeSearchQuery(debounceSearch);
+    // }
+    setSearchStudentList(search(searchText));
+  }, [debounceSearch]);
 
-  React.useEffect(() => {
-    return () => {
-      debouncedSearch.cancel();
-    };
-  }, [debouncedSearch]);
+  const applyFilter = (): void => {
+    let selectElement = document.getElementById("filter") as HTMLSelectElement;
+    console.log(selectElement.value);
+    setRecentFilterGroupList([selectElement.value]);
+    // let temp = search(searchText);
+    // console.log("abc: ", temp);
+    // setSearchStudentList(temp);
+  };
 
   React.useEffect(() => {
     console.log("abc: ", recentFilterGroupList);
@@ -410,7 +421,6 @@ const FinanceStudentManagermentPage: React.FC = () => {
 
   const handleSearchText = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setSearchText(e.target.value);
-    debouncedSearch(e.target.value);
   };
 
   return (
@@ -445,13 +455,7 @@ const FinanceStudentManagermentPage: React.FC = () => {
             name="filter"
             id="filter"
             className="ml-2 rounded-xl border border-black"
-            onChange={() => {
-              let selectElement = document.getElementById(
-                "filter"
-              ) as HTMLSelectElement;
-              console.log(selectElement.value);
-              setRecentFilterGroupList([selectElement.value]);
-            }}
+            onChange={applyFilter}
           >
             {filterGroupList.map((item, index) => {
               return (
@@ -462,10 +466,14 @@ const FinanceStudentManagermentPage: React.FC = () => {
             })}
           </select>
         </div>
-        <table className="max-w-11/12 w-11/12 mx-auto mt-8 text-lg shadow-tableShadow border-collapse rounded-3xl bg-white">
+        <div className="w-11/12 mx-auto font-notoSans font-bold mt-6 align-center text-lg">
+          Tổng: {searchStudentList.length}
+        </div>
+        <table className="max-w-11/12 w-11/12 mx-auto text-lg shadow-tableShadow border-collapse rounded-3xl bg-white">
           <thead>
             <tr className="text-center text-blueTitle border-b border-gray">
-              <th className="border-gray w-4 rounded-t-lg p-2">ID</th>
+              <th className="w-4 rounded-t-lg p-2">STT</th>
+              <th className="border-l border-gray p-2 w-2/12">ID</th>
               <th className="border-l border-gray p-2 w-2/12">Tên thí sinh</th>
               <th className="border-l border-gray p-2">Số điện thoại</th>
               <th className="border-l border-gray p-2 w-2/12">Email</th>
@@ -486,6 +494,7 @@ const FinanceStudentManagermentPage: React.FC = () => {
                   <td className="px-2 py-1 text-center border-r">
                     {index + 1}
                   </td>
+                  <td className="px-2 py-1 border-r">{item.id}</td>
                   <td className="px-2 py-1 border-r">{item.name}</td>
                   <td className="px-2 py-1 border-r">{item.phone}</td>
                   <td className="px-2 py-1 border-r">{item.email}</td>

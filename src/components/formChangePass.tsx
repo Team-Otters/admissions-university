@@ -2,14 +2,14 @@
 import React, { useState } from "react";
 import { Button } from "react-bootstrap";
 
-const FormWish: React.FC<{
+const FormChangePassword: React.FC<{
   closeModal: () => void;
   onSubmit: (data: Wish) => void;
   defaultValue: Wish;
 }> = ({ closeModal, onSubmit, defaultValue }) => {
   const [formState, setFormState] = useState(
     defaultValue || {
-      id: "",
+      studentName: "",
       name: "",
       priority: -1,
     }
