@@ -99,9 +99,9 @@ const WishlistPage: React.FC = () => {
       style={{ height: "100vh", paddingTop: "50px" }}
       className="font-notoSans"
     >
-      <div className="p-4 bg-white mb-4">
+      <div className="p-4 mb-4">
         <h2 className="text-3xl">Danh sách nguyện vọng</h2>
-        <table className="w-11/12 mx-auto mt-8 text-lg shadow-tableShadow border-collapse rounded-3xl">
+        <table className="w-11/12 mx-auto mt-8 text-lg shadow-tableShadow border-collapse rounded-3xl bg-white">
           <thead>
             <tr className="text-center text-blueTitle border-b border-gray">
               <th className="border-gray w-2/12 lg:w-1/12 rounded-t-lg p-2">
