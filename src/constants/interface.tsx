@@ -14,3 +14,10 @@ interface Student {
   CCCD: string;
   financeStatus: boolean;
 }
+
+interface ExamRoomManageForm {
+  roomCode: string;
+  subjectName: string;
+  roomName: string;
+  date: string;
+}
