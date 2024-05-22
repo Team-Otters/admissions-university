@@ -21,14 +21,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body className={inter.className}>
-        <AppHeader />
-        <div className="flex flex-1">
-          <Sidebar route="Khach" />
-          <Container className="custom-container">{children}</Container>
+    <html lang="en" style={{ height: "100%" }}>
+      <body className={inter.className} style={{ height: "100%" }}>
+        <div className="app-wrapper">
+          <AppHeader />
+          <div className="flex flex-1 main-content">
+            <Sidebar route="Khach" />
+            <Container>{children}</Container>
+          </div>
         </div>
-        {/* <AppFooter/>       */}
       </body>
     </html>
   );

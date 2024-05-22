@@ -1,6 +1,8 @@
 //demo
 import { useState } from "react";
 import { Button } from "react-bootstrap";
+import { FaWindowClose } from "react-icons/fa";
+import { TbMenu2 } from "react-icons/tb";
 
 const Sidebar: React.FC<{ route: string }> = ({ route }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -10,11 +12,8 @@ const Sidebar: React.FC<{ route: string }> = ({ route }) => {
   };
   //route = "Admin";
   return (
-    route === "Khach" ? (
-      <></>
-    ) :
-    <div className="text-black text-xl flex-col font-notoSans flex">
-      <div className="bg-white h-full lg:w-52 xl:w-52 2xl:w-52 hidden lg:flex xl:flex 2xl:flex h-fullscreen">
+    <div className="text-black text-xl flex-col font-notoSans flex mr-0 lg:mr-52">
+      <div className="bg-white h-full lg:w-52 lg:mt-8 xl:mt-0 hidden lg:flex xl:flex 2xl:flex fixed top-20 bottom-0">
         {/* <div className={`px-4 py-2 ${isOpen ? "hidden" : "block"}`}> */}
         {route === "Khach" ? (
           <></>
@@ -75,10 +74,8 @@ const Sidebar: React.FC<{ route: string }> = ({ route }) => {
           isOpen ? "block" : "hidden"
         } lg:hidden`}
       >
-        <div className="flex justify-between items-center mb-4">
-          <button className="text-black" onClick={toggleMenu}>
-            Close
-          </button>
+        <div className="flex justify-between items-center mb-2 mt-10 cursor-pointer">
+          <FaWindowClose size={24} onClick={toggleMenu} color="red" />
         </div>
         {route === "Khach" ? (
           <></>
@@ -134,14 +131,13 @@ const Sidebar: React.FC<{ route: string }> = ({ route }) => {
         )}
       </div>
       {/* Mobile Toggle Button */}
-      <div
-        className={`w-16 h-12 absolute top-24 bg-blueTitle lg:hidden  ${
+      <TbMenu2
+        className={`absolute left-0 md:top-28 sm:top-32 top-40 lg:hidden bg-white  ${
           isOpen ? "hidden" : ""
         } cursor-pointer`}
+        size={40}
         onClick={toggleMenu}
-      >
-        Menu
-      </div>
+      />
     </div>
   );
 };

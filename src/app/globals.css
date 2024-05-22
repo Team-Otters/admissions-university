@@ -29,6 +29,8 @@ body {
       rgb(var(--background-end-rgb))
     )
     rgb(var(--background-start-rgb));
+  background-repeat: no-repeat;
+  background-attachment: fixed;
 }
 .hideScrollBar::-webkit-scrollbar{
   display: none;
@@ -97,4 +99,29 @@ body {
   max-width: 90%; /* Adjust the width as needed */
   margin: 0 auto; /* Center the container horizontally */
   margin-top: 50px;
+}
+
+.app-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.app-wrapper .main-content {
+  display: flex;
+  flex: 1;
+  margin-top: 80px; /* Adjust this value based on the height of your header */
+}
+
+.header-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000; /* Ensure it stays on top */
+  /* margin-bottom: 100px;  */
+}
+
+.header-wrapper .navbar {
+  justify-content: center;
 }
