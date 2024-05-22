@@ -187,11 +187,11 @@ export default function Home() {
           <Col>
             <Row className=" flex">
               <p className=" font-bold text-center pt-20">Bạn có thắc mắc?</p>
-              <p className="text-center ">Gửi gmail đến chúng tôi để được tư vấn cụ thể</p>
+              <p className="text-center ">Gửi gmail đến chúng tôi để được tư vấn cụ thể nhé!</p>
             </Row>
             <Row>
               <div  className=" flex justify-items-center justify-center">
-                <Button variant="primary" className=" w-50 ">Đăng ký hồ sơ</Button>{' '}
+                <Button variant="primary" className=" w-50 ">Gửi mail thắc mắc</Button>{' '}
               </div>
             </Row>
           </Col>
