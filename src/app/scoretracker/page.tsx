@@ -42,7 +42,7 @@ const ScoreTrackerPage: React.FC = () => {
   return (
     <Container
       fluid
-      className="custom-container font-notoSans"
+      className="font-notoSans"
       style={{ height: "100vh", paddingTop: "20px" }}
     >
       <h1>Tra cứu điểm thi</h1>
