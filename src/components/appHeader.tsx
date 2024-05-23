@@ -150,7 +150,7 @@ const AppHeader = () => {
             <Col className="col-auto ml-auto">
               <Nav>
                 <Nav.Link
-                  href="/user"
+                  href="/login"
                   style={{
                     color: hoveredLinks[5]
                       ? "var(--mainBlueColor)"
@@ -162,7 +162,7 @@ const AppHeader = () => {
                   Đăng Nhập
                 </Nav.Link>
                 <Nav.Link
-                  href="/user"
+                  href="/profileregister"
                   style={{
                     color: hoveredLinks[6]
                       ? "var(--mainBlueColor)"
