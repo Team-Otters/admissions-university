@@ -3,6 +3,12 @@ interface Wish {
   name: string;
   priority: number;
 }
+interface New {
+  id: string;
+  date: string;
+  title: string;
+  content: string;
+}
 
 interface Student {
   id: string;
