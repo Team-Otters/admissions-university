@@ -20,6 +20,7 @@
 }
 
 body {
+  height: 100%;
   font-family: "Noto Sans", sans-serif;
   color: rgb(var(--foreground-rgb));
   background: linear-gradient(
@@ -93,7 +94,7 @@ body {
 }
 
 .custom-container {
-  max-height: 90%; /* Container will adjust its width based on content */
+  /* max-height: 90%; Container will adjust its width based on content */
   background-color: white;
   max-width: 90%; /* Adjust the width as needed */
   margin: 0 auto; /* Center the container horizontally */
