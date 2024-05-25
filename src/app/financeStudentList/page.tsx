@@ -1,12 +1,9 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { Container } from "react-bootstrap";
-import { Container } from "react-bootstrap";
 import { FaPencil } from "react-icons/fa6";
-import { MdDelete, MdOutlineFilterAlt } from "react-icons/md";
+import { MdOutlineFilterAlt } from "react-icons/md";
 import { FaSearch } from "react-icons/fa";
-import { debounce } from "lodash";
-import useDebounce from "@/hooks/useDebounce";
 import useDebounce from "@/hooks/useDebounce";
 
 const FinanceStudentManagermentPage: React.FC = () => {
@@ -296,14 +293,11 @@ const FinanceStudentManagermentPage: React.FC = () => {
   //   };
 
   const handleEditRow = (w: Student): void => {
-  const handleEditRow = (w: Student): void => {
     setRowToEdit(w);
     setIsOpenForm(true);
   };
 
   const search = (text: string): Student[] => {
-    console.log(recentFilterGroupList);
-    let temp: Student[] = studentList.filter((student) => {
     console.log(recentFilterGroupList);
     let temp: Student[] = studentList.filter((student) => {
       for (const element of recentFilterGroupList) {
@@ -371,9 +365,6 @@ const FinanceStudentManagermentPage: React.FC = () => {
             console.log(
               student.CCCD.toLowerCase().includes(text.toLowerCase())
             );
-            console.log(
-              student.CCCD.toLowerCase().includes(text.toLowerCase())
-            );
             if (student.CCCD.toLowerCase().includes(text.toLowerCase())) {
               return student;
             }
@@ -400,25 +391,6 @@ const FinanceStudentManagermentPage: React.FC = () => {
     return temp;
   };
 
-  const debounceSearch = useDebounce(searchText, 500);
-  useEffect(() => {
-    // if (debounceSearch == ''){
-    //     setSearchExam({mostRelevant: [], albums: [], tracks: [], artists: []});
-    // }
-    // else {
-    //     executeSearchQuery(debounceSearch);
-    // }
-    setSearchStudentList(search(searchText));
-  }, [debounceSearch]);
-
-  const applyFilter = (): void => {
-    let selectElement = document.getElementById("filter") as HTMLSelectElement;
-    console.log(selectElement.value);
-    setRecentFilterGroupList([selectElement.value]);
-    // let temp = search(searchText);
-    // console.log("abc: ", temp);
-    // setSearchStudentList(temp);
-  };
   const debounceSearch = useDebounce(searchText, 500);
   useEffect(() => {
     // if (debounceSearch == ''){
@@ -483,7 +455,6 @@ const FinanceStudentManagermentPage: React.FC = () => {
             id="filter"
             className="ml-2 rounded-xl border border-black"
             onChange={applyFilter}
-            onChange={applyFilter}
           >
             {filterGroupList.map((item, index) => {
               return (
@@ -494,10 +465,6 @@ const FinanceStudentManagermentPage: React.FC = () => {
             })}
           </select>
         </div>
-        <div className="w-11/12 mx-auto font-notoSans font-bold mt-6 align-center text-lg">
-          Tổng: {searchStudentList.length}
-        </div>
-        <table className="max-w-11/12 w-11/12 mx-auto text-lg shadow-tableShadow border-collapse rounded-3xl bg-white">
         <div className="w-11/12 mx-auto font-notoSans font-bold mt-6 align-center text-lg">
           Tổng: {searchStudentList.length}
         </div>
@@ -526,7 +493,6 @@ const FinanceStudentManagermentPage: React.FC = () => {
                   <td className="px-2 py-1 text-center border-r">
                     {index + 1}
                   </td>
-                  <td className="px-2 py-1 border-r">{item.id}</td>
                   <td className="px-2 py-1 border-r">{item.id}</td>
                   <td className="px-2 py-1 border-r">{item.name}</td>
                   <td className="px-2 py-1 border-r">{item.phone}</td>
