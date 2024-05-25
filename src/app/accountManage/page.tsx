@@ -183,6 +183,15 @@ const AccountManageScreen: React.FC = () => {
     setIsHiddens(temp);
   }, [searchAccounts]);
 
+  React.useEffect(() => {
+    let temp: boolean[] = [...isHiddens];
+    temp.length = 0;
+    accounts.forEach(() => {
+      temp.push(true);
+    });
+    setIsHiddens(temp);
+  }, []);
+
   return (
     <Container
       fluid
@@ -263,7 +272,13 @@ const AccountManageScreen: React.FC = () => {
                   <td className="px-2 py-1 border-r flex flex-row justify-between">
                     <input
                       className="bg-white"
-                      type={`${isHiddens[index] ? "password" : "text"}`}
+                      type={`${
+                        isHiddens.length == 0
+                          ? "password"
+                          : isHiddens[index]
+                          ? "password"
+                          : "text"
+                      }`}
                       value={`${item.password}`}
                       disabled
                     ></input>
