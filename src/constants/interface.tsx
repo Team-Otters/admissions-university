@@ -27,3 +27,10 @@ interface ExamRoomManageForm {
   roomName: string;
   date: string;
 }
+
+interface Account {
+  username: string;
+  accountName: string;
+  password: string;
+  role: string;
+}

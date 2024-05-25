@@ -2,9 +2,8 @@
 import React, { useEffect, useState } from "react";
 import { Container } from "react-bootstrap";
 import { FaPencil } from "react-icons/fa6";
-import { MdDelete, MdOutlineFilterAlt } from "react-icons/md";
+import { MdOutlineFilterAlt } from "react-icons/md";
 import { FaSearch } from "react-icons/fa";
-import { debounce } from "lodash";
 import useDebounce from "@/hooks/useDebounce";
 
 const FinanceStudentManagermentPage: React.FC = () => {
@@ -472,7 +471,7 @@ const FinanceStudentManagermentPage: React.FC = () => {
         <table className="max-w-11/12 w-11/12 mx-auto text-lg shadow-tableShadow border-collapse rounded-3xl bg-white">
           <thead>
             <tr className="text-center text-blueTitle border-b border-gray">
-              <th className="border-gray w-4 rounded-t-lg p-2">STT</th>
+              <th className="w-4 rounded-t-lg p-2">STT</th>
               <th className="border-l border-gray p-2 w-2/12">ID</th>
               <th className="border-l border-gray p-2 w-2/12">Tên thí sinh</th>
               <th className="border-l border-gray p-2">Số điện thoại</th>

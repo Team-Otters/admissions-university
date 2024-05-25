@@ -2,40 +2,38 @@
 import React, { useState } from "react";
 import { Button } from "react-bootstrap";
 
-const FormExamRoom: React.FC<{
+const FormAccount: React.FC<{
   closeModal: () => void;
   isEdit: boolean;
-  onSubmit: (data: ExamRoomManageForm) => void;
-  defaultValue: ExamRoomManageForm;
-  examRooms: ExamRoomManageForm[];
-}> = ({ closeModal, isEdit, onSubmit, defaultValue, examRooms }) => {
+  onSubmit: (data: Account) => void;
+  defaultValue: Account;
+  accounts: Account[];
+}> = ({ closeModal, isEdit, onSubmit, defaultValue, accounts }) => {
   const [formState, setFormState] = useState(defaultValue);
   const [errors, setErrors] = useState("");
   const isEdt = isEdit || true;
 
   const validateForm = () => {
+    formState.username = formState.username.trim();
+    formState.password = formState.password.trim();
+    formState.role = formState.role.trim();
+    formState.accountName = formState.accountName.trim();
+
     if (
-      formState.roomCode != "" &&
-      formState.roomName != "" &&
-      formState.subjectName != "" &&
-      formState.date != ""
+      formState.accountName != "" &&
+      formState.username != "" &&
+      formState.password != "" &&
+      formState.role != ""
     ) {
-      const isIdExists = examRooms.some(
-        (examRoom) => examRoom.roomCode == formState.roomCode
-      );
-      const isRoomUsable = examRooms.some(
-        (examRoom) =>
-          examRoom.roomName == formState.roomName &&
-          examRoom.date == formState.date
+      const isIdExists = accounts.some(
+        (account) => account.username == formState.username
       );
 
       if (!isEdit && isIdExists) {
-        setErrors(
-          "Mã phòng thi này đã tồn tại! Vui lòng nhập một mã phòng thi khác."
-        );
+        setErrors("username này đã tồn tại! Vui lòng nhập một username khác.");
         return false;
-      } else if (isRoomUsable) {
-        setErrors("Phòng thi này đã được sử dụng vào ngày " + formState.date);
+      } else if (formState.password.length < 8) {
+        setErrors("Mật khẩu phải dài hơn 8 ký tự");
         return false;
       }
       return true;
@@ -44,18 +42,17 @@ const FormExamRoom: React.FC<{
       for (const [key, value] of Object.entries(formState)) {
         if (value == "") {
           switch (key) {
-            case "roomCode":
-              errorFields.push("Mã phòng thi");
+            case "username":
+              errorFields.push("Username");
               break;
-            case "roomName":
-              errorFields.push("Phòng thi");
+            case "password":
+              errorFields.push("Password");
               break;
-            case "subjectName":
-              errorFields.push("Tên môn thi");
+            case "role":
+              errorFields.push("Vai trò");
               break;
-            case "date":
-              errorFields.push("Ngày thi");
-              break;
+            case "accountName":
+              errorFields.push("Tên tài khoản");
             default:
               break;
           }
@@ -90,44 +87,43 @@ const FormExamRoom: React.FC<{
       {/* <div className="bg-mainBlue"> */}
       <form className="h-5/6 w-full items-center justify-around flex flex-col">
         <div className="flex flex-row w-4/6">
-          <label className="w-1/3 lg:w-1/2">Mã phòng thi</label>
+          <label className="w-1/3 lg:w-1/2">Username</label>
           <input
             className="border border-black w-1/2 p-2"
-            name="roomCode"
+            name="username"
             onChange={handleChange}
             type="text"
-            value={formState.roomCode}
-            disabled={isEdit}
+            value={formState.username}
           />
         </div>
         <div className="flex flex-row w-4/6">
-          <label className="w-1/3 lg:w-1/2">Tên môn thi</label>
+          <label className="w-1/3 lg:w-1/2">Mật khẩu</label>
           <input
             className="border border-black w-1/2 p-2"
-            name="subjectName"
+            name="password"
             onChange={handleChange}
             type="text"
-            value={formState.subjectName}
+            value={formState.password}
           />
         </div>
         <div className="flex flex-row w-4/6">
-          <label className="w-1/3 lg:w-1/2">Phòng thi</label>
+          <label className="w-1/3 lg:w-1/2">Tên tài khoản</label>
           <input
             className="border border-black w-1/2 p-2"
-            name="roomName"
+            name="accountName"
             onChange={handleChange}
             type="text"
-            value={formState.roomName}
+            value={formState.accountName}
           />
         </div>
         <div className="flex flex-row w-4/6">
-          <label className="w-1/3 lg:w-1/2">Ngày thi</label>
+          <label className="w-1/3 lg:w-1/2">Vai trò</label>
           <input
             className="border border-black w-1/2 p-2"
-            name="date"
+            name="role"
             onChange={handleChange}
             type="text"
-            value={formState.date}
+            value={formState.role}
           />
         </div>
         {errors && <div className="text-center">{errors}</div>}
@@ -136,7 +132,7 @@ const FormExamRoom: React.FC<{
             Thoát
           </Button>
           <Button type="submit" className="mt-2 ml-4" onClick={handleSubmit}>
-            {isEdt ? "Lưu" : "Tạo phòng thi"}
+            {isEdt ? "Lưu" : "Tạo tài khoản"}
           </Button>
         </div>
       </form>
@@ -145,4 +141,4 @@ const FormExamRoom: React.FC<{
   );
 };
 
-export default FormExamRoom;
+export default FormAccount;
