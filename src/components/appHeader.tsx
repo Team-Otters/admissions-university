@@ -134,7 +134,7 @@ const AppHeader = () => {
                   Tra Cứu
                 </Nav.Link>
                 <Nav.Link
-                  href="/user"
+                  href="/news"
                   style={{
                     color: hoveredLinks[4]
                       ? "var(--mainBlueColor)"
