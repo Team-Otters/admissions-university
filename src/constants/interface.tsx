@@ -3,7 +3,7 @@ interface Wish {
   name: string;
   priority: number;
 }
-interface New {
+interface Post {
   id: string;
   date: string;
   title: string;

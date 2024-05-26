@@ -6,7 +6,7 @@ import Link from "next/link";
 
 
 export default function News() {
-  const [newListData, setNewlistData] = React.useState<New[]>([
+  const [newListData, setNewlistData] = React.useState<Post[]>([
     {
       title: "1 Thông báo lịch thi tập trung",
       date: "4:13, 12/5/2024",

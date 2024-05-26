@@ -24,7 +24,7 @@ const images = [
 ];
 
 export default function Home() {
-  const [newListData, setNewlistData] = React.useState<New[]>([
+  const [newListData, setNewlistData] = React.useState<Post[]>([
     {
       title: "Thông báo lịch thi tập trung",
       date: "4:13, 12/5/2024",
