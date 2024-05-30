@@ -10,10 +10,7 @@ import { IoIosEye, IoIosEyeOff } from "react-icons/io";
 import Input from "postcss/lib/input";
 
 
-const LoginPage: React.FC = () => {
-    const [isVisible, setIsVisible] = React.useState(false);
-
-    const toggleVisibility = () => setIsVisible(!isVisible);
+const FogotPasswordPage = () => {
 
     return (
         <Container fluid className="custom-container font-notoSans" style={{ height: "100vh", paddingTop: "20px", backgroundSize: "cover" ,  backgroundImage: 'url(https://tuyensinh.uit.edu.vn/sites/default/files/simplelogin/background.jpeg)'}}>
@@ -23,7 +20,7 @@ const LoginPage: React.FC = () => {
                     <Image src="/images/banner_2024.png" alt="" width={350} height={50} className=" mt-2 mb-2"></Image>
                 </a>
             <Form className=" w-60  pt-10">
-                <Form.Label className=" text-white">Tên đăng nhập</Form.Label>
+                <Form.Label className=" text-white">Nhập tên đăng nhập</Form.Label>
                 <Form.Control                
                     type="text"
                     name="username"
@@ -32,20 +29,11 @@ const LoginPage: React.FC = () => {
             
                 </Form.Control>
                 <div className=" pt-2 " >
-                <Form.Label className=" text-white ">Mật khẩu</Form.Label>
-                <Form.Control               
-                    type="password"
-                    name="password"
-                    placeholder="Nhập mật khẩu"
-                    required>
-                </Form.Control>
-                <Button variant="primary" type="submit" className=" w-60 mt-4">
-                  Đăng nhập
+                <Button variant="primary" type="submit" className=" w-60 mt-4 mb-2">
+                  Gửi yêu cầu
                 </Button>
                 </div>
             </Form>
-            <div className=" mt-6 flex flex-row justify-evenly"></div>
-            <p className=" text-white ">Quên mật khẩu? <a href="login/fogotpassword" className=" hover:underline text-white">Đổi mật khẩu</a></p> 
             </div>
 
         </div>
@@ -53,4 +41,4 @@ const LoginPage: React.FC = () => {
     );
 };
 
-export default LoginPage;
+export default FogotPasswordPage;
