@@ -1,6 +1,7 @@
 "use-client";
 import React, { useState } from "react";
 import { Button } from "react-bootstrap";
+import { IoMdEye, IoMdEyeOff } from "react-icons/io";
 
 const FormAccount: React.FC<{
   closeModal: () => void;
@@ -11,6 +12,8 @@ const FormAccount: React.FC<{
 }> = ({ closeModal, isEdit, onSubmit, defaultValue, accounts }) => {
   const [formState, setFormState] = useState(defaultValue);
   const [errors, setErrors] = useState("");
+  const [isHidden, setIsHidden] = useState(true);
+  const [isInputFocused, setIsInputFocused] = useState<boolean>(false);
   const isEdt = isEdit || true;
 
   const validateForm = () => {
@@ -98,13 +101,36 @@ const FormAccount: React.FC<{
         </div>
         <div className="flex flex-row w-4/6">
           <label className="w-1/3 lg:w-1/2">Mật khẩu</label>
-          <input
-            className="border border-black w-1/2 p-2"
-            name="password"
-            onChange={handleChange}
-            type="text"
-            value={formState.password}
-          />
+          <div
+            className={`flex flex-row w-1/2 p-2 border border-black ${
+              isInputFocused ? "border-2" : "border-1"
+            }`}
+            onFocus={() => setIsInputFocused(true)}
+            onBlur={() => setIsInputFocused(false)}
+          >
+            <input
+              className="w-11/12 focus:border-transparent focus:outline-none"
+              onFocus={() => setIsInputFocused(true)}
+              onBlur={() => setIsInputFocused(false)}
+              name="password"
+              onChange={handleChange}
+              type={`${isHidden ? "password" : "text"}`}
+              value={formState.password}
+            />
+            {isHidden ? (
+              <IoMdEyeOff
+                size={20}
+                className="self-center cursor-pointer"
+                onClick={() => setIsHidden(!isHidden)}
+              />
+            ) : (
+              <IoMdEye
+                size={20}
+                className="self-center cursor-pointer"
+                onClick={() => setIsHidden(!isHidden)}
+              />
+            )}
+          </div>
         </div>
         <div className="flex flex-row w-4/6">
           <label className="w-1/3 lg:w-1/2">Tên tài khoản</label>

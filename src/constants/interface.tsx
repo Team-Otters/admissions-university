@@ -34,3 +34,20 @@ interface Account {
   password: string;
   role: string;
 }
+
+interface ExamManageForm {
+  paperContainerCode: string;
+  roomName: string;
+  subject: string;
+  date: string;
+  numberOfPapers: number;
+}
+
+interface ScoreManageForm {
+  paperCode: string;
+  studentCode: string;
+  studentName: string;
+  subject: string;
+  date: string;
+  score: number;
+}
