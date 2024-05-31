@@ -115,9 +115,9 @@ const Sidebar: React.FC<{ route: string }> = ({ route }) => {
           </ul>
         ) : route === "KhaoThi" ? (
           <ul className="flex-1">
-            <li className="py-2 cursor-pointer hover:bg-gray">Tra cứu</li>
-            <li className="py-2 cursor-pointer hover:bg-gray">Hồ sơ</li>
-            <li className="py-2 cursor-pointer hover:bg-gray">Nguyện vọng</li>
+            <li className="py-2 cursor-pointer hover:bg-gray">
+              Quản lý chấm thi
+            </li>
             <li className="py-2 cursor-pointer hover:bg-gray">Đăng xuất</li>
           </ul>
         ) : (

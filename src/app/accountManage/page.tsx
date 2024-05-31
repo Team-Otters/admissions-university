@@ -9,7 +9,7 @@ import useDebounce from "@/hooks/useDebounce";
 import FormAccount from "@/components/formAccount";
 import { IoMdEye, IoMdEyeOff } from "react-icons/io";
 
-const AccountManageScreen: React.FC = () => {
+const AccountManagePage: React.FC = () => {
   const [isInputFocused, setIsInputFocused] = useState<boolean>(false);
   const [isOpenForm, setIsOpenForm] = useState<boolean>(false);
   const [rowToEdit, setRowToEdit] = React.useState<Account>();
@@ -347,4 +347,4 @@ const AccountManageScreen: React.FC = () => {
   );
 };
 
-export default AccountManageScreen;
+export default AccountManagePage;
