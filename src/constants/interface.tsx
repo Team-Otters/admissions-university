@@ -3,13 +3,19 @@ interface Wish {
   name: string;
   priority: number;
 }
-interface New {
+interface Post {
   id: string;
   date: string;
   title: string;
   content: string;
 }
-
+interface Papers {
+  id: string;
+  student: string;
+  subject: string;
+  numOfPage: number;
+  score: number;
+}
 interface Student {
   id: string;
   name: string;
@@ -50,4 +56,28 @@ interface ScoreManageForm {
   subject: string;
   date: string;
   score: number;
+}
+
+interface SubjectSets {
+  id: string;
+  name: string; // Tên tổ hợp môn học
+  mainSubject: string;
+  subjectList: string[]; // Danh sách các môn học trong tổ hợp
+}
+
+interface Subject {
+  id: string; 
+  name: string; 
+  parameter: string; 
+  time: string;
+}
+interface Exam {
+  id: string;
+  name: string;
+  year: string;
+}
+interface Benchmark {
+  id: string;
+  exam: Exam;
+  subject: Subject;
 }

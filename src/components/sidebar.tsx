@@ -43,6 +43,9 @@ const Sidebar: React.FC<{ route: string }> = ({ route }) => {
               Quản lý điểm thi
             </li>
             <li className="py-2 cursor-pointer hover:bg-gray">
+              Quản lý môn thi
+            </li>
+            <li className="py-2 cursor-pointer hover:bg-gray">
               Quản lý thông số
             </li>
             <li className="py-2 cursor-pointer hover:bg-gray">
