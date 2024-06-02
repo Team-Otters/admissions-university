@@ -184,15 +184,6 @@ export default function SubjectManagement() {
                   <td className="flex flex-row justify-center h-9 mr-1 self-center justify-self-center">
                     <button
                       className="cursor-pointer"
-                      //   onClick={() => {
-                      //     setIsEdit(true);
-                      //     handleEditRow(item);
-                      //   }}
-                    >
-                      <IoEye size={20} />
-                    </button>
-                    <button
-                      className="cursor-pointer"
                       onClick={() => {
                         setIsEdit(true);
                         handleEditRow(item);

@@ -20,15 +20,15 @@ const config: Config = {
       },
 
       colors: {
-        mainBlue: "#3285E6",
-        blueTitle: "#111FA0",
+        mainBlue: "#A5C7BF",
+        blueTitle: "#A5C7BF",
         gray: "#d9d9d9",
         iconStroke: "#5B5B58",
         amaranth: "#e6325c",
       },
 
       boxShadow: {
-        tableShadow: "0 0 20px -10px rgb(50, 133, 230)",
+        tableShadow: "0 0 20px -10px rgb(165, 199, 191)",
       },
 
       // borderRadius: {

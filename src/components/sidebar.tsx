@@ -46,10 +46,13 @@ const Sidebar: React.FC<{ route: string }> = ({ route }) => {
               Quản lý môn thi
             </li>
             <li className="py-2 cursor-pointer hover:bg-gray">
-              Quản lý thông số
+              Quản lý kỳ thi
             </li>
             <li className="py-2 cursor-pointer hover:bg-gray">
               Bài viết và thông báo
+            </li>
+            <li className="py-2 cursor-pointer hover:bg-gray">
+              Quản lý mốc thời gian
             </li>
             <li className="py-2 cursor-pointer hover:bg-gray">Báo cáo</li>
             <li className="py-2 cursor-pointer hover:bg-gray">Đăng xuất</li>
@@ -108,11 +111,17 @@ const Sidebar: React.FC<{ route: string }> = ({ route }) => {
               Quản lý điểm thi
             </li>
             <li className="py-2 cursor-pointer hover:bg-gray">
-              Quản lý thông số
+              Quản lý môn thi
+            </li>
+            <li className="py-2 cursor-pointer hover:bg-gray">
+              Quản lý kỳ thi
             </li>
             <li className="py-2 cursor-pointer hover:bg-gray">
               Bài viết và thông báo
             </li>
+            <li className="py-2 cursor-pointer hover:bg-gray">
+              Quản lý mốc thời gian
+              </li>
             <li className="py-2 cursor-pointer hover:bg-gray">Báo cáo</li>
             <li className="py-2 cursor-pointer hover:bg-gray">Đăng xuất</li>
           </ul>

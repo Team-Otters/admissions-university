@@ -142,7 +142,7 @@ const [selectedSubjects, setSelectedSubjects] = React.useState<string[]>([]);
   return (
     <div
       //   className="w-1/2 h-1/2 bg-white border border-black font-notoSans justify-center p-2 "
-      className="z-20 w-5/6 sm:w-1/2 lg:w-1/3 h-5/6 pt-2 bg-white flex items-center justify-around font-notoSans border rounded-3xl"
+      className="z-20 w-5/6 sm:w-1/2 lg:w-1/3 h-4/6 pt-2 bg-white flex items-center justify-around font-notoSans border rounded-3xl"
       onClick={(e) => {
         // if (e.target. === "modal-container") closeModal();
       }}

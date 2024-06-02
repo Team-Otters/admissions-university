@@ -5,6 +5,7 @@ import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import Button from "react-bootstrap/Button";
 import { Container, Alert } from "react-bootstrap";
+import axios from "axios";
 
 interface IFormData {
   fullName: string;
@@ -51,6 +52,66 @@ const ProfileRegisterPage: React.FC = () => {
   const [formSubmitted, setFormSubmitted] = useState<boolean>(false);
   const [showAlert, setShowAlert] = useState<boolean>(false);
   const [alertMessage, setAlertMessage] = useState<string>("");
+  const [cities, setCities] = useState([]);
+  const [districts, setDistricts] = useState([]);
+  const [wards, setWards] = useState([]);
+  const [selectedCity, setSelectedCity] = useState("");
+  const [selectedDistrict, setSelectedDistrict] = useState("");
+  const [selectedWard, setSelectedWard] = useState("");
+  const [selectedCityName, setSelectedCityName] = useState("");
+  const [selectedDistrictName, setSelectedDistrictName] = useState("");
+  const [selectedWardname, setSelectedWardName] = useState("");
+  const host = "https://provinces.open-api.vn/api/";
+  const callAPI = (api: string) => {
+    axios.get(api).then((response) => {
+      setCities(response.data);
+    });
+  };
+  const callApiDistrict = (api: string) => {
+    axios.get(api).then((response) => {
+      setDistricts(response.data.districts);
+      setSelectedCityName(response.data.name);
+    });
+  };
+  const callApiWard = (api: string) => {
+    axios.get(api).then((response) => {
+      setWards(response.data.wards);
+      setSelectedDistrictName(response.data.name);
+    });
+  };
+  const handleCityChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const cityCode = event.target.value;
+    setSelectedCity(cityCode);
+    setSelectedDistrict("");
+    setSelectedWard("");
+    setSelectedDistrictName("");
+    setSelectedWardName("");
+    if (cityCode) {
+      callApiDistrict(`${host}p/${cityCode}?depth=2`);
+    }
+  };
+  const handleDistrictChange = (
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    const districtCode = event.target.value;
+    setSelectedDistrict(districtCode);
+    setSelectedWard("");
+    setSelectedWardName("");
+    if (districtCode) {
+      callApiWard(`${host}d/${districtCode}?depth=2`);
+    }
+  };
+  const handleWardChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedWard(event.target.value);
+    let wName = wards.findLast((w) => w.code == event.target.value);
+    wName = wName.name;
+    setSelectedWardName(wName || "");
+    // console.log({
+    //   citycode: selectedCityName,
+    //   dtcode: selectedDistrictName,
+    //   wcode: wName,
+    // });
+  };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
     setFormData({ ...formData, [event.target.name]: event.target.value });
