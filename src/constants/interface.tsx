@@ -78,6 +78,13 @@ interface Exam {
 }
 interface Benchmark {
   id: string;
-  exam: Exam;
-  subject: Subject;
+  exam: string;
+  class: string;
+  score: Number;
+}
+interface Class {
+  id: string;
+  name: string;
+  year: string;
+  quotas: Number;
 }

@@ -1,6 +1,5 @@
 "use client";
 //import type { Metadata } from 'next'
-import "./globals.css";
 import { Inter } from "next/font/google";
 import "bootstrap/dist/css/bootstrap.min.css";
 import AppHeader from "@/components/appHeader";
@@ -21,14 +20,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" style={{ height: "100%" }}>
-      <body className={inter.className} style={{ height: "100%" }}>
-        <div className="app-wrapper">
-        <AppHeader />
-
-            {children}
+        <div >
+          <AppHeader />
+          <div className="flex flex-1 main-content">
+            <Sidebar route="Khach" />
+            <Container>{children}</Container>
+          </div>
         </div>
-      </body>
-    </html>
   );
 }
