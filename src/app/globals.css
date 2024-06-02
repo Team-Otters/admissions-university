@@ -122,6 +122,15 @@ body {
   /* margin-bottom: 100px;  */
 }
 
-.header-wrapper .navbar {
-  justify-content: center;
+.btn-custom {
+  background-color: #109491 !important;/* Replace with your custom hex color */
+  border-color: #109491 !important;     /* Replace with your custom hex color */
+  color: #ffffff !important;                  /* Change text color if necessary */
+}
+
+.btn-custom:hover, 
+.btn-custom:focus, 
+.btn-custom:active {
+  background-color: #5a4787 !important; /* Ensure hover, focus, and active states are styled */
+  border-color: #109491 !important;     /* Ensure border color is consistent */
 }

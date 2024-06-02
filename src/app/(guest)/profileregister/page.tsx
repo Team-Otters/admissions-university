@@ -126,15 +126,16 @@ const ProfileRegisterPage: React.FC = () => {
       reader.readAsDataURL(event.target.files[0]);
     }
   };
-  const handleCodeSubmit = () =>
-  {
-    console.log('Confirm Code')
+  const handleCodeSubmit = () => {
+    console.log("Confirm Code");
   };
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    const allFieldsFilled = Object.values(formData).every((value) => value.trim() !== "");
+    const allFieldsFilled = Object.values(formData).every(
+      (value) => value.trim() !== ""
+    );
     setFormSubmitted(true);
     if (allFieldsFilled && formData.idImage) {
       setFormSubmitted(true);
@@ -167,7 +168,12 @@ const ProfileRegisterPage: React.FC = () => {
               <Form.Control type="text" placeholder="Nhập mã xác nhận" />
             </Form.Group>
           </Form>
-          <Button variant="primary" type="submit" className="mt-6" onClick={handleCodeSubmit}>
+          <Button
+            variant="primary"
+            type="submit"
+            className="mt-6"
+            onClick={handleCodeSubmit}
+          >
             Submit
           </Button>
         </div>
@@ -176,102 +182,112 @@ const ProfileRegisterPage: React.FC = () => {
           <h1>Đăng ký hồ sơ</h1>
           <Form onSubmit={handleSubmit}>
             <Row className="mb-3">
-              <Col>
-                <Form.Group controlId="formFullName">
-                  <Form.Label>Họ tên</Form.Label>
-                  <Form.Control
-                    type="text"
-                    name="fullName"
-                    placeholder="Nhập họ tên"
-                    value={formData.fullName}
-                    onChange={handleChange}
-                    required
-                  />
-                </Form.Group>
+              <Col md={4}>
+                <Row className="mb-3  min-h-20">
+                  <Form.Group controlId="formFullName">
+                    <Form.Label className="pl-2">Họ tên</Form.Label>
+                    <Form.Control
+                      type="text"
+                      name="fullName"
+                      placeholder="Nhập họ tên"
+                      value={formData.fullName}
+                      onChange={handleChange}
+                      required
+                    />
+                  </Form.Group>
+                </Row>
+                <Row className="mb-3">
+                  <Form.Group controlId="formDateOfBirth">
+                    <Form.Label className="pl-2">Ngày sinh</Form.Label>
+                    <Form.Control
+                      type="date"
+                      name="dateOfBirth"
+                      value={formData.dateOfBirth}
+                      onChange={handleChange}
+                      required
+                    />
+                  </Form.Group>
+                </Row>
               </Col>
-              <Col>
-                <Form.Group controlId="formIdNumber">
-                  <Form.Label>CMND/CCCD</Form.Label>
-                  <Form.Control
-                    type="text"
-                    name="idNumber"
-                    placeholder="Nhập CMND/CCCD"
-                    value={formData.idNumber}
-                    onChange={handleChange}
-                    required
-                  />
-                </Form.Group>
+              <Col md={4}>
+                <Row className="mb-3 min-h-20">
+                  <Form.Group controlId="formGender">
+                    <Form.Label className="pl-2">Giới tính</Form.Label>
+                    <div className="d-flex flex-wrap">
+                      <Form.Check
+                        className="me-md-3 mb-2"
+                        inline
+                        type="checkbox"
+                        label="Nam"
+                        name="gender"
+                        value="Nam"
+                        checked={formData.gender === "Nam"}
+                        onChange={handleChange}
+                      />
+                      <Form.Check
+                        className="me-md-3 mb-2"
+                        inline
+                        type="checkbox"
+                        label="Nữ"
+                        name="gender"
+                        value="Nữ"
+                        checked={formData.gender === "Nữ"}
+                        onChange={handleChange}
+                      />
+                    </div>
+                  </Form.Group>
+                </Row>
+                <Row className="mb-3">
+                  <Form.Group controlId="formPlaceOfBirth">
+                    <Form.Label className="pl-2">Nơi sinh</Form.Label>
+                    <Form.Control
+                      as="select"
+                      name="placeOfBirth"
+                      value={formData.placeOfBirth}
+                      onChange={handleChange}
+                      required
+                    >
+                      <option value="">-- Chọn nơi sinh --</option>
+                      <option value="Address1">Địa chỉ 1</option>
+                      <option value="Address2">Địa chỉ 2</option>
+                    </Form.Control>
+                  </Form.Group>
+                </Row>
               </Col>
-              <Col>
-                <Form.Group controlId="formHouseholdAddress1">
-                  <Form.Label>Địa chỉ hộ khẩu</Form.Label>
-                  <Form.Control
-                    type="text"
-                    name="householdAddress1"
-                    placeholder="Nhập địa chỉ"
-                    value={formData.householdAddress1}
-                    onChange={handleChange}
-                    required
-                  />
-                </Form.Group>
-              </Col>
-              <Col>
-                <Form.Group controlId="formPermanentResidence1">
-                  <Form.Label>Địa chỉ thường trú</Form.Label>
-                  <Form.Control
-                    type="text"
-                    name="permanentResidence1"
-                    placeholder="Nhập địa chỉ"
-                    value={formData.permanentResidence1}
-                    onChange={handleChange}
-                    required
-                  />
+              <Col xs="auto" className="justify-center">
+                <Form.Group
+                  controlId="formIDImage"
+                  className="flex flex-col items-start"
+                >
+                  {!formData.idImage ? (
+                    <div className="mb-2.5">
+                      <Form.Label className="pl-2 justify-self-center">
+                        Ảnh Thẻ
+                      </Form.Label>
+                      <Form.Control
+                        type="file"
+                        onChange={handleFileChange}
+                        accept="image/*"
+                      />
+                    </div>
+                  ) : (
+                    <div className="mb-2.5">
+                      <Form.Label className="pl-2">Ảnh Thẻ</Form.Label>
+                      <img
+                        src={formData.idImage}
+                        alt="Uploaded Image"
+                        className="mt-2 max-w-36 max-h-36"
+                      />
+                    </div>
+                  )}
                 </Form.Group>
               </Col>
             </Row>
+
             <Row className="mb-3">
-            <Col>
-                <Form.Group controlId="formDateOfBirth">
-                  <Form.Label>Ngày sinh</Form.Label>
-                  <Form.Control
-                    type="date"
-                    name="dateOfBirth"
-                    value={formData.dateOfBirth}
-                    onChange={handleChange}
-                    required
-                  />
-                </Form.Group>
-              </Col>
-              <Col>
-                <Form.Group controlId="formGender">
-                  <Form.Label>Giới tính</Form.Label>
-                  <div className="d-flex flex-wrap">
-                    <Form.Check
-                      className="me-md-3 mb-2"
-                      inline
-                      type="checkbox"
-                      label="Nam"
-                      name="gender"
-                      value="Nam"
-                      checked={formData.gender === "Nam"}
-                      onChange={handleChange}
-                    />
-                    <Form.Check
-                      className="me-md-3 mb-2"
-                      inline
-                      type="checkbox"
-                      label="Nữ"
-                      name="gender"
-                      value="Nữ"
-                      checked={formData.gender === "Nữ"}
-                      onChange={handleChange}
-                    />
-                  </div>
-                </Form.Group>
-              </Col>
               <Col>
                 <Form.Group controlId="formHouseholdAddress2">
-                  <Form.Label>Tỉnh/Thành Phố</Form.Label>
+                  <Form.Label className="pl-2">Tỉnh/Thành Phố</Form.Label>
                   <Form.Control
                     as="select"
                     name="householdAddress2"
@@ -286,55 +302,8 @@ const ProfileRegisterPage: React.FC = () => {
                 </Form.Group>
               </Col>
               <Col>
-                <Form.Group controlId="formPermanentResidence2">
-                  <Form.Label>Tỉnh/Thành Phố</Form.Label>
-                  <Form.Control
-                    as="select"
-                    name="permanentResidence2"
-                    value={formData.permanentResidence2}
-                    onChange={handleChange}
-                    required
-                  >
-                    <option value="">-- Chọn địa chỉ --</option>
-                    <option value="Address1">Địa chỉ 1</option>
-                    <option value="Address2">Địa chỉ 2</option>
-                  </Form.Control>
-                </Form.Group>
-              </Col>
-            </Row>
-            <Row className="mb-3">
-            <Col>
-                <Form.Group controlId="formPlaceOfBirth">
-                  <Form.Label>Nơi sinh</Form.Label>
-                  <Form.Control
-                    as="select"
-                    name="placeOfBirth"
-                    value={formData.placeOfBirth}
-                    onChange={handleChange}
-                    required
-                  >
-                    <option value="">-- Chọn nơi sinh --</option>
-                    <option value="Address1">Địa chỉ 1</option>
-                    <option value="Address2">Địa chỉ 2</option>
-                  </Form.Control>
-                </Form.Group>
-              </Col>
-              <Col>
-                <Form.Group controlId="formEthnicity">
-                  <Form.Label>Dân tộc</Form.Label>
-                  <Form.Control
-                    type="text"
-                    name="ethnicity"
-                    placeholder="Nhập dân tộc"
-                    value={formData.ethnicity}
-                    onChange={handleChange}
-                    required
-                  />
-                </Form.Group>
-              </Col>
-              <Col>
                 <Form.Group controlId="formHouseholdAddress3">
-                  <Form.Label>Quận/Huyện</Form.Label>
+                  <Form.Label className="pl-2">Quận/Huyện</Form.Label>
                   <Form.Control
                     as="select"
                     name="householdAddress3"
@@ -349,41 +318,8 @@ const ProfileRegisterPage: React.FC = () => {
                 </Form.Group>
               </Col>
               <Col>
-                <Form.Group controlId="formPermanentResidence3">
-                  <Form.Label>Quận/Huyện</Form.Label>
-                  <Form.Control
-                    as="select"
-                    name="permanentResidence3"
-                    value={formData.permanentResidence3}
-                    onChange={handleChange}
-                    required
-                  >
-                    <option value="">-- Chọn địa chỉ --</option>
-                    <option value="Address1">Địa chỉ 1</option>
-                    <option value="Address2">Địa chỉ 2</option>
-                  </Form.Control>
-                </Form.Group>
-              </Col>
-            </Row>
-            <Row className="mb-3">
-              
-              <Col>
-                <Form.Group controlId="formSecondSchool">
-                  <Form.Label>Trường THCS</Form.Label>
-                  <Form.Control
-                    type="text"
-                    name="secondSchool"
-                    placeholder="Nhập trường THCS"
-                    value={formData.secondSchool}
-                    onChange={handleChange}
-                    required
-                  />
-                </Form.Group>
-              </Col>
-              <Col />
-              <Col>
                 <Form.Group controlId="formHouseholdAddress4">
-                  <Form.Label>Xã/Phường</Form.Label>
+                  <Form.Label className="pl-2">Xã/Phường</Form.Label>
                   <Form.Control
                     as="select"
                     name="householdAddress4"
@@ -398,8 +334,56 @@ const ProfileRegisterPage: React.FC = () => {
                 </Form.Group>
               </Col>
               <Col>
+                <Form.Group controlId="formHouseholdAddress1">
+                  <Form.Label className="pl-2">Địa chỉ hộ khẩu</Form.Label>
+                  <Form.Control
+                    type="text"
+                    name="householdAddress1"
+                    placeholder="Nhập địa chỉ"
+                    value={formData.householdAddress1}
+                    onChange={handleChange}
+                    required
+                  />
+                </Form.Group>
+              </Col>
+            </Row>
+            <Row className="mb-3">
+              <Col>
+                <Form.Group controlId="formPermanentResidence2">
+                  <Form.Label className="pl-2">Tỉnh/Thành Phố</Form.Label>
+                  <Form.Control
+                    as="select"
+                    name="permanentResidence2"
+                    value={formData.permanentResidence2}
+                    onChange={handleChange}
+                    required
+                  >
+                    <option value="">-- Chọn địa chỉ --</option>
+                    <option value="Address1">Địa chỉ 1</option>
+                    <option value="Address2">Địa chỉ 2</option>
+                  </Form.Control>
+                </Form.Group>
+              </Col>
+
+              <Col>
+                <Form.Group controlId="formPermanentResidence3">
+                  <Form.Label className="pl-2">Quận/Huyện</Form.Label>
+                  <Form.Control
+                    as="select"
+                    name="permanentResidence3"
+                    value={formData.permanentResidence3}
+                    onChange={handleChange}
+                    required
+                  >
+                    <option value="">-- Chọn địa chỉ --</option>
+                    <option value="Address1">Địa chỉ 1</option>
+                    <option value="Address2">Địa chỉ 2</option>
+                  </Form.Control>
+                </Form.Group>
+              </Col>
+              <Col>
                 <Form.Group controlId="formPermanentResidence4">
-                  <Form.Label>Xã/Phường</Form.Label>
+                  <Form.Label className="pl-2">Xã/Phường</Form.Label>
                   <Form.Control
                     as="select"
                     name="permanentResidence4"
@@ -413,11 +397,50 @@ const ProfileRegisterPage: React.FC = () => {
                   </Form.Control>
                 </Form.Group>
               </Col>
+              <Col>
+                <Form.Group controlId="formPermanentResidence1">
+                  <Form.Label className="pl-2">Địa chỉ thường trú</Form.Label>
+                  <Form.Control
+                    type="text"
+                    name="permanentResidence1"
+                    placeholder="Nhập địa chỉ"
+                    value={formData.permanentResidence1}
+                    onChange={handleChange}
+                    required
+                  />
+                </Form.Group>
+              </Col>
             </Row>
             <Row className="mb-3">
               <Col>
+                <Form.Group controlId="formEthnicity">
+                  <Form.Label className="pl-2">Dân tộc</Form.Label>
+                  <Form.Control
+                    type="text"
+                    name="ethnicity"
+                    placeholder="Nhập dân tộc"
+                    value={formData.ethnicity}
+                    onChange={handleChange}
+                    required
+                  />
+                </Form.Group>
+              </Col>
+              <Col>
+                <Form.Group controlId="formSecondSchool">
+                  <Form.Label className="pl-2">Trường THCS</Form.Label>
+                  <Form.Control
+                    type="text"
+                    name="secondSchool"
+                    placeholder="Nhập trường THCS"
+                    value={formData.secondSchool}
+                    onChange={handleChange}
+                    required
+                  />
+                </Form.Group>
+              </Col>
+              <Col>
                 <Form.Group controlId="formPhoneNumber">
-                  <Form.Label>Số Điện Thoại</Form.Label>
+                  <Form.Label className="pl-2">Số Điện Thoại</Form.Label>
                   <Form.Control
                     type="text"
                     name="phoneNumber"
@@ -430,7 +453,7 @@ const ProfileRegisterPage: React.FC = () => {
               </Col>
               <Col>
                 <Form.Group controlId="formEmail">
-                  <Form.Label>Email</Form.Label>
+                  <Form.Label className="pl-2">Email</Form.Label>
                   <Form.Control
                     type="text"
                     name="email"
@@ -441,32 +464,11 @@ const ProfileRegisterPage: React.FC = () => {
                   />
                 </Form.Group>
               </Col>
-              <Col>
-                <Form.Group
-                  controlId="formIDImage"
-                  style={{ display: "flex", alignItems: "center" }}
-                >
-                  <div style={{ marginRight: "10px" }}>
-                    <Form.Label>Ảnh CCCD/CMND</Form.Label>
-                    <Form.Control
-                      type="file"
-                      onChange={handleFileChange}
-                      accept="image/*"
-                    />
-                  </div>
-                  {formData.idImage && (
-                    <img
-                      src={formData.idImage}
-                      alt="Uploaded Image"
-                      style={{ maxWidth: "100px", maxHeight: "100px" }}
-                    />
-                  )}
-                </Form.Group>
-              </Col>
             </Row>
-            <Row className="justify-content-center">
+            <Row className="mb-3 justify-center"></Row>
+            <Row className="justify-center">
               <Col xs="auto">
-                <Button variant="primary" type="submit">
+                <Button className="btn-custom" type="submit">
                   Submit
                 </Button>
               </Col>
