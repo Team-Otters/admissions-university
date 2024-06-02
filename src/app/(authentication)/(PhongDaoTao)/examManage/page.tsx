@@ -87,7 +87,7 @@ export default function ExamManagement() {
       style={{ height: "100vh", paddingTop: "50px" }}
       className="font-notoSans"
     >
-      <div className="p-2 bg-white mb-4 col-auto h-5/6">
+      <div className="p-2 mb-4 col-auto h-5/6">
       <div>
         <h2 className="text-3xl">Quản lý kỳ thi</h2>
         <div className="w-11/12 mx-auto flex flex-row justify-between">
