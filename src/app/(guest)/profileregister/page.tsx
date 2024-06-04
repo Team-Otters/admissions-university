@@ -61,7 +61,7 @@ const ProfileRegisterPage: React.FC = () => {
   const [selectedCityName, setSelectedCityName] = useState("");
   const [selectedDistrictName, setSelectedDistrictName] = useState("");
   const [selectedWardname, setSelectedWardName] = useState("");
-  const host = "https://provinces.open-api.vn/api/";
+  const host = "https://vapi.vnappmob.com/api/province/";
   const callAPI = (api: string) => {
     axios.get(api).then((response) => {
       setCities(response.data);
@@ -149,6 +149,10 @@ const ProfileRegisterPage: React.FC = () => {
       console.log("Please fill in all fields and upload the image.");
     }
   };
+  React.useEffect(() => {
+    // callAPI(`${host}p?depth=2`);
+    callAPI(`${host}`);
+  }, []);
 
   return (
     <Container
@@ -295,9 +299,16 @@ const ProfileRegisterPage: React.FC = () => {
                     onChange={handleChange}
                     required
                   >
-                    <option value="">-- Chọn địa chỉ --</option>
-                    <option value="Address1">Địa chỉ 1</option>
-                    <option value="Address2">Địa chỉ 2</option>
+                    {cities.map((city: any) => (
+                            <option
+                              key={city.code}
+                              value={city.code}
+                              id="tinh"
+                              name="tinh"
+                            >
+                              {city.name}
+                            </option>
+                          ))}
                   </Form.Control>
                 </Form.Group>
               </Col>

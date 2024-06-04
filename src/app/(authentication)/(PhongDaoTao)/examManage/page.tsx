@@ -149,7 +149,8 @@ export default function ExamManagement() {
                     <button
                       className="cursor-pointer"
                       onClick={() => {
-                        handleEditRow(item);
+                        //handleEditRow(item);
+                        console.log(item.id);
                         router.push(
                             `/examManage/examDetail/${item.id}`
                           )
