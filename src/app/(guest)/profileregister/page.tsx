@@ -137,7 +137,6 @@ const ProfileRegisterPage: React.FC = () => {
     try {
       let data = JSON.stringify({
         "fullName": formData.fullName,
-        "numberID": formData.idNumber,
         "gender": formData.gender,
         "dateOfBirth": formData.dateOfBirth,
         "phoneNumber": formData.phoneNumber,
