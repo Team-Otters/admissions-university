@@ -6,14 +6,12 @@ import Row from "react-bootstrap/Row";
 import Button from "react-bootstrap/Button";
 import { Container } from "react-bootstrap";
 interface IFormData {
-  userName: string;
   password: string;
   password1: string;
 }
 
 const ChangePasswordPage: React.FC = () => {
   const [formData, setFormData] = React.useState<IFormData>({
-    userName: "",
     password: "",
     password1: "",
   });
@@ -27,7 +25,6 @@ const ChangePasswordPage: React.FC = () => {
     // handle form submission here
     console.log(formData);
     setFormData({
-        userName: "",
         password: "",
         password1: "",
     });
@@ -41,22 +38,6 @@ const ChangePasswordPage: React.FC = () => {
     >
       <h1>Đổi mật khẩu</h1>
       <Form onSubmit={handleSubmit}>
-        <Row className="mb-3">
-          <Col>
-            <Form.Group controlId="formExamName">
-              <Form.Label>Tên người dùng</Form.Label>
-              <Form.Control
-                type="text"
-                name="userName"
-                value={formData.userName}
-                onChange={handleChange}
-                required
-              />
-            </Form.Group>
-          </Col>
-          <Col>
-          </Col>
-        </Row>
         <Row className="mb-3">
           <Col>
             <Form.Group controlId="formPassword">

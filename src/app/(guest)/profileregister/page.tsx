@@ -61,57 +61,7 @@ const ProfileRegisterPage: React.FC = () => {
   const [selectedCityName, setSelectedCityName] = useState("");
   const [selectedDistrictName, setSelectedDistrictName] = useState("");
   const [selectedWardname, setSelectedWardName] = useState("");
-  const host = "https://provinces.open-api.vn/api/";
-  const callAPI = (api: string) => {
-    axios.get(api).then((response) => {
-      setCities(response.data);
-    });
-  };
-  const callApiDistrict = (api: string) => {
-    axios.get(api).then((response) => {
-      setDistricts(response.data.districts);
-      setSelectedCityName(response.data.name);
-    });
-  };
-  const callApiWard = (api: string) => {
-    axios.get(api).then((response) => {
-      setWards(response.data.wards);
-      setSelectedDistrictName(response.data.name);
-    });
-  };
-  const handleCityChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const cityCode = event.target.value;
-    setSelectedCity(cityCode);
-    setSelectedDistrict("");
-    setSelectedWard("");
-    setSelectedDistrictName("");
-    setSelectedWardName("");
-    if (cityCode) {
-      callApiDistrict(`${host}p/${cityCode}?depth=2`);
-    }
-  };
-  const handleDistrictChange = (
-    event: React.ChangeEvent<HTMLSelectElement>
-  ) => {
-    const districtCode = event.target.value;
-    setSelectedDistrict(districtCode);
-    setSelectedWard("");
-    setSelectedWardName("");
-    if (districtCode) {
-      callApiWard(`${host}d/${districtCode}?depth=2`);
-    }
-  };
-  const handleWardChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedWard(event.target.value);
-    let wName = wards.findLast((w) => w.code == event.target.value);
-    wName = wName.name;
-    setSelectedWardName(wName || "");
-    // console.log({
-    //   citycode: selectedCityName,
-    //   dtcode: selectedDistrictName,
-    //   wcode: wName,
-    // });
-  };
+  const axios = require("axios");
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
     setFormData({ ...formData, [event.target.name]: event.target.value });
@@ -130,23 +80,87 @@ const ProfileRegisterPage: React.FC = () => {
     console.log("Confirm Code");
   };
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmition = async (e: { preventDefault: () => void; }) =>{
+    e.preventDefault();
+    try {
+      let data = JSON.stringify({
+        "fullName": "Ian Smith",
+        "numberId": "12345",
+        "gender": "male",
+        "dateOfBirth": "2023-05-22T00:00:00.000+00:00",
+        "phoneNumber": "0123456700",
+        "email": "student@gmail.com",
+        "placeOfBirth": "Ha Noi",
+        "ethnicType": "Asian",
+        "houseHold": "Family B",
+        "address": "123 Main St, Anytown USA",
+        "school": "THCS ABC"
+      });
+      
+      let config = {
+        method: 'post',
+        maxBodyLength: Infinity,
+        url: 'http://localhost:8080/register/student',
+        headers: { 
+          'Content-Type': 'application/json'
+        },
+        data : data
+      };
+      const response = await axios.request(config);
+           
+      // Handle successful login based on your API's response structure
+      console.log(response.data); // Example: log the response data (e.g., token, user details)
+      // You can use the response data to redirect the user to a different page, store authentication tokens, etc.
+    } catch (error) {
+      console.error(error); // Handle errors appropriately (e.g., display error messages)
+    }
+
+  }
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    const allFieldsFilled = Object.values(formData).every(
-      (value) => value.trim() !== ""
-    );
-    setFormSubmitted(true);
-    if (allFieldsFilled && formData.idImage) {
-      setFormSubmitted(true);
-      setAlertMessage("Form submitted successfully!");
-      setShowAlert(true);
-      setTimeout(() => setShowAlert(false), 3000);
-    } else {
-      setAlertMessage("Please fill in all fields and upload the image.");
-      setShowAlert(true);
-      setTimeout(() => setShowAlert(false), 3000);
-      console.log("Please fill in all fields and upload the image.");
+    // const allFieldsFilled = Object.values(formData).every(
+    //   (value) => value.trim() !== ""
+    // );
+    // setFormSubmitted(true);
+    // if (allFieldsFilled && formData.idImage) {
+    //   setFormSubmitted(true);
+    //   setAlertMessage("Form submitted successfully!");
+    //   setShowAlert(true);
+    //   setTimeout(() => setShowAlert(false), 3000);
+    // } else {
+    //   setAlertMessage("Please fill in all fields and upload the image.");
+    //   setShowAlert(true);
+    //   setTimeout(() => setShowAlert(false), 3000);
+    //   console.log("Please fill in all fields and upload the image.");
+    // }
+    try {
+      let data = JSON.stringify({
+        "fullName": formData.fullName,
+        "gender": formData.gender,
+        "dateOfBirth": formData.dateOfBirth,
+        "phoneNumber": formData.phoneNumber,
+        "email": formData.email,
+        "placeOfBirth": formData.placeOfBirth,
+        "ethnicType": formData.ethnicity,
+        "houseHold": `${formData.householdAddress1}, ${formData.householdAddress4}, ${formData.householdAddress3}, ${formData.householdAddress2}`,
+        "address": `${formData.permanentResidence1}, ${formData.permanentResidence4}, ${formData.permanentResidence3}, ${formData.permanentResidence2}`,
+        "school": formData.secondSchool,
+      });
+      let config = {
+        method: "post",
+        maxBodyLength: Infinity,
+        url: "http://localhost:8081/register/student",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        data: data,
+      };
+
+      const response = await axios.request(config);
+      console.log(JSON.stringify(response.data));
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -154,7 +168,7 @@ const ProfileRegisterPage: React.FC = () => {
     <Container
       fluid
       className="font-notoSans"
-      style={{ height: "100vh", paddingTop: "20px" }}
+      style={{ height: "100vh", paddingTop: "100px" }}
     >
       {formSubmitted ? (
         <div style={{ textAlign: "center", marginTop: "10%" }}>
@@ -180,7 +194,7 @@ const ProfileRegisterPage: React.FC = () => {
       ) : (
         <>
           <h1>Đăng ký hồ sơ</h1>
-          <Form onSubmit={handleSubmit}>
+          <Form onSubmit={handleSubmition}>
             <Row className="mb-3">
               <Col md={4}>
                 <Row className="mb-3  min-h-20">
