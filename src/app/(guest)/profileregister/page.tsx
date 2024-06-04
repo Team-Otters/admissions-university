@@ -6,7 +6,6 @@ import Row from "react-bootstrap/Row";
 import Button from "react-bootstrap/Button";
 import { Container, Alert } from "react-bootstrap";
 import axios from "axios";
-import { Console } from "console";
 
 interface IFormData {
   fullName: string;
@@ -62,45 +61,21 @@ const ProfileRegisterPage: React.FC = () => {
   const [selectedCityName, setSelectedCityName] = useState("");
   const [selectedDistrictName, setSelectedDistrictName] = useState("");
   const [selectedWardname, setSelectedWardName] = useState("");
-  const [isLoadingImage, setIsLoadingImage] = useState(false);
-
-  const registerStudent = async (studentData: any) => {
-    const config = {
-      method: 'post',
-      maxBodyLength: Infinity,
-      url: 'http://localhost:8081/register/student',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      data: studentData,
-    };
-  
-    try {
-      const response = await axios.request(config);
-      console.log(response.data); // Handle successful registration response here (e.g., display success message)
-    } catch (error) {
-      console.error(error); // Handle registration errors here (e.g., display error message)
-    }
-  };
+  const axios = require("axios");
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
     setFormData({ ...formData, [event.target.name]: event.target.value });
   };
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setIsLoadingImage(true);
-    console.log('Image loading');
     if (event.target.files && event.target.files[0]) {
       const reader = new FileReader();
       reader.onload = (e: ProgressEvent<FileReader>) => {
         setFormData({ ...formData, idImage: e.target?.result as string });
-        console.log(formData.idImage); // Log here after image is loaded
       };
       reader.readAsDataURL(event.target.files[0]);
     }
-    setIsLoadingImage(false);
   };
-
   const handleCodeSubmit = () => {
     console.log("Confirm Code");
   };
@@ -111,8 +86,20 @@ const ProfileRegisterPage: React.FC = () => {
     // const allFieldsFilled = Object.values(formData).every(
     //   (value) => value.trim() !== ""
     // );
+    // setFormSubmitted(true);
     // if (allFieldsFilled && formData.idImage) {
-      const studentData = {
+    //   setFormSubmitted(true);
+    //   setAlertMessage("Form submitted successfully!");
+    //   setShowAlert(true);
+    //   setTimeout(() => setShowAlert(false), 3000);
+    // } else {
+    //   setAlertMessage("Please fill in all fields and upload the image.");
+    //   setShowAlert(true);
+    //   setTimeout(() => setShowAlert(false), 3000);
+    //   console.log("Please fill in all fields and upload the image.");
+    // }
+    try {
+      let data = JSON.stringify({
         fullName: formData.fullName,
         numberID: formData.idNumber,
         gender: formData.gender,
@@ -124,24 +111,22 @@ const ProfileRegisterPage: React.FC = () => {
         houseHold: `${formData.householdAddress1}, ${formData.householdAddress4}, ${formData.householdAddress3}, ${formData.householdAddress2}`,
         address: `${formData.permanentResidence1}, ${formData.permanentResidence4}, ${formData.permanentResidence3}, ${formData.permanentResidence2}`,
         school: formData.secondSchool,
+      });
+      let config = {
+        method: "post",
+        maxBodyLength: Infinity,
+        url: "http://localhost:8081/register/student",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        data: data,
       };
-      // setFormSubmitted(true);
-      // setAlertMessage("Form submitted successfully!");
-      // setShowAlert(true);
-      // setTimeout(() => setShowAlert(false), 3000);
-      try {
-        await registerStudent(studentData);
-        console.log('Successful register');
-      } catch (error) {
-        console.log('Error register');
-      }
-      
-    // } else {
-    //   setAlertMessage("Please fill in all fields and upload the image.");
-    //   setShowAlert(true);
-    //   setTimeout(() => setShowAlert(false), 3000);
-    //   console.log("Please fill in all fields and upload the image.");
-    // }
+
+      const response = await axios.request(config);
+      console.log(JSON.stringify(response.data));
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
