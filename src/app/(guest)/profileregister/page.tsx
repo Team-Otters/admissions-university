@@ -80,6 +80,42 @@ const ProfileRegisterPage: React.FC = () => {
     console.log("Confirm Code");
   };
 
+  const handleSubmition = async (e: { preventDefault: () => void; }) =>{
+    e.preventDefault();
+    try {
+      let data = JSON.stringify({
+        "fullName": "Ian Smith",
+        "numberId": "12345",
+        "gender": "male",
+        "dateOfBirth": "2023-05-22T00:00:00.000+00:00",
+        "phoneNumber": "0123456700",
+        "email": "student@gmail.com",
+        "placeOfBirth": "Ha Noi",
+        "ethnicType": "Asian",
+        "houseHold": "Family B",
+        "address": "123 Main St, Anytown USA",
+        "school": "THCS ABC"
+      });
+      
+      let config = {
+        method: 'post',
+        maxBodyLength: Infinity,
+        url: 'http://localhost:8080/register/student',
+        headers: { 
+          'Content-Type': 'application/json'
+        },
+        data : data
+      };
+      const response = await axios.request(config);
+           
+      // Handle successful login based on your API's response structure
+      console.log(response.data); // Example: log the response data (e.g., token, user details)
+      // You can use the response data to redirect the user to a different page, store authentication tokens, etc.
+    } catch (error) {
+      console.error(error); // Handle errors appropriately (e.g., display error messages)
+    }
+
+  }
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
@@ -100,17 +136,17 @@ const ProfileRegisterPage: React.FC = () => {
     // }
     try {
       let data = JSON.stringify({
-        fullName: formData.fullName,
-        numberID: formData.idNumber,
-        gender: formData.gender,
-        dateOfBirth: formData.dateOfBirth,
-        phoneNumber: formData.phoneNumber,
-        email: formData.email,
-        placeOfBirth: formData.placeOfBirth,
-        ethnicType: formData.ethnicity,
-        houseHold: `${formData.householdAddress1}, ${formData.householdAddress4}, ${formData.householdAddress3}, ${formData.householdAddress2}`,
-        address: `${formData.permanentResidence1}, ${formData.permanentResidence4}, ${formData.permanentResidence3}, ${formData.permanentResidence2}`,
-        school: formData.secondSchool,
+        "fullName": formData.fullName,
+        "numberID": formData.idNumber,
+        "gender": formData.gender,
+        "dateOfBirth": formData.dateOfBirth,
+        "phoneNumber": formData.phoneNumber,
+        "email": formData.email,
+        "placeOfBirth": formData.placeOfBirth,
+        "ethnicType": formData.ethnicity,
+        "houseHold": `${formData.householdAddress1}, ${formData.householdAddress4}, ${formData.householdAddress3}, ${formData.householdAddress2}`,
+        "address": `${formData.permanentResidence1}, ${formData.permanentResidence4}, ${formData.permanentResidence3}, ${formData.permanentResidence2}`,
+        "school": formData.secondSchool,
       });
       let config = {
         method: "post",
@@ -159,7 +195,7 @@ const ProfileRegisterPage: React.FC = () => {
       ) : (
         <>
           <h1>Đăng ký hồ sơ</h1>
-          <Form onSubmit={handleSubmit}>
+          <Form onSubmit={handleSubmition}>
             <Row className="mb-3">
               <Col md={4}>
                 <Row className="mb-3  min-h-20">
