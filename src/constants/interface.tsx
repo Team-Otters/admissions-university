@@ -61,7 +61,6 @@ interface ScoreManageForm {
 interface SubjectSets {
   id: string;
   name: string; // Tên tổ hợp môn học
-  mainSubject: string;
   subjectList: string[]; // Danh sách các môn học trong tổ hợp
 }
 
@@ -86,5 +85,5 @@ interface Class {
   id: string;
   name: string;
   year: string;
-  quotas: Number;
+  quotas: number;
 }
