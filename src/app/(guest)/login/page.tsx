@@ -17,8 +17,7 @@ const LoginPage: React.FC = () => {
 
     const toggleVisibility = () => setIsVisible(!isVisible);
     const handleSubmit = async (e) => {
-        e.preventDefault(); // Prevent default form submission
-    
+        e.preventDefault();  
         try {
           const url = 'http://localhost:8080/login'; // Replace with your actual login API endpoint
         //   const data = {
@@ -30,8 +29,8 @@ const LoginPage: React.FC = () => {
 
         //   };
           let data = JSON.stringify({
-            "username": "admin",
-            "password": "12345"
+            "username": username,
+            "password": password
           });
           
           let config = {
@@ -45,7 +44,7 @@ const LoginPage: React.FC = () => {
           };
           
           const response = await axios.request(config);
-    
+           
           // Handle successful login based on your API's response structure
           console.log(response.data); // Example: log the response data (e.g., token, user details)
           // You can use the response data to redirect the user to a different page, store authentication tokens, etc.

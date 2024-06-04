@@ -3,46 +3,51 @@ import { useState } from "react";
 import { Button } from "react-bootstrap";
 import { FaWindowClose } from "react-icons/fa";
 import { TbMenu2 } from "react-icons/tb";
+import { useRouter } from "next/navigation";
 
 const Sidebar: React.FC<{ route: string }> = ({ route }) => {
   const [isOpen, setIsOpen] = useState(false);
-
+  const router = useRouter();
   const toggleMenu = () => {
     setIsOpen(!isOpen);
+  };
+  const handleNavigate = (path: string) => {
+    router.push(path); // Use `router.push` for dynamic navigation
   };
   //route = "Admin";
   return (
     <div className="text-black text-xl flex-col font-notoSans flex mr-0 lg:mr-52">
+      {route === "khach" ? <></> : <div>
       <div className="bg-white h-full lg:w-52 lg:mt-8 xl:mt-0 hidden lg:flex xl:flex 2xl:flex fixed top-20 bottom-0">
         {/* <div className={`px-4 py-2 ${isOpen ? "hidden" : "block"}`}> */}
         {route === "Khach" ? (
           <></>
         ) : route === "ThiSinh" ? (
           <ul className="flex-1">
-            <li className="py-2 cursor-pointer hover:bg-gray">Tra cứu</li>
-            <li className="py-2 cursor-pointer hover:bg-gray">Hồ sơ</li>
-            <li className="py-2 cursor-pointer hover:bg-gray">Nguyện vọng</li>
+            <li onClick={()=>handleNavigate("/studentscore")} className="py-2 cursor-pointer hover:bg-gray">Tra cứu</li>
+            <li onClick={()=> handleNavigate("/studentprofile")} className="py-2 cursor-pointer hover:bg-gray">Hồ sơ</li>
+            <li onClick={()=> handleNavigate("/wishlist")} className="py-2 cursor-pointer hover:bg-gray">Nguyện vọng</li>
             <li className="py-2 cursor-pointer hover:bg-gray">Đăng xuất</li>
           </ul>
         ) : route === "TaiChinh" ? (
           <ul className="flex-1">
-            <li className="py-2 cursor-pointer hover:bg-gray">
+            <li onClick={()=>handleNavigate("/feemanage")} className="py-2 cursor-pointer hover:bg-gray">
               Quản lý lệ phí
             </li>
-            <li className="py-2 cursor-pointer hover:bg-gray">
+            <li onClick={()=>handleNavigate("/financeStudentList")} className="py-2 cursor-pointer hover:bg-gray">
               Quản lý thí sinh
             </li>
             <li className="py-2 cursor-pointer hover:bg-gray">Đăng xuất</li>
           </ul>
         ) : route === "DaoTao" ? (
           <ul className="flex-1">
-            <li className="py-2 cursor-pointer hover:bg-gray">
+            <li onClick={()=>handleNavigate("/financeStudentList")} className="py-2 cursor-pointer hover:bg-gray">
               Quản lý thí sinh
             </li>
-            <li className="py-2 cursor-pointer hover:bg-gray">
+            <li onClick={()=>handleNavigate("/exam")} className="py-2 cursor-pointer hover:bg-gray">
               Quản lý điểm thi
             </li>
-            <li className="py-2 cursor-pointer hover:bg-gray">
+            <li onClick={()=>handleNavigate("/subjectsets")} className="py-2 cursor-pointer hover:bg-gray">
               Quản lý môn thi
             </li>
             <li className="py-2 cursor-pointer hover:bg-gray">
@@ -150,6 +155,8 @@ const Sidebar: React.FC<{ route: string }> = ({ route }) => {
         size={40}
         onClick={toggleMenu}
       />
+      </div>      
+}
     </div>
   );
 };

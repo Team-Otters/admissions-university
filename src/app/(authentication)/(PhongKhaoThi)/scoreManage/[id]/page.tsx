@@ -46,6 +46,7 @@ const ScoreManagePage: React.FC = ({ params}) => {
       numberOfPapers: 40,
     },
   ]);
+  const [isValid, setIsValid] = React.useState<boolean>(false) 
   const [recentFilterGroupList, setRecentFilterGroupList] =
     useState(filterGroupList);
   const [searchText, setSearchText] = React.useState<string>("");
