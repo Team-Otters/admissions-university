@@ -44,7 +44,6 @@ interface ExamRoomManageForm {
   room: string;
   subject: string;
   date: string;
-  paperContainersId: string;
 }
 
 interface Account {

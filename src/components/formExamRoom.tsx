@@ -117,7 +117,6 @@ const FormExamRoom: React.FC<{
             onChange={handleChange}
             className="border border-black w-1/2 p-2"
             id="subject"
-            defaultValue={subjects[0].id}
             value={formState.subject}
           >
             {subjects.map((item, index) => {
