@@ -7,6 +7,7 @@ import { FaPencil } from "react-icons/fa6";
 import { MdDelete } from "react-icons/md";
 import FormExamRoom from "@/components/formExamRoom";
 import useDebounce from "@/hooks/useDebounce";
+import axios from "axios";
 
 const VenueManageScreen: React.FC = () => {
   const [isInputFocused, setIsInputFocused] = useState<boolean>(false);
@@ -24,24 +25,6 @@ const VenueManageScreen: React.FC = () => {
     useState(filterGroupList);
   const [searchText, setSearchText] = React.useState<string>("");
   const [examRooms, setExamRooms] = useState<ExamRoomManageForm[]>([
-    {
-      roomCode: "P001",
-      roomName: "B5.08",
-      subjectName: "Hóa Học",
-      date: "06/06/2024",
-    },
-    {
-      roomCode: "P002",
-      roomName: "B4.14",
-      subjectName: "Toán",
-      date: "06/06/2024",
-    },
-    {
-      roomCode: "P003",
-      roomName: "B5.14",
-      subjectName: "Vật Lý",
-      date: "06/06/2024",
-    },
   ]);
 
   const [searchExamRooms, setSearchExamRooms] =
@@ -95,8 +78,28 @@ const VenueManageScreen: React.FC = () => {
     console.log(selectElement.value);
     setRecentFilterGroupList([selectElement.value]);
   };
-
+  const getAllExamRoom = async ()=>{
+    try {       
+      let token = localStorage.getItem('accessToken');
+      let config = {
+        method: 'get',
+        maxBodyLength: Infinity,
+        url: 'http://localhost:8080/exam_room',
+        headers: { 
+          'Authorization': `Bearer ${token}`
+        }
+      };
+      const response = await axios.request(config);
+       //createUser(newUser);
+       setExamRooms(response.data);
+       console.log(response.data);
+      // Handle successful login based on your API's response structure
+    } catch (error) {
+      console.error(error); // Handle errors appropriately (e.g., display error messages)
+    }
+  }
   React.useEffect(() => {
+    getAllExamRoom();
     console.log("truoc khi search in filter: ", recentFilterGroupList);
     let temp = search(searchText);
     console.log("sau khi search in array ketqua: ", temp);
@@ -136,10 +139,32 @@ const VenueManageScreen: React.FC = () => {
     setExamRooms(temp);
   };
 
-  const handleSubmit = (data: ExamRoomManageForm): void => {
-    let temp = [...examRooms];
-    temp.push(data);
-    setExamRooms(temp);
+  const handleSubmit = async (data: ExamRoomManageForm)=> {
+    try {       
+      let token = localStorage.getItem('accessToken');
+      let dt = JSON.stringify({
+        "room": data.roomCode,
+        "subject": data.subjectName,
+        "date": data.date,
+      })
+      let config = {
+        method: 'post',
+        maxBodyLength: Infinity,
+        url: 'http://localhost:8080/admin/user',
+        headers: { 
+          'Content-Type': 'application/json', 
+          'Authorization': `Bearer ${token}`
+        },
+        data: dt
+      };
+      const response = await axios.request(config);
+       //createUser(newUser);
+       getAllExamRoom();
+       console.log(response.data);
+      // Handle successful login based on your API's response structure
+    } catch (error) {
+      console.error(error); // Handle errors appropriately (e.g., display error messages)
+    }
   };
 
   const handleEdit = (data: ExamRoomManageForm): void => {

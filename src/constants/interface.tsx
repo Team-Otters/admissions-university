@@ -79,7 +79,7 @@ interface Benchmark {
   id: string;
   exam: string;
   class: string;
-  score: Number;
+  score: number;
 }
 interface Class {
   id: string;
