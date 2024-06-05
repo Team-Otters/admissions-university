@@ -73,7 +73,7 @@ const ProfileRegisterPage: React.FC = () => {
     console.log(event.target.name, event.target.value);
   };
 
-  const host = "https://vn-public-apis.fpo.vn/provinces/getAll?limit=-1";
+  const host = "https://vapi-vnappmob.readthedocs.io/en/latest/index.html";
 
   useEffect(() => {
     callAPI(`${host}`);
@@ -385,13 +385,11 @@ const ProfileRegisterPage: React.FC = () => {
                       <option value="" >
                         -- Chọn nơi sinh --
                       </option>
-                      <option value="Address1">Địa chỉ 1</option>
-                    <option value="Address2">Địa chỉ 2</option>
-                      {cities.map((city: any) => (
-                        <option key={city.code} value={city.code}>
-                          {city.name}
-                        </option>
-                      ))}
+                      {/* {cities.map((city: any) => (
+          <option key={city.code} value={city.code}>
+            {city.name}
+          </option>
+        ))} */}
                     </Form.Control>
                   </Form.Group>
                 </Row>
@@ -426,7 +424,7 @@ const ProfileRegisterPage: React.FC = () => {
               </Col>
             </Row>
 
-            <Row className="mb-3">
+            <Row className="mb-3 bg-amber-100 rounded">
               <Col>
                 <Form.Group controlId="formHouseholdAddress2">
                   <Form.Label className="pl-2">Tỉnh/Thành Phố</Form.Label>
@@ -438,8 +436,11 @@ const ProfileRegisterPage: React.FC = () => {
                     required
                   >
                     <option value="">-- Chọn địa chỉ --</option>
-                    <option value="Address1">Địa chỉ 1</option>
-                    <option value="Address2">Địa chỉ 2</option>
+                    {districts.map((district: any) => (
+          <option key={district.code} value={district.code}>
+            {district.name}
+          </option>
+        ))}
                   </Form.Control>
                 </Form.Group>
               </Col>
@@ -489,7 +490,7 @@ const ProfileRegisterPage: React.FC = () => {
                 </Form.Group>
               </Col>
             </Row>
-            <Row className="mb-3">
+            <Row className="mb-3 bg-pink-100 rounded">
               <Col>
                 <Form.Group controlId="formPermanentResidence2">
                   <Form.Label className="pl-2">Tỉnh/Thành Phố</Form.Label>

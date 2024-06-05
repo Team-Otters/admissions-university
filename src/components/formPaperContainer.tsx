@@ -68,7 +68,7 @@ const FormPaperContainer: React.FC<{
     setFormState({ ...formState, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e : any) => {
     e.preventDefault();
 
     if (!validateForm()) return;
