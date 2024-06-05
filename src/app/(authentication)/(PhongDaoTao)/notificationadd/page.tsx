@@ -20,27 +20,33 @@ const NotiAddPage: React.FC = () => {
     content: "",
   });
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>): void => {
     setFormData({ ...formData, [event.target.name]: event.target.value });
   };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    
+
+    // Capture the current date and time
+    const currentDate = new Date().toISOString();
+
+    // Get the token from local storage
+    const token = localStorage.getItem("accessToken");
+
     try {
       const response = await axios.post('http://localhost:8080/admin/notification', {
-        title: formData.title,
-        target: formData.target,
-        content: formData.content,
-        day: new Date().toISOString()
+        ...formData,
+        day: currentDate,
       }, {
         headers: { 
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
         },
       });
 
       console.log(response.data);
       
+      // Reset form after successful submission
       setFormData({
         title: "",
         target: "",

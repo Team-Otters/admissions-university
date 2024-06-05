@@ -12,8 +12,6 @@ interface IFormData {
   idNumber: string;
   dateOfBirth: string;
   gender: string;
-  userName: string;
-  password: string;
   permanentResidence1: string;
   permanentResidence2: string;
   permanentResidence3: string;
@@ -28,6 +26,7 @@ interface IFormData {
   secondSchool: string;
   phoneNumber: string;
   email: string;
+  id: string;
 }
 
 const StudentProfilePage: React.FC = () => {
@@ -36,8 +35,6 @@ const StudentProfilePage: React.FC = () => {
     idNumber: "",
     dateOfBirth: "",
     gender: "",
-    userName: "",
-    password: "",
     permanentResidence1: "",
     permanentResidence2: "",
     permanentResidence3: "",
@@ -52,6 +49,7 @@ const StudentProfilePage: React.FC = () => {
     secondSchool: "",
     phoneNumber: "",
     email: "",
+    id: "",
   });
 
   const [initialFormData, setInitialFormData] = useState<IFormData>(formData);
@@ -59,31 +57,42 @@ const StudentProfilePage: React.FC = () => {
   const [isEditable, setIsEditable] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  const user = localStorage.getItem("username");
+  const token = localStorage.getItem("accessToken");
 
+  console.log("student user::", user);
   useEffect(() => {
     const config = {
-      method: 'get',
+      method: "get",
       maxBodyLength: Infinity,
-      url: 'http://localhost:8081/profile/all-profile',
-      headers: { 
-        'Authorization': 'Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJzdHVkZW50QGdtYWlsLmNvbSIsImlhdCI6MTcxNzUyMzc0OCwiZXhwIjoxNzE3NTI3MzQ4fQ.hD5nNW2J4qXdnrUJFjxgJE1GesulDqp_G2D27R_Vy6BNCX7xK7KD_tML3MruHkBY'
-      }
+      url: `http://localhost:8080/profile/email/${user}`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
     };
 
-    axios.request(config)
+    axios
+      .request(config)
       .then((response) => {
-        const serverData = response.data[0];
-        const houseHoldParts = serverData.houseHold.split(',').map(part => part.trim());
-        const addressParts = serverData.adress.split(',').map(part => part.trim());
+        const serverData = response.data;
+        const date = new Date(serverData.dateOfBirth);
+        const formattedDate = date.toISOString().split("T")[0];
+        console.log("student user name::", response.data.gender.toLowerCase());
+        const houseHoldParts = serverData.houseHold
+          .split(",")
+          .map((part: any) => part.trim());
+        const addressParts = serverData.address
+          .split(",")
+          .map((part: any) => part.trim());
         const transformedData = {
           fullName: serverData.fullName,
           idNumber: serverData.numberId,
-          dateOfBirth: serverData.dateOfBirth,
+          dateOfBirth: formattedDate,
           gender: serverData.gender,
-          permanentResidence1: addressParts[0]|| "",
-          permanentResidence2: addressParts[3]|| "",
-          permanentResidence3: addressParts[2]|| "",
-          permanentResidence4: addressParts[1]|| "",
+          permanentResidence1: addressParts[0] || "",
+          permanentResidence2: addressParts[3] || "",
+          permanentResidence3: addressParts[2] || "",
+          permanentResidence4: addressParts[1] || "",
           householdAddress1: houseHoldParts[0] || "",
           householdAddress2: houseHoldParts[3] || "",
           householdAddress3: houseHoldParts[2] || "",
@@ -94,13 +103,14 @@ const StudentProfilePage: React.FC = () => {
           secondSchool: serverData.school,
           phoneNumber: serverData.phoneNumber,
           email: serverData.email,
+          id: serverData.id,
         };
         setFormData(transformedData);
         setInitialFormData(transformedData);
       })
       .catch((error) => {
-        console.log(error);
-        setErrorMessage('Error fetching profile data');
+        console.log(error, "Can't set form data");
+        setErrorMessage("Error fetching profile data");
       });
   }, []);
 
@@ -117,48 +127,51 @@ const StudentProfilePage: React.FC = () => {
 
   const handleConfirm = () => {
     const transformedData = {
-      "fullName": formData.fullName,
-      "gender": formData.gender,
-      "dateOfBirth": formData.dateOfBirth,
-      "phoneNumber": formData.phoneNumber,
-      "email": formData.email,
-      "placeOfBirth": formData.placeOfBirth,
-      "ethnicType": formData.ethnicity,
-      "houseHold": `${formData.householdAddress1}, ${formData.householdAddress4}, ${formData.householdAddress3}, ${formData.householdAddress2}`,
-      "address": `${formData.permanentResidence1}, ${formData.permanentResidence4}, ${formData.permanentResidence3}, ${formData.permanentResidence2}`,
-      "school": formData.secondSchool,
+      fullName: formData.fullName,
+      gender: formData.gender,
+      dateOfBirth: formData.dateOfBirth,
+      phoneNumber: formData.phoneNumber,
+      email: formData.email,
+      placeOfBirth: formData.placeOfBirth,
+      ethnicType: formData.ethnicity,
+      houseHold: `${formData.householdAddress1}, ${formData.householdAddress4}, ${formData.householdAddress3}, ${formData.householdAddress2}`,
+      address: `${formData.permanentResidence1}, ${formData.permanentResidence4}, ${formData.permanentResidence3}, ${formData.permanentResidence2}`,
+      school: formData.secondSchool,
     };
     const data = JSON.stringify(transformedData);
 
     const config = {
-      method: 'put',
+      method: "put",
       maxBodyLength: Infinity,
-      url: `http://localhost:8081/profile/${formData.idNumber}`, // Assuming idNumber is the unique identifier
-      headers: { 
-        'Content-Type': 'application/json', 
-        'Authorization': 'Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJzdHVkZW50QGdtYWlsLmNvbSIsImlhdCI6MTcxNzI4ODk1MSwiZXhwIjoxNzE3MjkyNTUxfQ.BAgaKbQVUZye0QQCY9AxTv55d8NJFekGxSYcGQ55ecAo7qD090KtSjEp0RLMc2Lt'
+      url: `http://localhost:8080/profile/${formData.id}`, // Assuming idNumber is the unique identifier
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
-      data: data
+      data: data,
     };
 
-    axios.request(config)
+    axios
+      .request(config)
       .then((response) => {
         console.log(JSON.stringify(response.data));
         setInitialFormData(formData);
         setIsEditable(false);
-        setSuccessMessage('Profile updated successfully');
+        setSuccessMessage("Profile updated successfully");
       })
       .catch((error) => {
         console.log(error);
-        setErrorMessage('Error updating profile');
+        setErrorMessage("Error updating profile");
       });
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     const { name, value } = e.target;
-    setFormData(prevState => ({
+    setFormData((prevState) => ({
       ...prevState,
-      [name]: value
+      [name]: value,
     }));
   };
 
@@ -167,9 +180,9 @@ const StudentProfilePage: React.FC = () => {
       const file = e.target.files[0];
       const reader = new FileReader();
       reader.onloadend = () => {
-        setFormData(prevState => ({
+        setFormData((prevState) => ({
           ...prevState,
-          idImage: reader.result as string
+          idImage: reader.result as string,
         }));
       };
       reader.readAsDataURL(file);
@@ -225,7 +238,10 @@ const StudentProfilePage: React.FC = () => {
                     label="Nam"
                     name="gender"
                     value="Nam"
-                    checked={formData.gender === "Nam"}
+                    checked={
+                      formData.gender.toLowerCase() === "nam" ||
+                      formData.gender.toLowerCase() === "male"
+                    }
                     disabled={!isEditable}
                     onChange={() =>
                       setFormData((prevData) => ({
@@ -241,7 +257,10 @@ const StudentProfilePage: React.FC = () => {
                     label="Nữ"
                     name="gender"
                     value="Nữ"
-                    checked={formData.gender === "Nữ"}
+                    checked={
+                      formData.gender.toLowerCase() === "nữ" ||
+                      formData.gender.toLowerCase() === "female"
+                    }
                     disabled={!isEditable}
                     onChange={() =>
                       setFormData((prevData) => ({
