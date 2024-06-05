@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Form from "react-bootstrap/Form";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
@@ -49,22 +49,97 @@ const ProfileRegisterPage: React.FC = () => {
     phoneNumber: "",
     email: "",
   });
+
   const [formSubmitted, setFormSubmitted] = useState<boolean>(false);
   const [showAlert, setShowAlert] = useState<boolean>(false);
   const [alertMessage, setAlertMessage] = useState<string>("");
+  const [alertVariant, setAlertVariant] = useState<string>("success");
   const [cities, setCities] = useState([]);
   const [districts, setDistricts] = useState([]);
   const [wards, setWards] = useState([]);
   const [selectedCity, setSelectedCity] = useState("");
   const [selectedDistrict, setSelectedDistrict] = useState("");
   const [selectedWard, setSelectedWard] = useState("");
-  const [selectedCityName, setSelectedCityName] = useState("");
-  const [selectedDistrictName, setSelectedDistrictName] = useState("");
-  const [selectedWardname, setSelectedWardName] = useState("");
+  const [selectedCity1, setSelectedCity1] = useState("");
+  const [selectedDistrict1, setSelectedDistrict1] = useState("");
+  const [selectedWard1, setSelectedWard1] = useState("");
+  const [province, setProvince] = useState("");
+  const [district, setDistrict] = useState("");
+  const [ward, setWard] = useState("");
   const axios = require("axios");
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
     setFormData({ ...formData, [event.target.name]: event.target.value });
+    console.log(event.target.name, event.target.value);
+  };
+
+  const host = "https://vn-public-apis.fpo.vn/provinces/getAll?limit=-1";
+
+  useEffect(() => {
+    callAPI(`${host}`);
+  }, []);
+
+  const callAPI = (api: string) => {
+    axios.get(api).then((response: any) => {
+      console.log(response.data.data);
+      setCities(response.data);
+    });
+  };
+
+  const callApiDistrict = (api: string) => {
+    axios.get(api).then((response: any) => {
+      setDistricts(response.data.districts);
+      console.log(response.data.name);
+      setProvince(response.data.name);
+    });
+  };
+
+  const callApiWard = (api: string) => {
+    axios.get(api).then((response: any) => {
+      setWards(response.data.wards);
+      console.log(response.data.name);
+      setDistrict(response.data.name);
+    });
+  };
+
+  const callNameWard = (api: string) => {
+    axios.get(api).then((response: any) => {
+      setWard(response.data.name);
+      console.log(response.data.name);
+    });
+  };
+
+  const handleCityChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const cityCode = event.target.value;
+    setSelectedCity(cityCode);
+    setSelectedDistrict("");
+    setSelectedWard("");
+    if (cityCode) {
+      callApiDistrict(`${host}p/${cityCode}?depth=2`);
+    }
+
+    console.log("");
+  };
+
+  const handleDistrictChange = (
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    const districtCode = event.target.value;
+    setSelectedDistrict(districtCode);
+    setSelectedWard("");
+    if (districtCode) {
+      callApiWard(`${host}d/${districtCode}?depth=2`);
+    }
+    //console.log(districts);
+  };
+
+  const handleWardChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedWard(event.target.value);
+    const wardCode = event.target.value;
+    if (wardCode) {
+      callNameWard(`${host}w/${wardCode}?depth=2`);
+    }
+    setWard(event.target.value);
   };
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -80,42 +155,79 @@ const ProfileRegisterPage: React.FC = () => {
     console.log("Confirm Code");
   };
 
-  const handleSubmition = async (e: { preventDefault: () => void; }) =>{
+  const handleSubmition = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
     try {
       let data = JSON.stringify({
-        "fullName": "Ian Smith",
-        "numberId": "12345",
-        "gender": "male",
-        "dateOfBirth": "2023-05-22T00:00:00.000+00:00",
-        "phoneNumber": "0123456700",
-        "email": "student@gmail.com",
-        "placeOfBirth": "Ha Noi",
-        "ethnicType": "Asian",
-        "houseHold": "Family B",
-        "address": "123 Main St, Anytown USA",
-        "school": "THCS ABC"
+        fullName: formData.fullName,
+        numberId: "12345",
+        gender: formData.gender,
+        dateOfBirth: formData.dateOfBirth,
+        phoneNumber: formData.phoneNumber,
+        email: formData.email,
+        placeOfBirth: formData.placeOfBirth,
+        ethnicType: formData.ethnicity,
+        houseHold: `${formData.householdAddress1}, ${formData.householdAddress4}, ${formData.householdAddress3}, ${formData.householdAddress2}`,
+        address: `${formData.permanentResidence1}, ${formData.permanentResidence4}, ${formData.permanentResidence3}, ${formData.permanentResidence2}`,
+        school: formData.secondSchool,
+
+        // "fullName": formData.fullName,
+        // "numberID": "12345",
+        // "gender": formData.gender,
+        // "dateOfBirth": formData.dateOfBirth,
+        // "phoneNumber": formData.phoneNumber,
+        // "email": formData.email,
+        // "placeOfBirth": formData.placeOfBirth,
+        // "ethnicType": formData.ethnicity,
+        // "houseHold": `${formData.householdAddress1}, ${formData.householdAddress4}, ${formData.householdAddress3}, ${formData.householdAddress2}`,
+        // "address": `${formData.permanentResidence1}, ${formData.permanentResidence4}, ${formData.permanentResidence3}, ${formData.permanentResidence2}`,
+        // "school": formData.secondSchool,
       });
-      
+
       let config = {
-        method: 'post',
+        method: "post",
         maxBodyLength: Infinity,
-        url: 'http://localhost:8080/register/student',
-        headers: { 
-          'Content-Type': 'application/json'
+        url: "http://localhost:8080/register/student",
+        headers: {
+          "Content-Type": "application/json",
         },
-        data : data
+        data: data,
       };
       const response = await axios.request(config);
-           
-      // Handle successful login based on your API's response structure
-      console.log(response.data); // Example: log the response data (e.g., token, user details)
-      // You can use the response data to redirect the user to a different page, store authentication tokens, etc.
-    } catch (error) {
-      console.error(error); // Handle errors appropriately (e.g., display error messages)
-    }
+      console.log(response.data);
+      console.log("msg", response.data.message);
 
-  }
+      // Handle successful registration
+      if (response.data.message == "User already exist") {
+        setAlertMessage("Email đã tồn tại!");
+        setAlertVariant("danger");
+      } else {
+        setAlertMessage("Đăng ký thành công!");
+        setAlertVariant("success");
+      }
+
+      setShowAlert(true);
+    } catch (error: any) {
+      console.error(error);
+      console.log(error.response);
+      console.log(error.response.status);
+
+      // Handle errors appropriately (e.g., display error messages)
+      if (axios.isAxiosError(error)) {
+        if (error.response && error.response.status === 409) {
+          setAlertMessage("Email đã tồn tại!");
+        } else {
+          setAlertMessage(
+            "An error occurred during registration. Please try again."
+          );
+        }
+      } else {
+        setAlertMessage("An unexpected error occurred. Please try again.");
+      }
+      setAlertVariant("danger");
+      setShowAlert(true);
+    }
+  };
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
@@ -136,16 +248,16 @@ const ProfileRegisterPage: React.FC = () => {
     // }
     try {
       let data = JSON.stringify({
-        "fullName": formData.fullName,
-        "gender": formData.gender,
-        "dateOfBirth": formData.dateOfBirth,
-        "phoneNumber": formData.phoneNumber,
-        "email": formData.email,
-        "placeOfBirth": formData.placeOfBirth,
-        "ethnicType": formData.ethnicity,
-        "houseHold": `${formData.householdAddress1}, ${formData.householdAddress4}, ${formData.householdAddress3}, ${formData.householdAddress2}`,
-        "address": `${formData.permanentResidence1}, ${formData.permanentResidence4}, ${formData.permanentResidence3}, ${formData.permanentResidence2}`,
-        "school": formData.secondSchool,
+        fullName: formData.fullName,
+        gender: formData.gender,
+        dateOfBirth: formData.dateOfBirth,
+        phoneNumber: formData.phoneNumber,
+        email: formData.email,
+        placeOfBirth: formData.placeOfBirth,
+        ethnicType: formData.ethnicity,
+        houseHold: `${formData.householdAddress1}, ${formData.householdAddress4}, ${formData.householdAddress3}, ${formData.householdAddress2}`,
+        address: `${formData.permanentResidence1}, ${formData.permanentResidence4}, ${formData.permanentResidence3}, ${formData.permanentResidence2}`,
+        school: formData.secondSchool,
       });
       let config = {
         method: "post",
@@ -168,7 +280,7 @@ const ProfileRegisterPage: React.FC = () => {
     <Container
       fluid
       className="font-notoSans"
-      style={{ height: "100vh", paddingTop: "100px" }}
+      style={{ height: "100vh", paddingTop: "40px" }}
     >
       {formSubmitted ? (
         <div style={{ textAlign: "center", marginTop: "10%" }}>
@@ -194,6 +306,15 @@ const ProfileRegisterPage: React.FC = () => {
       ) : (
         <>
           <h1>Đăng ký hồ sơ</h1>
+          {showAlert && (
+            <Alert
+              variant={alertVariant}
+              onClose={() => setShowAlert(false)}
+              dismissible
+            >
+              {alertMessage}
+            </Alert>
+          )}
           <Form onSubmit={handleSubmition}>
             <Row className="mb-3">
               <Col md={4}>
@@ -261,9 +382,16 @@ const ProfileRegisterPage: React.FC = () => {
                       onChange={handleChange}
                       required
                     >
-                      <option value="">-- Chọn nơi sinh --</option>
+                      <option value="" >
+                        -- Chọn nơi sinh --
+                      </option>
                       <option value="Address1">Địa chỉ 1</option>
-                      <option value="Address2">Địa chỉ 2</option>
+                    <option value="Address2">Địa chỉ 2</option>
+                      {cities.map((city: any) => (
+                        <option key={city.code} value={city.code}>
+                          {city.name}
+                        </option>
+                      ))}
                     </Form.Control>
                   </Form.Group>
                 </Row>
@@ -309,9 +437,9 @@ const ProfileRegisterPage: React.FC = () => {
                     onChange={handleChange}
                     required
                   >
-                      <option value="">-- Chọn nơi sinh --</option>
-                      <option value="Address1">Địa chỉ 1</option>
-                      <option value="Address2">Địa chỉ 2</option>
+                    <option value="">-- Chọn địa chỉ --</option>
+                    <option value="Address1">Địa chỉ 1</option>
+                    <option value="Address2">Địa chỉ 2</option>
                   </Form.Control>
                 </Form.Group>
               </Col>
