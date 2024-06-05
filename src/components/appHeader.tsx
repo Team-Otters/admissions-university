@@ -2,32 +2,18 @@
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
-import NavDropdown from "react-bootstrap/NavDropdown";
-import Form from "react-bootstrap/Form";
-import InputGroup from "react-bootstrap/InputGroup";
+import Modal from "react-bootstrap/Modal";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
-import ImageActionButton from "./ImageButton";
 import { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import Modal from "react-bootstrap/Modal";
 import { redirect } from 'next/navigation'
 
 const AppHeader = () => {
   const path = usePathname();
   const router = useRouter();
-  const [hoveredLinks, setHoveredLinks] = useState([
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-  ]);
-  const [sidebarVisible, setSidebarVisible] = useState(false);
+  const [hoveredLinks, setHoveredLinks] = useState([false, false, false, false, false, false, false, false]);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [username, setUsername] = useState('');
   const [showSignOutModal, setShowSignOutModal] = useState(false);
@@ -35,6 +21,9 @@ const AppHeader = () => {
   useEffect(() => {
     const token = localStorage.getItem("accessToken");
     const user = localStorage.getItem("username");
+
+    console.log("Token:", token);
+    console.log("Username:", user);
 
     if (token != null && user != null) {
       setIsLoggedIn(true);
@@ -63,7 +52,7 @@ const AppHeader = () => {
     setShowSignOutModal(false);
   };
 
-  const handleMouseEnter = (index) => {
+  const handleMouseEnter = (index: any) => {
     setHoveredLinks((prevHoveredLinks) => {
       const updatedHoveredLinks = [...prevHoveredLinks];
       updatedHoveredLinks[index] = true;
@@ -71,7 +60,7 @@ const AppHeader = () => {
     });
   };
 
-  const handleMouseLeave = (index) => {
+  const handleMouseLeave = (index: any) => {
     setHoveredLinks((prevHoveredLinks) => {
       const updatedHoveredLinks = [...prevHoveredLinks];
       updatedHoveredLinks[index] = false;
@@ -205,7 +194,7 @@ const AppHeader = () => {
                       onMouseEnter={() => handleMouseEnter(6)}
                       onMouseLeave={() => handleMouseLeave(6)}
                     >
-                      Sign Out
+                      Đăng xuất
                     </Nav.Link>
                   </>
                 ) : (
@@ -249,10 +238,10 @@ const AppHeader = () => {
         <Modal.Body>Are you sure you want to sign out?</Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleCancelSignOut}>
-            Cancel
+            Hủy
           </Button>
           <Button variant="primary" onClick={handleConfirmSignOut}>
-            Sign Out
+            Đăng xuất
           </Button>
         </Modal.Footer>
       </Modal>

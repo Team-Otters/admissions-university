@@ -1,37 +1,115 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import Form from "react-bootstrap/Form";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import Button from "react-bootstrap/Button";
 import { Container } from "react-bootstrap";
+import axios from "axios";
 interface IFormData {
-  notiTitle: string;
-  notiSubject: string;
+  title: string;
+  target: string;
   content: string;
 }
 
 const NotiAdjustPage: React.FC = () => {
+  const id = localStorage.getItem('notificationId');
+  
   const [formData, setFormData] = React.useState<IFormData>({
-    notiTitle: "",
-    notiSubject: "",
+    title: "",
+    target: "",
     content: "",
   });
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
-    setFormData({ ...formData, [event.target.name]: event.target.value });
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`http://localhost:8080/notification/${id}`);
+        const { title, target, content } = response.data;
+        setFormData({title, target, content});
+      } catch (error) {
+        console.error("Error fetching notification data:", error);
+      }
+    };
+
+    if (id) {
+      fetchData();
+    }
+  }, [id]);
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>): void => {
+    const { name, value } = event.target;
+    setFormData({ ...formData, [name]: value });
+  };
+  
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const currentDate = new Date().toISOString();
+
+    // Get the token from local storage
+    const token = localStorage.getItem("accessToken");
+    
+    try {
+      await axios.put(`http://localhost:8080/admin/notification/${id}`, {
+        ...formData,
+        day: currentDate,
+
+      }, {
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+      });
+      console.log(id);
+
+      console.log('Notification updated successfully');
+    } catch (error) {
+      console.log(id, "error");
+      console.error('Error updating notification:', error);
+    }
+    
+    window.location.href = '/notification';
+
   };
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    // handle form submission here
-    console.log(formData);
-    setFormData({
-      notiTitle: "",
-      notiSubject: "",
-      content: "",
-    });
+  const handleCancel = () => {
+    window.location.href = '/notification';
   };
+
+  // const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+  //   event.preventDefault();
+  //   // handle form submission here
+  //   const currentDate = new Date().toISOString();
+
+  //   // Get the token from local storage
+  //   const token = localStorage.getItem("accessToken");
+  //   try {
+  //     const response = await axios.post('http://localhost:8080/admin/notification', {
+  //       ...formData,
+  //       day: currentDate,
+  //     }, {
+  //       headers: { 
+  //         'Content-Type': 'application/json',
+  //         'Authorization': `Bearer ${token}`
+  //       },
+  //     });
+
+  //     console.log(response.data);
+      
+  //     // Reset form after successful submission
+  //     setFormData({
+  //       title: "",
+  //       target: "",
+  //       content: "",
+  //     });
+  //     localStorage.getItem('notificationID');
+      
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  //   window.location.href = '/notification';
+  // };
 
   return (
     <Container
@@ -43,13 +121,13 @@ const NotiAdjustPage: React.FC = () => {
       <Form onSubmit={handleSubmit}>
         <Row className="mb-3">
           <Col>
-            <Form.Group controlId="formNotiTitle">
+            <Form.Group controlId="formTitle">
               <Form.Label>Tiêu đề</Form.Label>
               <Form.Control
                 type="text"
-                name="notiTitle"
+                name="title"
                 placeholder="Nhập tiêu đề"
-                value={formData.notiTitle}
+                value={formData.title}
                 onChange={handleChange}
                 required
               />
@@ -58,13 +136,13 @@ const NotiAdjustPage: React.FC = () => {
         </Row>
         <Row className="mb-3">
           <Col>
-            <Form.Group controlId="formNotiSubject">
+            <Form.Group controlId="formTarget">
               <Form.Label>Đối tượng</Form.Label>
               <Form.Control
                 type="text"
-                name="NotiSubject"
+                name="target"
                 placeholder="Nhập đối tượng"
-                value={formData.notiSubject}
+                value={formData.target}
                 onChange={handleChange}
                 required
               />
@@ -97,7 +175,7 @@ const NotiAdjustPage: React.FC = () => {
             </Button>
           </Col>
           <Col xs="auto">
-            <Button variant="light" type="button">
+            <Button variant="light" type="button" onClick={handleCancel}>
               Hủy
             </Button>
           </Col>
