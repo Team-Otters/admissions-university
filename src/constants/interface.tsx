@@ -40,10 +40,11 @@ interface std {
     school: string 
 }
 interface ExamRoomManageForm {
-  roomCode: string;
-  subjectName: string;
-  roomName: string;
+  id: string;
+  room: string;
+  subject: string;
   date: string;
+  paperContainersId: string;
 }
 
 interface Account {
@@ -77,9 +78,9 @@ interface SubjectSets {
 }
 
 interface Subject {
-  id: string; 
-  name: string; 
-  parameter: string; 
+  id: string;
+  name: string;
+  parameter: string;
   time: string;
 }
 interface Exam {
@@ -98,4 +99,16 @@ interface Class {
   name: string;
   year: string;
   quotas: number;
+}
+
+interface Room {
+  id: string;
+  name: string;
+  maxContain: number;
+}
+
+interface PaperContainer {
+  id: string;
+  numberOfPapers: number;
+  subject: string;
 }
