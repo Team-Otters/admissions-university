@@ -61,25 +61,26 @@ const ProfileRegisterPage: React.FC = () => {
   const [selectedCityName, setSelectedCityName] = useState("");
   const [selectedDistrictName, setSelectedDistrictName] = useState("");
   const [selectedWardname, setSelectedWardName] = useState("");
-  const host = "https://vapi.vnappmob.com/api/province/";
-  const callAPI = (api: string) => {
-    axios.get(api).then((response) => {
-      setCities(response.data);
-    });
+  const axios = require("axios");
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
+    setFormData({ ...formData, [event.target.name]: event.target.value });
   };
-  const callApiDistrict = (api: string) => {
-    axios.get(api).then((response) => {
-      setDistricts(response.data.districts);
-      setSelectedCityName(response.data.name);
-    });
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files && event.target.files[0]) {
+      const reader = new FileReader();
+      reader.onload = (e: ProgressEvent<FileReader>) => {
+        setFormData({ ...formData, idImage: e.target?.result as string });
+      };
+      reader.readAsDataURL(event.target.files[0]);
+    }
   };
-  const callApiWard = (api: string) => {
-    axios.get(api).then((response) => {
-      setWards(response.data.wards);
-      setSelectedDistrictName(response.data.name);
-    });
+  const handleCodeSubmit = () => {
+    console.log("Confirm Code");
   };
-  const handleSubmition = async (e) =>{
+
+  const handleSubmition = async (e: { preventDefault: () => void; }) =>{
     e.preventDefault();
     try {
       let data = JSON.stringify({
@@ -115,86 +116,59 @@ const ProfileRegisterPage: React.FC = () => {
     }
 
   }
-  const handleCityChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const cityCode = event.target.value;
-    setSelectedCity(cityCode);
-    setSelectedDistrict("");
-    setSelectedWard("");
-    setSelectedDistrictName("");
-    setSelectedWardName("");
-    if (cityCode) {
-      callApiDistrict(`${host}p/${cityCode}?depth=2`);
-    }
-  };
-  const handleDistrictChange = (
-    event: React.ChangeEvent<HTMLSelectElement>
-  ) => {
-    const districtCode = event.target.value;
-    setSelectedDistrict(districtCode);
-    setSelectedWard("");
-    setSelectedWardName("");
-    if (districtCode) {
-      callApiWard(`${host}d/${districtCode}?depth=2`);
-    }
-  };
-  const handleWardChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedWard(event.target.value);
-    let wName = wards.findLast((w) => w.code == event.target.value);
-    wName = wName.name;
-    setSelectedWardName(wName || "");
-    // console.log({
-    //   citycode: selectedCityName,
-    //   dtcode: selectedDistrictName,
-    //   wcode: wName,
-    // });
-  };
-
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
-    setFormData({ ...formData, [event.target.name]: event.target.value });
-  };
-
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files && event.target.files[0]) {
-      const reader = new FileReader();
-      reader.onload = (e: ProgressEvent<FileReader>) => {
-        setFormData({ ...formData, idImage: e.target?.result as string });
-      };
-      reader.readAsDataURL(event.target.files[0]);
-    }
-  };
-  const handleCodeSubmit = () => {
-    console.log("Confirm Code");
-  };
-
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    const allFieldsFilled = Object.values(formData).every(
-      (value) => value.trim() !== ""
-    );
-    setFormSubmitted(true);
-    if (allFieldsFilled && formData.idImage) {
-      setFormSubmitted(true);
-      setAlertMessage("Form submitted successfully!");
-      setShowAlert(true);
-      setTimeout(() => setShowAlert(false), 3000);
-    } else {
-      setAlertMessage("Please fill in all fields and upload the image.");
-      setShowAlert(true);
-      setTimeout(() => setShowAlert(false), 3000);
-      console.log("Please fill in all fields and upload the image.");
+    // const allFieldsFilled = Object.values(formData).every(
+    //   (value) => value.trim() !== ""
+    // );
+    // setFormSubmitted(true);
+    // if (allFieldsFilled && formData.idImage) {
+    //   setFormSubmitted(true);
+    //   setAlertMessage("Form submitted successfully!");
+    //   setShowAlert(true);
+    //   setTimeout(() => setShowAlert(false), 3000);
+    // } else {
+    //   setAlertMessage("Please fill in all fields and upload the image.");
+    //   setShowAlert(true);
+    //   setTimeout(() => setShowAlert(false), 3000);
+    //   console.log("Please fill in all fields and upload the image.");
+    // }
+    try {
+      let data = JSON.stringify({
+        "fullName": formData.fullName,
+        "gender": formData.gender,
+        "dateOfBirth": formData.dateOfBirth,
+        "phoneNumber": formData.phoneNumber,
+        "email": formData.email,
+        "placeOfBirth": formData.placeOfBirth,
+        "ethnicType": formData.ethnicity,
+        "houseHold": `${formData.householdAddress1}, ${formData.householdAddress4}, ${formData.householdAddress3}, ${formData.householdAddress2}`,
+        "address": `${formData.permanentResidence1}, ${formData.permanentResidence4}, ${formData.permanentResidence3}, ${formData.permanentResidence2}`,
+        "school": formData.secondSchool,
+      });
+      let config = {
+        method: "post",
+        maxBodyLength: Infinity,
+        url: "http://localhost:8081/register/student",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        data: data,
+      };
+
+      const response = await axios.request(config);
+      console.log(JSON.stringify(response.data));
+    } catch (error) {
+      console.log(error);
     }
   };
-  React.useEffect(() => {
-    // callAPI(`${host}p?depth=2`);
-    callAPI(`${host}`);
-  }, []);
 
   return (
     <Container
       fluid
       className="font-notoSans"
-      style={{ height: "100vh", paddingTop: "20px" }}
+      style={{ height: "100vh", paddingTop: "100px" }}
     >
       {formSubmitted ? (
         <div style={{ textAlign: "center", marginTop: "10%" }}>
