@@ -8,6 +8,7 @@ import { MdDelete } from "react-icons/md";
 import useDebounce from "@/hooks/useDebounce";
 import FormAccount from "@/components/formAccount";
 import { IoMdEye, IoMdEyeOff } from "react-icons/io";
+import axios from "axios";
 
 const AccountManagePage: React.FC = () => {
   const [isInputFocused, setIsInputFocused] = useState<boolean>(false);
@@ -26,25 +27,7 @@ const AccountManagePage: React.FC = () => {
     useState(filterGroupList);
   const [searchText, setSearchText] = React.useState<string>("");
   const [accounts, setAccounts] = useState<Account[]>([
-    {
-      username: "abc123",
-      password: "123456",
-      accountName: "Nguyễn A",
-      role: "Quản trị viên",
-    },
-    {
-      username: "abc123",
-      password: "123456",
-      accountName: "Nguyễn AAA",
-      role: "Thí sinh",
-    },
-    {
-      username: "abc123",
-      password: "123456",
-      accountName: "Nguyễn AA",
-      role: "Phòng đào tạo",
-    },
-  ]);
+ ]);
 
   const [searchAccounts, setSearchAccounts] =
     React.useState<Account[]>(accounts);
@@ -141,7 +124,26 @@ const AccountManagePage: React.FC = () => {
   const handleSearchText = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setSearchText(e.target.value);
   };
-
+  const getAllUser = async () => {
+    try {       
+      let token = localStorage.getItem('accessToken');
+      let config = {
+        method: 'get',
+        maxBodyLength: Infinity,
+        url: 'http://localhost:8080/admin/user',
+        headers: { 
+          'Authorization': `Bearer ${token}`
+        }
+      };
+      const response = await axios.request(config);
+       //createUser(newUser);
+       setAccounts(response.data);
+       console.log(response.data);
+      // Handle successful login based on your API's response structure
+    } catch (error) {
+      console.error(error); // Handle errors appropriately (e.g., display error messages)
+    }
+  }
   const handleHiddenPass = (idx: number): void => {
     let temp: boolean[] = [...isHiddens];
     temp[idx] = !temp[idx];
@@ -150,6 +152,7 @@ const AccountManagePage: React.FC = () => {
 
   const debounceSearch = useDebounce(searchText, 500);
   useEffect(() => {
+    getAllUser();
     // if (debounceSearch == ''){
     //     setSearchExam({mostRelevant: [], albums: [], tracks: [], artists: []});
     // }

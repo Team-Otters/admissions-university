@@ -79,6 +79,42 @@ const ProfileRegisterPage: React.FC = () => {
       setSelectedDistrictName(response.data.name);
     });
   };
+  const handleSubmition = async (e) =>{
+    e.preventDefault();
+    try {
+      let data = JSON.stringify({
+        "fullName": "Ian Smith",
+        "numberId": "12345",
+        "gender": "male",
+        "dateOfBirth": "2023-05-22T00:00:00.000+00:00",
+        "phoneNumber": "0123456700",
+        "email": "student@gmail.com",
+        "placeOfBirth": "Ha Noi",
+        "ethnicType": "Asian",
+        "houseHold": "Family B",
+        "address": "123 Main St, Anytown USA",
+        "school": "THCS ABC"
+      });
+      
+      let config = {
+        method: 'post',
+        maxBodyLength: Infinity,
+        url: 'http://localhost:8080/register/student',
+        headers: { 
+          'Content-Type': 'application/json'
+        },
+        data : data
+      };
+      const response = await axios.request(config);
+           
+      // Handle successful login based on your API's response structure
+      console.log(response.data); // Example: log the response data (e.g., token, user details)
+      // You can use the response data to redirect the user to a different page, store authentication tokens, etc.
+    } catch (error) {
+      console.error(error); // Handle errors appropriately (e.g., display error messages)
+    }
+
+  }
   const handleCityChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const cityCode = event.target.value;
     setSelectedCity(cityCode);
@@ -184,7 +220,7 @@ const ProfileRegisterPage: React.FC = () => {
       ) : (
         <>
           <h1>Đăng ký hồ sơ</h1>
-          <Form onSubmit={handleSubmit}>
+          <Form onSubmit={handleSubmition}>
             <Row className="mb-3">
               <Col md={4}>
                 <Row className="mb-3  min-h-20">
@@ -299,16 +335,9 @@ const ProfileRegisterPage: React.FC = () => {
                     onChange={handleChange}
                     required
                   >
-                    {cities.map((city: any) => (
-                            <option
-                              key={city.code}
-                              value={city.code}
-                              id="tinh"
-                              name="tinh"
-                            >
-                              {city.name}
-                            </option>
-                          ))}
+                      <option value="">-- Chọn nơi sinh --</option>
+                      <option value="Address1">Địa chỉ 1</option>
+                      <option value="Address2">Địa chỉ 2</option>
                   </Form.Control>
                 </Form.Group>
               </Col>
