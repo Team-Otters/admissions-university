@@ -8,73 +8,16 @@ import { FaSearch } from "react-icons/fa";
 import { FaPencil } from "react-icons/fa6";
 import { IoEye } from "react-icons/io5";
 import { MdOutlineFilterAlt, MdDelete } from "react-icons/md";
-
+import axios from "axios";
 
 const ExamDetail  = ({ params }) => { 
   const {id} = params;
-    const [examList, setExamList] = React.useState<Exam[]>([
-        {
-            id: "EX001",
-            name: "Kỳ thi 2021",
-            year: "2021"
-        },
-        {
-            id: "EX002",
-            name: "Kỳ thi 2022",
-            year: "2022"
-        },        
-        {
-            id: "EX003",
-            name: "Kỳ thi 2023",
-            year: "2023"
-        },       
-        {
-            id: "EX004",
-            name: "Kỳ thi 2024",
-            year: "2024"
-        },
-    ]);
+    const [examList, setExamList] = React.useState<Exam[]>([]);
     const [classList, setClassList] = React.useState<Class[]>([
-      {
-        id: "CL001",
-        name: "Chuyên Toán",
-        quotas: 30,
-        year: "2021"
-      },
-      {
-        id: "CL002",
-        name: "Chuyên Toán 2",
-        quotas: 30,
-        year: "2021"
-      },
-      {
-        id: "CL003",
-        name: "Chuyên Hóa",
-        quotas: 30,
-        year: "2021"
-      },
     ]);
-    const [benchmarkList, setBenchmarkList] = React.useState<Benchmark[]>([
-      {
-        id: "BN001",
-        exam: "EX001",
-        class: "CL002",
-        score: 0,
-      },
-      {
-        id: "BN002",
-        exam: "EX001",
-        class: "CL003",
-        score: 0,
-      },
-      {
-        id: "BN003",
-        exam: "EX001",
-        class: "CL001",
-        score: 0,
-      },     
-    ]
+    const [benchmarkList, setBenchmarkList] = React.useState<Benchmark[]>([    ]
     );
+    const [filteredBenchmarkList, setFilteredBenchmarkList] = React.useState<Benchmark[]>([]);
     const [selectedExam, setSelectedExam] = React.useState<Exam>();
     const [examN, setExamN] = React.useState<string>();
     const [isInputFocused, setIsInputFocused] = React.useState<boolean>(false);
@@ -83,16 +26,76 @@ const ExamDetail  = ({ params }) => {
     const handleSearchText = (e: React.ChangeEvent<HTMLInputElement>): void => {
         setSearchText(e.target.value);
       };
+      const getAllBenchmark = async () => {
+        try {       
+          let token = localStorage.getItem('accessToken');
+          let config = {
+            method: 'get',
+            maxBodyLength: Infinity,
+            url: 'http://localhost:8080/bench_mark',
+            headers: { 
+              'Authorization': `Bearer ${token}`
+            }
+          };
+          const response = await axios.request(config);
+           //createUser(newUser);
+           setBenchmarkList(response.data);
+           console.log(response.data);
+          // Handle successful login based on your API's response structure
+        } catch (error) {
+          console.error(error); // Handle errors appropriately (e.g., display error messages)
+        }
+      }
+      const getAllClass = async () => {
+        try {       
+          let token = localStorage.getItem('accessToken');
+          let config = {
+            method: 'get',
+            maxBodyLength: Infinity,
+            url: 'http://localhost:8080/major_class',
+            headers: { 
+              'Authorization': `Bearer ${token}`
+            }
+          };
+          const response = await axios.request(config);
+           //createUser(newUser);
+           setClassList(response.data);
+           console.log(response.data);
+          // Handle successful login based on your API's response structure
+        } catch (error) {
+          console.error(error); // Handle errors appropriately (e.g., display error messages)
+        }
+      }
+      const changeName = async () => {
+        try {       
+          let token = localStorage.getItem('accessToken');
+          let config = {
+            method: 'get',
+            maxBodyLength: Infinity,
+            url: `http://localhost:8080/exam/${id}`,
+            headers: { 
+              'Authorization': `Bearer ${token}`
+            }
+          };
+          const response = await axios.request(config);
+           //createUser(newUser);
+           setExamN(response.data.name);
+           console.log(response.data);
+          // Handle successful login based on your API's response structure
+        } catch (error) {
+          console.error(error); // Handle errors appropriately (e.g., display error messages)
+        }
+      }
       React.useEffect(() =>{
-        let examName : Exam[] = examList.filter((exam) => {
-          if (exam.id==id) return exam
-        });
-        setExamN(examName[0].name);
+        getAllBenchmark();
+        getAllClass();
+        changeName();
         // const sortList : Class[]  = classList.filter((item) =>{
         //   if (item.id == benchmarkList[0].class) return item;
         // });
-        // setClassList(sortList);
-      }, [])
+        const filtered = benchmarkList.filter((benchmark) => benchmark.examId === id); // Assuming 'examId' property exists in Benchmark
+        setFilteredBenchmarkList(filtered);
+      }, [id, benchmarkList]);
       const findMatchingClass = (classId: string) => {
         // Find the class element in classList that has a matching ID with the provided classId
         const matchingClass = classList.find((cl) => cl.id === classId);
@@ -123,7 +126,7 @@ const ExamDetail  = ({ params }) => {
             </tr>
           </thead>
           <tbody>
-            {benchmarkList.map((item, index) => {
+            {filteredBenchmarkList.map((item, index) => {
                const matchingClass = findMatchingClass(item.class);
               return (
                 <tr

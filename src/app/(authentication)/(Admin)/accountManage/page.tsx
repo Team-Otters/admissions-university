@@ -77,15 +77,29 @@ const AccountManagePage: React.FC = () => {
     setRecentFilterGroupList([selectElement.value]);
   };
 
-  const handleSubmit = (data: Account): void => {
+  const handleSubmit = async (data: Account) => {
     try {
-      
+      let dt = JSON.stringify({
+        "username": data.username,
+        "password": data.password,
+        "role": data.role
+      });
+      let token = localStorage.getItem('accessToken');
+      let config = {
+        method: 'post',
+        maxBodyLength: Infinity,
+        url: 'http://localhost:8080/register',
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        data : dt
+      };
+      const response = await axios.request(config);
+      getAllUser();
     } catch (error) {
-
+      console.error(error); // Handle errors appropriately (e.g., display error messages)
     }
-    let temp = [...accounts];
-    temp.push(data);
-    setAccounts(temp);
   };
 
   const handleEdit = (data: Account): void => {

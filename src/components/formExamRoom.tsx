@@ -8,26 +8,39 @@ const FormExamRoom: React.FC<{
   onSubmit: (data: ExamRoomManageForm) => void;
   defaultValue: ExamRoomManageForm;
   examRooms: ExamRoomManageForm[];
-}> = ({ closeModal, isEdit, onSubmit, defaultValue, examRooms }) => {
+  rooms: Room[];
+  subjects: Subject[];
+}> = ({
+  closeModal,
+  isEdit,
+  onSubmit,
+  defaultValue,
+  examRooms,
+  rooms,
+  subjects,
+}) => {
   const [formState, setFormState] = useState(defaultValue);
   const [errors, setErrors] = useState("");
   const isEdt = isEdit || true;
 
   const validateForm = () => {
     if (
-      formState.roomCode != "" &&
-      formState.roomName != "" &&
-      formState.subjectName != "" &&
+      formState.room != "" &&
+      formState.subject != "" &&
       formState.date != ""
     ) {
       const isIdExists = examRooms.some(
-        (examRoom) => examRoom.roomCode == formState.roomCode
+        (examRoom) => examRoom.room == formState.room
       );
       const isRoomUsable = examRooms.some(
         (examRoom) =>
-          examRoom.roomName == formState.roomName &&
-          examRoom.date == formState.date
+          examRoom.room == formState.room && examRoom.date == formState.date
       );
+      // const isPaperContainerUsable = examRooms.some(
+      //   (examRoom) =>
+      //     examRoom.room !== formState.room &&
+      //     examRoom.paperContainersId == formState.paperContainersId
+      // );
 
       if (!isEdit && isIdExists) {
         setErrors(
@@ -42,17 +55,17 @@ const FormExamRoom: React.FC<{
     } else {
       let errorFields = [];
       for (const [key, value] of Object.entries(formState)) {
-        if (value == "") {
+        if (key !== "paperContainersId" && value == "") {
           switch (key) {
-            case "roomCode":
-              errorFields.push("Mã phòng thi");
-              break;
-            case "roomName":
+            case "room":
               errorFields.push("Phòng thi");
               break;
-            case "subjectName":
-              errorFields.push("Tên môn thi");
+            case "subject":
+              errorFields.push("Môn thi");
               break;
+            // case "paperContainersId":
+            //   errorFields.push("Mã túi bài thi");
+            //   break;
             case "date":
               errorFields.push("Ngày thi");
               break;
@@ -65,7 +78,7 @@ const FormExamRoom: React.FC<{
     }
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: any) => {
     setFormState({ ...formState, [e.target.name]: e.target.value });
   };
 
@@ -91,34 +104,41 @@ const FormExamRoom: React.FC<{
       <form className="h-5/6 w-full items-center justify-around flex flex-col">
         <div className="flex flex-row w-4/6">
           <label className="w-1/3 lg:w-1/2">Mã phòng thi</label>
-          <input
-            className="border border-black w-1/2 p-2"
+          <select
             name="roomCode"
             onChange={handleChange}
-            type="text"
+            className="border border-black w-1/2 p-2"
+            id="roomCode"
             value={formState.roomCode}
             disabled={isEdit}
-          />
+          >
+            {rooms.map((item, index) => {
+              return (
+                <option key={index} value={item.id}>
+                  {item.name}
+                </option>
+              );
+            })}
+          </select>
         </div>
         <div className="flex flex-row w-4/6">
-          <label className="w-1/3 lg:w-1/2">Tên môn thi</label>
-          <input
-            className="border border-black w-1/2 p-2"
-            name="subjectName"
+          <label className="w-1/3 lg:w-1/2">Môn thi</label>
+          <select
+            name="subjectId"
             onChange={handleChange}
-            type="text"
-            value={formState.subjectName}
-          />
-        </div>
-        <div className="flex flex-row w-4/6">
-          <label className="w-1/3 lg:w-1/2">Phòng thi</label>
-          <input
             className="border border-black w-1/2 p-2"
-            name="roomName"
-            onChange={handleChange}
-            type="text"
-            value={formState.roomName}
-          />
+            id="subjectId"
+            value={formState.subjectId}
+            disabled={isEdit}
+          >
+            {subjects.map((item, index) => {
+              return (
+                <option key={index} value={item.id}>
+                  {item.name}
+                </option>
+              );
+            })}
+          </select>
         </div>
         <div className="flex flex-row w-4/6">
           <label className="w-1/3 lg:w-1/2">Ngày thi</label>
@@ -126,7 +146,7 @@ const FormExamRoom: React.FC<{
             className="border border-black w-1/2 p-2"
             name="date"
             onChange={handleChange}
-            type="text"
+            type="date"
             value={formState.date}
           />
         </div>

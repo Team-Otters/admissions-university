@@ -13,7 +13,7 @@ const FormExam: React.FC<{
 const [List, setExamList] = useState(examList);
   const validateForm = () => {
     if (
-      formState.id != "" &&
+      //formState.id != "" &&
       formState.name != "" &&
       formState.year != ""
     ) {
@@ -33,9 +33,6 @@ const [List, setExamList] = useState(examList);
       for (const [key, value] of Object.entries(formState)) {
         if (value == "") {
           switch (key) {
-            case "id":
-              errorFields.push("Mã kỳ thi");
-              break;
             case "name":
               errorFields.push("Tên kỳ thi");
               break;
@@ -78,7 +75,7 @@ const [List, setExamList] = useState(examList);
     >
       {/* <div className="bg-mainBlue"> */}
       <form className="h-5/6 w-full items-center justify-around flex flex-col">
-        <div className="flex flex-row w-4/6">
+        {/* <div className="flex flex-row w-4/6">
           <label className="w-1/3 lg:w-1/2">Mã kỳ thi</label>
           <input
             className="border border-black w-1/2 p-2"
@@ -87,7 +84,7 @@ const [List, setExamList] = useState(examList);
             type="text"
             value={formState.id}
           />
-        </div>
+        </div> */}
         <div className="flex flex-row w-4/6">
           <label className="w-1/3 lg:w-1/2">Tên kỳ thi</label>
           <input

@@ -44,14 +44,14 @@ const Sidebar: React.FC<{ route: string }> = ({ route }) => {
         {/* <div className={`px-4 py-2 ${isOpen ? "hidden" : "block"}`}> */}
         {role === "Khach" ? (
           <></>
-        ) : role === "ThiSinh" ? (
+        ) : role === "STUDENT" ? (
           <ul className="flex-1">
             <li onClick={()=>handleNavigate("/studentscore")} className="py-2 cursor-pointer hover:bg-gray">Tra cứu</li>
             <li onClick={()=> handleNavigate("/studentprofile")} className="py-2 cursor-pointer hover:bg-gray">Hồ sơ</li>
             <li onClick={()=> handleNavigate("/wishlist")} className="py-2 cursor-pointer hover:bg-gray">Nguyện vọng</li>
             <li onClick={()=>handleLogout} className="py-2 cursor-pointer hover:bg-gray">Đăng xuất</li>
           </ul>
-        ) : role === "TaiChinh" ? (
+        ) : role === "TAICHINH" ? (
           <ul className="flex-1">
             <li onClick={()=>handleNavigate("/feemanage")} className="py-2 cursor-pointer hover:bg-gray">
               Quản lý lệ phí
@@ -61,7 +61,7 @@ const Sidebar: React.FC<{ route: string }> = ({ route }) => {
             </li>
             <li onClick={()=>handleLogout} className="py-2 cursor-pointer hover:bg-gray">Đăng xuất</li>
           </ul>
-        ) : role === "DaoTao" ? (
+        ) : role === "DAOTAO" ? (
           <ul className="flex-1">
             <li onClick={()=>handleNavigate("/financeStudentList")} className="py-2 cursor-pointer hover:bg-gray">
               Quản lý thí sinh
@@ -84,7 +84,7 @@ const Sidebar: React.FC<{ route: string }> = ({ route }) => {
             <li onClick={()=>handleNavigate("/scoreChart")} className="py-2 cursor-pointer hover:bg-gray">Báo cáo</li>
             <li onClick={()=>handleLogout} className="py-2 cursor-pointer hover:bg-gray">Đăng xuất</li>
           </ul>
-        ) : role === "KhaoThi" ? (
+        ) : role === "KHAOTHI" ? (
           <ul className="flex-1">
             <li onClick={()=>handleNavigate("/paperContainer")} className="py-2 cursor-pointer hover:bg-gray">Quản lý chấm thi</li>
             <li onClick={()=>handleLogout} className="py-2 cursor-pointer hover:bg-gray">Đăng xuất</li>
@@ -117,14 +117,14 @@ const Sidebar: React.FC<{ route: string }> = ({ route }) => {
         </div>
         {role === "Khach" ? (
           <></>
-        ) : role === "ThiSinh" ? (
+        ) : role === "STUDENT" ? (
           <ul className="flex-1">
             <li className="py-2 cursor-pointer hover:bg-gray">Tra cứu</li>
             <li className="py-2 cursor-pointer hover:bg-gray">Hồ sơ</li>
             <li className="py-2 cursor-pointer hover:bg-gray">Nguyện vọng</li>
             <li onClick={()=>handleLogout} className="py-2 cursor-pointer hover:bg-gray">Đăng xuất</li>
           </ul>
-        ) : role === "TaiChinh" ? (
+        ) : role === "TAICHINH" ? (
           <ul className="flex-1">
             <li className="py-2 cursor-pointer hover:bg-gray">
               Quản lý lệ phí
@@ -134,7 +134,7 @@ const Sidebar: React.FC<{ route: string }> = ({ route }) => {
             </li>
             <li onClick={()=>handleLogout} className="py-2 cursor-pointer hover:bg-gray">Đăng xuất</li>
           </ul>
-        ) : role === "DaoTao" ? (
+        ) : role === "DAOTAO" ? (
           <ul className="flex-1">
             <li className="py-2 cursor-pointer hover:bg-gray">
               Quản lý thí sinh
@@ -157,7 +157,7 @@ const Sidebar: React.FC<{ route: string }> = ({ route }) => {
             <li className="py-2 cursor-pointer hover:bg-gray">Báo cáo</li>
             <li onClick={()=>handleLogout} className="py-2 cursor-pointer hover:bg-gray">Đăng xuất</li>
           </ul>
-        ) : role === "KhaoThi" ? (
+        ) : role === "KHAOTHI" ? (
           <ul className="flex-1">
             <li onClick={()=>handleLogout} className="py-2 cursor-pointer hover:bg-gray">
               Quản lý chấm thi

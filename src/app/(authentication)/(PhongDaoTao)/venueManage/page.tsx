@@ -7,6 +7,7 @@ import { FaPencil } from "react-icons/fa6";
 import { MdDelete } from "react-icons/md";
 import FormExamRoom from "@/components/formExamRoom";
 import useDebounce from "@/hooks/useDebounce";
+import axios from "axios";
 
 const VenueManageScreen: React.FC = () => {
   const [isInputFocused, setIsInputFocused] = useState<boolean>(false);
@@ -16,36 +17,20 @@ const VenueManageScreen: React.FC = () => {
   const [filterGroupList, setFilterGroupList] = useState([
     "All",
     "Mã phòng thi",
-    "Tên môn thi",
-    "Phòng thi",
+    "Mã môn thi",
+    "Mã túi bài thi",
     "Ngày thi",
   ]);
   const [recentFilterGroupList, setRecentFilterGroupList] =
     useState(filterGroupList);
   const [searchText, setSearchText] = React.useState<string>("");
-  const [examRooms, setExamRooms] = useState<ExamRoomManageForm[]>([
-    {
-      roomCode: "P001",
-      roomName: "B5.08",
-      subjectName: "Hóa Học",
-      date: "06/06/2024",
-    },
-    {
-      roomCode: "P002",
-      roomName: "B4.14",
-      subjectName: "Toán",
-      date: "06/06/2024",
-    },
-    {
-      roomCode: "P003",
-      roomName: "B5.14",
-      subjectName: "Vật Lý",
-      date: "06/06/2024",
-    },
-  ]);
+  const [examRooms, setExamRooms] = useState<ExamRoomManageForm[]>([]);
+  const [rooms, setRooms] = useState<Room[]>([]);
+  const [subjects, setSubjects] = useState<Subject[]>([]);
 
-  const [searchExamRooms, setSearchExamRooms] =
-    React.useState<ExamRoomManageForm[]>(examRooms);
+  const [searchExamRooms, setSearchExamRooms] = React.useState<
+    ExamRoomManageForm[]
+  >([]);
 
   const search = (text: string): ExamRoomManageForm[] => {
     let temp: ExamRoomManageForm[] = examRooms.filter((exam) => {
@@ -55,8 +40,10 @@ const VenueManageScreen: React.FC = () => {
             console.log(text.toLowerCase());
             if (
               exam.roomCode.toLowerCase().includes(text.toLowerCase()) ||
-              exam.roomName.toLowerCase().includes(text.toLowerCase()) ||
-              exam.subjectName.toLowerCase().includes(text.toLowerCase()) ||
+              exam.paperContainersId
+                .toLowerCase()
+                .includes(text.toLowerCase()) ||
+              exam.subjectId.toLowerCase().includes(text.toLowerCase()) ||
               exam.date.toLowerCase().includes(text.toLowerCase())
             ) {
               return exam;
@@ -67,13 +54,13 @@ const VenueManageScreen: React.FC = () => {
               return exam;
             }
             break;
-          case "Tên môn thi":
-            if (exam.subjectName.toLowerCase().includes(text.toLowerCase())) {
+          case "Mã môn thi":
+            if (exam.subjectId.toLowerCase().includes(text.toLowerCase())) {
               return exam;
             }
             break;
-          case "Phòng thi":
-            if (exam.roomName.toLowerCase().includes(text.toLowerCase())) {
+          case "Mã phòng thi":
+            if (exam.roomCode.toLowerCase().includes(text.toLowerCase())) {
               return exam;
             }
             break;
@@ -95,6 +82,69 @@ const VenueManageScreen: React.FC = () => {
     console.log(selectElement.value);
     setRecentFilterGroupList([selectElement.value]);
   };
+  const getAllExamRoom = async () => {
+    console.log(localStorage.getItem("accessToken"));
+    try {
+      let token = localStorage.getItem("accessToken");
+      let config = {
+        method: "get",
+        maxBodyLength: Infinity,
+        url: "http://localhost:8081/exam_room",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      const response = await axios.request(config);
+      //createUser(newUser);
+      setExamRooms(response.data);
+      console.log("er: ", response.data);
+      // Handle successful login based on your API's response structure
+    } catch (error) {
+      console.error(error); // Handle errors appropriately (e.g., display error messages)
+    }
+  };
+
+  const getAllRooms = async () => {
+    try {
+      let token = localStorage.getItem("accessToken");
+      let config = {
+        method: "get",
+        maxBodyLength: Infinity,
+        url: "http://localhost:8081/room",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      const response = await axios.request(config);
+      //createUser(newUser);
+      setRooms(response.data);
+      console.log("r: ", response.data);
+      // Handle successful login based on your API's response structure
+    } catch (error) {
+      console.error(error); // Handle errors appropriately (e.g., display error messages)
+    }
+  };
+
+  const getAllSubjects = async () => {
+    try {
+      let token = localStorage.getItem("accessToken");
+      let config = {
+        method: "get",
+        maxBodyLength: Infinity,
+        url: "http://localhost:8081/subject",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      const response = await axios.request(config);
+      //createUser(newUser);
+      setSubjects(response.data.content);
+      console.log("sj: ", response.data.content);
+      // Handle successful login based on your API's response structure
+    } catch (error) {
+      console.error(error); // Handle errors appropriately (e.g., display error messages)
+    }
+  };
 
   React.useEffect(() => {
     console.log("truoc khi search in filter: ", recentFilterGroupList);
@@ -105,12 +155,6 @@ const VenueManageScreen: React.FC = () => {
 
   const debounceSearch = useDebounce(searchText, 500);
   useEffect(() => {
-    // if (debounceSearch == ''){
-    //     setSearchExam({mostRelevant: [], albums: [], tracks: [], artists: []});
-    // }
-    // else {
-    //     executeSearchQuery(debounceSearch);
-    // }
     setSearchExamRooms(search(searchText));
   }, [debounceSearch]);
 
@@ -129,46 +173,98 @@ const VenueManageScreen: React.FC = () => {
   const handleClearRow = (roomCode: string): void => {
     let temp: ExamRoomManageForm[] = [...examRooms];
     temp = temp.filter((value) => {
-      if (value.roomCode !== roomCode) {
+      if (value.room !== roomCode) {
         return value;
       }
     });
     setExamRooms(temp);
   };
 
-  const handleSubmit = (data: ExamRoomManageForm): void => {
-    let temp = [...examRooms];
-    temp.push(data);
-    setExamRooms(temp);
+  const handleSubmit = async (data: ExamRoomManageForm) => {
+    try {
+      let token = localStorage.getItem("accessToken");
+      let dt = JSON.stringify({
+        examRoomId: data.room,
+        subjectId: data.subject,
+        date: data.date,
+        paperContainersId: "",
+      });
+      let config = {
+        method: "post",
+        maxBodyLength: Infinity,
+        url: "http://localhost:8081/exam_room",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        data: dt,
+      };
+      const response = await axios.request(config).then((response) => {
+        getAllExamRoom();
+        console.log(response.data);
+      });
+      //createUser(newUser);
+      // Handle successful login based on your API's response structure
+    } catch (error) {
+      console.error(error); // Handle errors appropriately (e.g., display error messages)
+    }
   };
 
-  const handleEdit = (data: ExamRoomManageForm): void => {
-    let idx: number = -1;
-    examRooms.map((exRoom, index) => {
-      if (exRoom.roomCode == data.roomCode) {
-        idx = index;
-      }
-    });
-
-    if (idx != -1) {
-      let temp: ExamRoomManageForm[] = [...examRooms];
-      temp[idx] = data || {
-        roomCode: "",
-        roomName: "",
-        subjectName: "",
-        date: "",
+  const handleEdit = async (data: ExamRoomManageForm) => {
+    try {
+      let dt = JSON.stringify({
+        roomCode: data.room,
+        subjectId: data.subject,
+        date: data.date,
+      });
+      let token = localStorage.getItem("accessToken");
+      let config = {
+        method: "put",
+        maxBodyLength: Infinity,
+        url: `http://localhost:8080/exam_room/${data.id}`,
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        data: dt,
       };
-      setExamRooms(temp);
-      console.log(temp[idx]);
-    } else {
-      console.log("Lỗi update");
+      const response = await axios.request(config);
+      getAllExamRoom();
+    } catch (error) {
+      console.error(error); // Handle errors appropriately (e.g., display error messages)
     }
+    // let idx: number = -1;
+    // examRooms.map((exRoom, index) => {
+    //   if (exRoom.room == data.room) {
+    //     idx = index;
+    //   }
+    // });
+
+    // if (idx != -1) {
+    //   let temp: ExamRoomManageForm[] = [...examRooms];
+    //   temp[idx] = data || {
+    //     id: "",
+    //     room: "",
+    //     subject: "",
+    //     date: "",
+    //   };
+    //   setExamRooms(temp);
+    //   console.log(temp[idx]);
+    // } else {
+    //   console.log("Lỗi update");
+    // }
   };
 
   const handleEditRow = (exRoom: ExamRoomManageForm): void => {
     setRowToEdit(exRoom);
     setIsOpenForm(true);
   };
+
+  useEffect(() => {
+    getAllExamRoom();
+    getAllRooms();
+    getAllSubjects();
+  }, []);
 
   return (
     <Container
@@ -225,31 +321,31 @@ const VenueManageScreen: React.FC = () => {
           </Button>
         </div>
         <div className="w-11/12 mx-auto font-notoSans font-bold mt-6 align-center text-lg">
-          Tổng: {searchExamRooms.length}
+          Tổng: {searchExamRooms?.length}
         </div>
         <table className="max-w-11/12 w-11/12 mx-auto text-lg shadow-tableShadow border-collapse rounded-3xl bg-white">
           <thead>
             <tr className="text-center text-blueTitle border-b border-gray">
               <th className="p-2 w-1/12">STT</th>
               <th className="border-l border-gray p-2 w-2/12">Mã phòng thi</th>
-              <th className="border-l border-gray p-2">Tên môn thi</th>
-              <th className="border-l border-gray p-2">Phòng thi</th>
+              <th className="border-l border-gray p-2">Mã môn thi</th>
               <th className="border-l border-gray p-2">Ngày thi</th>
+              <th className="border-l border-gray p-2">Mã túi bài thi</th>
               <th className="w-12 border-gray p-2"></th>
             </tr>
           </thead>
           <tbody>
-            {searchExamRooms.map((item, index) => {
+            {searchExamRooms?.map((item, index) => {
               return (
                 <tr
                   className="border-b border-gray rounded-b-lg last:border-none"
                   key={index}
                 >
                   <td className="px-2 py-1 border-r">{index + 1}</td>
-                  <td className="px-2 py-1 border-r">{item.roomCode}</td>
-                  <td className="px-2 py-1 border-r">{item.subjectName}</td>
-                  <td className="px-2 py-1 border-r">{item.roomName}</td>
-                  <td className="px-2 py-1">{item.date}</td>
+                  <td className="px-2 py-1 border-r">{item.room}</td>
+                  <td className="px-2 py-1 border-r">{item.subject}</td>
+                  <td className="px-2 py-1 border-r">{item.date}</td>
+                  <td className="px-2 py-1">{item.paperContainersId || ""}</td>
                   <td className="flex flex-row justify-center h-9 self-center justify-self-center">
                     <button
                       className="cursor-pointer"
@@ -278,12 +374,19 @@ const VenueManageScreen: React.FC = () => {
           <div className="absolute inset-0 flex justify-center items-center bg-black bg-opacity-50 z-50">
             <FormExamRoom
               examRooms={examRooms}
+              rooms={rooms}
+              subjects={subjects}
               closeModal={() => setIsOpenForm(false)}
               isEdit={isEdit}
               onSubmit={isEdit ? handleEdit : handleSubmit}
               defaultValue={
                 rowToEdit === undefined
-                  ? { roomCode: "", roomName: "", subjectName: "", date: "" }
+                  ? {
+                      roomCode: "",
+                      subjectId: "",
+                      date: "",
+                      paperContainersId: "",
+                    }
                   : rowToEdit
               }
             />
