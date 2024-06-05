@@ -1,1 +1,8 @@
-//Để các function dùng chung ở đây, tránh viêc code đi code lại nhiều lần
+const formatDate = (timestamp) => {
+  const date = new Date(timestamp);
+  const formattedDate = date.toISOString().split("T")[0];
+
+  return formattedDate;
+};
+
+export { formatDate };
