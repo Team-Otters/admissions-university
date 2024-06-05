@@ -1446,9 +1446,9 @@ const ProfileRegisterPage: React.FC = () => {
                     required
                   >
                     <option value="">-- Chọn địa chỉ --</option>
-                    {districtOptions.map((householdAddress3) => (
-                  <option key={householdAddress3} value={householdAddress3}>
-                    {householdAddress3}
+                    {Object.keys(districts).map((city) => (
+                  <option key={city} value={city}>
+                    {city}
                   </option>
                 ))}
                   </Form.Control>
@@ -1465,6 +1465,11 @@ const ProfileRegisterPage: React.FC = () => {
                     required
                   >
                     <option value="">-- Chọn địa chỉ --</option>
+                    {Object.keys(districts).map((city) => (
+                  <option key={city} value={city}>
+                    {city}
+                  </option>
+                ))}
                   </Form.Control>
                 </Form.Group>
               </Col>
@@ -1593,8 +1598,11 @@ const ProfileRegisterPage: React.FC = () => {
                     required
                   >
                     <option value="">-- Chọn địa chỉ --</option>
-                    <option value="Address1">Địa chỉ 1</option>
-                    <option value="Address2">Địa chỉ 2</option>
+                    {Object.keys(districts).map((city) => (
+                  <option key={city} value={city}>
+                    {city}
+                  </option>
+                ))}
                   </Form.Control>
                 </Form.Group>
               </Col>
