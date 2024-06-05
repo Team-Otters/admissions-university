@@ -103,7 +103,9 @@ const LoginPage: React.FC = () => {
           await localStorage.setItem("role" , response.data.role)
           const storedData = localStorage.getItem('accessToken')
           console.log(storedData);
-          await new Promise(resolve => router.push('/accountManage', undefined, { shallow: true }, resolve))
+          await router.refresh();
+          
+          await new Promise(resolve => router.push(`/?refreshId=${new Date().getTime()}`, undefined, { shallow: true }, resolve))
           // You can use the response data to redirect the user to a different page, store authentication tokens, etc.
         } catch (error) {
           console.error(error); // Handle errors appropriately (e.g., display error messages)

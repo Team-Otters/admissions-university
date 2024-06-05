@@ -26,7 +26,19 @@ interface Student {
   CCCD: string;
   financeStatus: boolean;
 }
-
+interface std {
+    fullName: string,
+    numberId: string, 
+    gender: string,
+    dateOfBirth: string,
+    phoneNumber: string, 
+    email: string,
+    placeOfBirth: string,
+    ethnicType: string, 
+    houseHold: string, 
+    address: string, 
+    school: string 
+}
 interface ExamRoomManageForm {
   roomCode: string;
   subjectName: string;

@@ -90,14 +90,36 @@ export default function SubjectManagement() {
 
         try {       
           let token = localStorage.getItem('accessToken');
-          let dt = JSON.stringify({
-            "name": data.name,
-            "subjects": data.subjectList
-          })
           let config = {
             method: 'delete',
             maxBodyLength: Infinity,
             url: `http://localhost:8080/subjectSets/${data.id}`,
+            headers: { 
+              'Authorization': `Bearer ${token}`
+            },
+            data:data
+          };
+          await axios.request(config);
+           getAllSubjectSet();
+          // Handle successful login based on your API's response structure
+        } catch (error) {
+          console.error(error); 
+          alert(`Bug because of constraint in database. Error code:${error.code}`)
+          // Handle errors appropriately (e.g., display error messages)
+        }
+      };
+      const handleClassSubmit = async (data: Class) => {
+        try {       
+          let token = localStorage.getItem('accessToken');
+          let dt = JSON.stringify({
+            name: data.name,
+            "year": data.year,
+            "quotas": data.quotas
+          })
+          let config = {
+            method: 'post',
+            maxBodyLength: Infinity,
+            url: `http://localhost:8080/major_class`,
             headers: { 
               'Content-Type': 'application/json',
               'Authorization': `Bearer ${token}`
@@ -106,93 +128,135 @@ export default function SubjectManagement() {
           };
           const response = await axios.request(config);
            //createUser(newUser);
-           setSubjectList(response.data.content);
            console.log(`subject list: ${response.data.content}`);
-           getAllSubjectSet();
+           getAllClass();
           // Handle successful login based on your API's response structure
         } catch (error) {
           console.error(error); // Handle errors appropriately (e.g., display error messages)
-        }
-      };
-      const handleClassSubmit = (data: Class): void => {
-        let temp = [...classList];
-        temp.push(data);
-        setClassList(temp);
+        }      
       };
     
-      const handleClassEdit = (data: Class): void => {
-        let idx: number = -1;
-        classList.map((item, index) => {
-          if (item.id == data.id) {
-            idx = index;
-          }
-        });
-    
-        if (idx != -1) {
-          let temp: Class[] = [...classList];
-          temp[idx] = data || {
-            id: "",
-            name: "",
-            year: "",
-            quotas: 0
+      const handleClassEdit = async (data: Class)=> {
+        try {       
+          let token = localStorage.getItem('accessToken');
+          let dt = JSON.stringify({
+            "name": data.name,
+            "year": data.year,
+            "quotas": data.quotas
+          })
+          let config = {
+            method: 'put',
+            maxBodyLength: Infinity,
+            url: `http://localhost:8080/major_class/${data.id}`,
+            headers: { 
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
+            },
+            data: dt
           };
-          setClassList(temp);
-          console.log(temp[idx]);
-        } else {
-          console.log("Lỗi update");
-        }
+          const response = await axios.request(config);
+           //createUser(newUser);
+           getAllClass();
+          // Handle successful login based on your API's response structure
+        } catch (error) {
+          console.error(error); // Handle errors appropriately (e.g., display error messages)
+        }      
       };
-      const handleClassClearRow = (data: Class): void => {
+      const handleClassClearRow = async (data: Class) => {
+        try {       
+          let token = localStorage.getItem('accessToken');
 
-        let temp: Class[] = [...classList];
-        temp = temp.filter((value) => {
-          if (value.id !== data.id) {
-            return value;
-          }
-        });
-        setClassList(temp);
-      };
-      const handleSubjectSubmit = (data: Subject): void => {
-        let temp = [...subjectList];
-        temp.push(data);
-        setSubjectList(temp);
-      };
-    
-      const handleSubjectEdit = (data: Subject): void => {
-        let idx: number = -1;
-        subjectList.map((item, index) => {
-          if (item.id == data.id) {
-            idx = index;
-          }
-        });
-    
-        if (idx != -1) {
-          let temp: Subject[] = [...subjectList];
-          temp[idx] = data || {
-            id: "",
-            name: "",
-            parameter: "",
-            time: ""
+          let config = {
+            method: 'delete',
+            maxBodyLength: Infinity,
+            url: `http://localhost:8080/major_class/${data.id}`,
+            headers: { 
+              'Authorization': `Bearer ${token}`
+            }
           };
-          setSubjectList(temp);
-          console.log(temp[idx]);
-        } else {
-          console.log("Lỗi update");
-        }
+          const response = await axios.request(config);
+           getAllClass();
+          // Handle successful login based on your API's response structure
+        } catch (error) {
+          console.error(error); // Handle errors appropriately (e.g., display error messages)
+        }      
       };
-      const handleSubjectClearRow = (data: Subject): void => {
+      const handleSubjectSubmit = async (data: Subject)=> {
+        try {       
+          let token = localStorage.getItem('accessToken');
+          let dt = JSON.stringify({
+            "name": data.name,
+            "parameter": data.parameter,
+            "quotas": data.time
+          })
+          let config = {
+            method: 'post',
+            maxBodyLength: Infinity,
+            url: `http://localhost:8080/subject`,
+            headers: { 
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
+            },
+            data: dt
+          };
+          const response = await axios.request(config);
+           //createUser(newUser);
+           getAllSubject();
+          // Handle successful login based on your API's response structure
+        } catch (error) {
+          console.error(error); // Handle errors appropriately (e.g., display error messages)
+        }      
+      };
+    
+      const handleSubjectEdit = async (data: Subject) => {
+        try {       
+          let token = localStorage.getItem('accessToken');
+          let dt = JSON.stringify({
+            "name": data.name,
+            "parameter": data.parameter,
+            "quotas": data.time
+          })
+          let config = {
+            method: 'put',
+            maxBodyLength: Infinity,
+            url: `http://localhost:8080/subject/${data.id}`,
+            headers: { 
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
+            },
+            data: dt
+          };
+          const response = await axios.request(config);
+           //createUser(newUser);
+           getAllSubject();
+          // Handle successful login based on your API's response structure
+        } catch (error) {
+          console.error(error); // Handle errors appropriately (e.g., display error messages)
+        }        
+         };
+      const handleSubjectClearRow = async (data: Subject) => {
+        try {       
+          let token = localStorage.getItem('accessToken');
 
-        let temp: Subject[] = [...subjectList];
-        temp = temp.filter((value) => {
-          if (value.id !== data.id) {
-            return value;
-          }
-        });
-        setSubjectList(temp);
+          let config = {
+            method: 'delete',
+            maxBodyLength: Infinity,
+            url: `http://localhost:8080/subject/${data.id}`,
+            headers: { 
+              'Authorization': `Bearer ${token}`
+            },
+          };
+          const response = await axios.request(config);
+           //createUser(newUser);
+           getAllSubject();
+          // Handle successful login based on your API's response structure
+        } catch (error) {
+          console.error(error); // Handle errors appropriately (e.g., display error messages)
+        }  
       };
       const handleEditRow = (subs: SubjectSets): void => {
         setRowSubjectSetToEdit(subs);
-        console.log(subs);
+        //console.log(subs);
         setIsOpenForm(true);
       };
       const handleClassEditRow = (subs: Class): void => {

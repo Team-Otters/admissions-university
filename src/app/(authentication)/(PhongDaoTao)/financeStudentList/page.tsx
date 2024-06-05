@@ -16,7 +16,6 @@ const FinanceStudentManagermentPage: React.FC = () => {
     "Email",
     "Ngày sinh",
     "Giới tính",
-    "CCCD",
     "Tình trạng",
   ]);
   const [recentFilterGroupList, setRecentFilterGroupList] =
@@ -25,242 +24,11 @@ const FinanceStudentManagermentPage: React.FC = () => {
   const [searchResults, setSearchResults] = React.useState<string[]>([]);
   const [isOpenForm, setIsOpenForm] = React.useState<boolean>(false);
   const [isEdit, setIsEdit] = React.useState<boolean>(false);
-  const [rowToEdit, setRowToEdit] = React.useState<Student>();
-  const [studentList, setStudentList] = React.useState<Student[]>([
-    {
-      id: "SV001",
-      name: "Văn AA",
-      phone: "0449201842",
-      email: "abc@gmail.com",
-      birth: "12/1/2002",
-      gender: true,
-      CCCD: "094828991823",
-      financeStatus: true,
-    },
-    {
-      id: "SV002",
-      name: "Văn A",
-      phone: "0449201842",
-      email: "abc@gmail.com",
-      birth: "12/1/2002",
-      gender: true,
-      CCCD: "094828991823",
-      financeStatus: true,
-    },
-    {
-      id: "SV002",
-      name: "Văn A",
-      phone: "0449201842",
-      email: "abc@gmail.com",
-      birth: "12/1/2002",
-      gender: true,
-      CCCD: "094828991823",
-      financeStatus: true,
-    },
-    {
-      id: "SV002",
-      name: "Văn A",
-      phone: "0449201842",
-      email: "abc@gmail.com",
-      birth: "12/1/2002",
-      gender: true,
-      CCCD: "094828991823",
-      financeStatus: true,
-    },
-    {
-      id: "SV002",
-      name: "Văn A",
-      phone: "0449201842",
-      email: "abc@gmail.com",
-      birth: "12/1/2002",
-      gender: true,
-      CCCD: "094828991823",
-      financeStatus: true,
-    },
-    {
-      id: "SV002",
-      name: "Văn A",
-      phone: "0449201842",
-      email: "abc@gmail.com",
-      birth: "12/1/2002",
-      gender: true,
-      CCCD: "094828991823",
-      financeStatus: true,
-    },
-    {
-      id: "SV002",
-      name: "Văn A",
-      phone: "0449201842",
-      email: "abc@gmail.com",
-      birth: "12/1/2002",
-      gender: true,
-      CCCD: "094828991823",
-      financeStatus: true,
-    },
-    {
-      id: "SV002",
-      name: "Văn A",
-      phone: "0449201842",
-      email: "abc@gmail.com",
-      birth: "12/1/2002",
-      gender: true,
-      CCCD: "094828991823",
-      financeStatus: true,
-    },
-    {
-      id: "SV002",
-      name: "Văn A",
-      phone: "0449201842",
-      email: "abc@gmail.com",
-      birth: "12/1/2002",
-      gender: true,
-      CCCD: "094828991823",
-      financeStatus: true,
-    },
-    {
-      id: "SV002",
-      name: "Văn A",
-      phone: "0449201842",
-      email: "abc@gmail.com",
-      birth: "12/1/2002",
-      gender: true,
-      CCCD: "094828991823",
-      financeStatus: true,
-    },
-    {
-      id: "SV002",
-      name: "Văn A",
-      phone: "0449201842",
-      email: "abc@gmail.com",
-      birth: "12/1/2002",
-      gender: true,
-      CCCD: "094828991823",
-      financeStatus: true,
-    },
-    {
-      id: "SV002",
-      name: "Văn A",
-      phone: "0449201842",
-      email: "abc@gmail.com",
-      birth: "12/1/2002",
-      gender: true,
-      CCCD: "094828991823",
-      financeStatus: true,
-    },
-    {
-      id: "SV002",
-      name: "Văn A",
-      phone: "0449201842",
-      email: "abc@gmail.com",
-      birth: "12/1/2002",
-      gender: true,
-      CCCD: "094828991823",
-      financeStatus: true,
-    },
-    {
-      id: "SV002",
-      name: "Văn A",
-      phone: "0449201842",
-      email: "abc@gmail.com",
-      birth: "12/1/2002",
-      gender: true,
-      CCCD: "094828991823",
-      financeStatus: true,
-    },
-    {
-      id: "SV002",
-      name: "Văn A",
-      phone: "0449201842",
-      email: "abc@gmail.com",
-      birth: "12/1/2002",
-      gender: true,
-      CCCD: "094828991823",
-      financeStatus: true,
-    },
-    {
-      id: "SV002",
-      name: "Văn A",
-      phone: "0449201842",
-      email: "abc@gmail.com",
-      birth: "12/1/2002",
-      gender: true,
-      CCCD: "094828991823",
-      financeStatus: true,
-    },
-    {
-      id: "SV002",
-      name: "Văn A",
-      phone: "0449201842",
-      email: "abc@gmail.com",
-      birth: "12/1/2002",
-      gender: true,
-      CCCD: "094828991823",
-      financeStatus: true,
-    },
-    {
-      id: "SV002",
-      name: "Văn A",
-      phone: "0449201842",
-      email: "abc@gmail.com",
-      birth: "12/1/2002",
-      gender: true,
-      CCCD: "094828991823",
-      financeStatus: true,
-    },
-    {
-      id: "SV002",
-      name: "Văn A",
-      phone: "0449201842",
-      email: "abc@gmail.com",
-      birth: "12/1/2002",
-      gender: true,
-      CCCD: "094828991823",
-      financeStatus: true,
-    },
-    {
-      id: "SV002",
-      name: "Văn A",
-      phone: "0449201842",
-      email: "abc@gmail.com",
-      birth: "12/1/2002",
-      gender: true,
-      CCCD: "094828991823",
-      financeStatus: true,
-    },
-    {
-      id: "SV002",
-      name: "Văn A",
-      phone: "0449201842",
-      email: "abc@gmail.com",
-      birth: "12/1/2002",
-      gender: true,
-      CCCD: "094828991823",
-      financeStatus: true,
-    },
-    {
-      id: "SV002",
-      name: "Văn A",
-      phone: "0449201842",
-      email: "abc@gmail.com",
-      birth: "12/1/2002",
-      gender: true,
-      CCCD: "094828991823",
-      financeStatus: true,
-    },
-    {
-      id: "SV002",
-      name: "Văn A",
-      phone: "0449201842",
-      email: "abc@gmail.com",
-      birth: "12/1/2002",
-      gender: true,
-      CCCD: "094828991823",
-      financeStatus: true,
-    },
-  ]);
+  const [rowToEdit, setRowToEdit] = React.useState<std>();
+  const [studentList, setStudentList] = React.useState<std[]>([]);
 
   const [searchStudentList, setSearchStudentList] =
-    React.useState<Student[]>(studentList);
+    React.useState<std[]>(studentList);
 
   // const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
   //   event.preventDefault();
@@ -292,48 +60,42 @@ const FinanceStudentManagermentPage: React.FC = () => {
   //     setWishlistData(temp);
   //   };
 
-  const handleEditRow = (w: Student): void => {
+  const handleEditRow = (w: std): void => {
     setRowToEdit(w);
     setIsOpenForm(true);
   };
 
-  const search = (text: string): Student[] => {
+  const search = (text: string): std[] => {
     console.log(recentFilterGroupList);
-    let temp: Student[] = studentList.filter((student) => {
+    let temp: std[] = studentList.filter((student) => {
       for (const element of recentFilterGroupList) {
         switch (element) {
           case "All":
             console.log(text.toLowerCase());
             if (
-              student.id.toLowerCase().includes(text.toLowerCase()) ||
-              student.name.toLowerCase().includes(text.toLowerCase()) ||
-              student.phone.toLowerCase().includes(text.toLowerCase()) ||
+              student.numberId.toLowerCase().includes(text.toLowerCase()) ||
+              student.fullName.toLowerCase().includes(text.toLowerCase()) ||
+              student.phoneNumber.toLowerCase().includes(text.toLowerCase()) ||
               student.email.toLowerCase().includes(text.toLowerCase()) ||
-              student.birth.toLowerCase().includes(text.toLowerCase()) ||
-              (student.gender === true && text.toLowerCase().includes("nam")) ||
-              student.CCCD.toLowerCase().includes(text.toLowerCase()) ||
-              (student.financeStatus === true &&
-                text.toLowerCase().includes("đã thu phí")) ||
-              (student.gender === false && text.toLowerCase().includes("nữ")) ||
-              (!student.financeStatus === false &&
-                text.toLowerCase().includes("chưa thu phí"))
+              student.placeOfBirth.toLowerCase().includes(text.toLowerCase()) ||
+              (student.gender === "male" && text.toLowerCase().includes("nam")) 
             ) {
               console.log("True nè");
               return student;
             }
             break;
           case "ID":
-            if (student.id.toLowerCase().includes(text.toLowerCase())) {
+            if (student.numberId.toLowerCase().includes(text.toLowerCase())) {
               return student;
             }
             break;
           case "Tên thí sinh":
-            if (student.name.toLowerCase().includes(text.toLowerCase())) {
+            if (student.fullName.toLowerCase().includes(text.toLowerCase())) {
               return student;
             }
             break;
           case "Số điện thoại":
-            if (student.phone.toLowerCase().includes(text.toLowerCase())) {
+            if (student.phoneNumber.toLowerCase().includes(text.toLowerCase())) {
               return student;
             }
             break;
@@ -345,39 +107,18 @@ const FinanceStudentManagermentPage: React.FC = () => {
           case "Ngày sinh":
             console.log(text);
             console.log(
-              student.birth.toLowerCase().includes(text.toLowerCase())
+              student.dateOfBirth.toLowerCase().includes(text.toLowerCase())
             );
-            if (student.birth.toLowerCase().includes(text.toLowerCase())) {
+            if (student.dateOfBirth.toLowerCase().includes(text.toLowerCase())) {
               return student;
             }
             break;
           case "Giới tính":
-            if (student.gender === true && text.toLowerCase().includes("nam")) {
+            if (student.gender === "male" && text.toLowerCase().includes("nam")) {
               return student;
             } else if (
-              student.gender === false &&
+              student.gender === "female" &&
               text.toLowerCase().includes("nữ")
-            ) {
-              return student;
-            }
-            break;
-          case "CCCD":
-            console.log(
-              student.CCCD.toLowerCase().includes(text.toLowerCase())
-            );
-            if (student.CCCD.toLowerCase().includes(text.toLowerCase())) {
-              return student;
-            }
-            break;
-          case "Tình trạng":
-            if (
-              student.financeStatus === true &&
-              text.toLowerCase().includes("đã thu phí")
-            ) {
-              return student;
-            } else if (
-              student.financeStatus === false &&
-              text.toLowerCase().includes("chưa thu phí")
             ) {
               return student;
             }
