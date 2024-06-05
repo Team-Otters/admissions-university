@@ -6,7 +6,7 @@ import Row from "react-bootstrap/Row";
 import Button from "react-bootstrap/Button";
 import { Container, Alert } from "react-bootstrap";
 import axios from "axios";
-
+//import { host } from "@/constants/string";
 interface IFormData {
   fullName: string;
   idNumber: string;
