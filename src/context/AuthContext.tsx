@@ -1,10 +1,11 @@
+"use client";
 import { useRouter } from "next/navigation";
 import React, { createContext, useState, useEffect } from "react";
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [role, setRole] = useState(null);
+  const [role, setRole] = useState("Khach");
   const router = useRouter();
 
   useEffect(() => {
@@ -35,7 +36,7 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem("accessToken");
     localStorage.removeItem("refreshToken");
     console.log("[logging out]");
-    router.push("");
+    router.push("/");
   };
 
   return (

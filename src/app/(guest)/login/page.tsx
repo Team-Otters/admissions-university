@@ -101,6 +101,7 @@ const LoginPage: React.FC = () => {
       console.log(response.data);
       // Handle successful login based on your API's response structure
       login(response.data.role);
+      await localStorage.setItem("username", username);
       await localStorage.setItem("accessToken", response.data.access_token);
       await localStorage.setItem("refreshToken", response.data.refresh_token);
       // await localStorage.setItem("role", response.data.role);

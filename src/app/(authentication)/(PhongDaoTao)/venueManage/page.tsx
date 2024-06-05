@@ -84,7 +84,7 @@ const VenueManageScreen: React.FC = () => {
       let config = {
         method: "get",
         maxBodyLength: Infinity,
-        url: "http://localhost:8081/exam_room",
+        url: "http://localhost:8080/exam_room",
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -105,7 +105,7 @@ const VenueManageScreen: React.FC = () => {
       let config = {
         method: "get",
         maxBodyLength: Infinity,
-        url: "http://localhost:8081/room",
+        url: "http://localhost:8080/room",
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -126,7 +126,7 @@ const VenueManageScreen: React.FC = () => {
       let config = {
         method: "get",
         maxBodyLength: Infinity,
-        url: "http://localhost:8081/subject",
+        url: "http://localhost:8080/subject",
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -205,14 +205,15 @@ const VenueManageScreen: React.FC = () => {
         examRoomId: data.room,
         subjectId: data.subject,
         date: data.date,
+        paperContainersId: "AA001",
       });
       let config = {
         method: "post",
         maxBodyLength: Infinity,
-        url: "http://localhost:8081/exam_room",
+        url: "http://localhost:8080/exam_room",
         headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
         },
         data: dt,
       };

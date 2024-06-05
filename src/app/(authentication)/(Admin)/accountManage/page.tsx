@@ -9,8 +9,10 @@ import useDebounce from "@/hooks/useDebounce";
 import FormAccount from "@/components/formAccount";
 import { IoMdEye, IoMdEyeOff } from "react-icons/io";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 
 const AccountManagePage: React.FC = () => {
+  const router = useRouter();
   const [isInputFocused, setIsInputFocused] = useState<boolean>(false);
   const [isOpenForm, setIsOpenForm] = useState<boolean>(false);
   const [rowToEdit, setRowToEdit] = React.useState<Account>();
@@ -171,6 +173,7 @@ const AccountManagePage: React.FC = () => {
 
   const debounceSearch = useDebounce(searchText, 500);
   useEffect(() => {
+    router.refresh();
     getAllUser();
     // if (debounceSearch == ''){
     //     setSearchExam({mostRelevant: [], albums: [], tracks: [], artists: []});
@@ -321,23 +324,6 @@ const AccountManagePage: React.FC = () => {
                   <td className="px-2 py-1 border-r">{item.accountName}</td>
                   <td className="px-2 py-1">{item.role}</td>
                   <td className="flex flex-row justify-center h-9 self-center justify-self-center">
-                    <button
-                      className="cursor-pointer"
-                      onClick={() => {
-                        setIsEdit(true);
-                        handleEditRow(item);
-                      }}
-                    >
-                      <FaPencil size={18} />
-                    </button>
-                    <button
-                      className="cursor-pointer ml-1"
-                      onClick={() => {
-                        handleClearRow(item.username);
-                      }}
-                    >
-                      <MdDelete size={24} />
-                    </button>
                   </td>
                 </tr>
               );

@@ -1,4 +1,4 @@
-//demo
+"use client";
 import { useContext, useState } from "react";
 import { Button } from "react-bootstrap";
 import { FaWindowClose } from "react-icons/fa";

@@ -1,17 +1,15 @@
-'use client';
+"use client";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
-import NavDropdown from "react-bootstrap/NavDropdown";
-import Form from "react-bootstrap/Form";
-import InputGroup from "react-bootstrap/InputGroup";
+import Modal from "react-bootstrap/Modal";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
-import ImageActionButton from "./ImageButton";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import Modal from "react-bootstrap/Modal";
+import { redirect } from "next/navigation";
+import AuthContext from "@/context/AuthContext";
 
 const AppHeader = () => {
   const path = usePathname();
@@ -26,40 +24,55 @@ const AppHeader = () => {
     false,
     false,
   ]);
-  const [sidebarVisible, setSidebarVisible] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [username, setUsername] = useState('');
+  const [username, setUsername] = useState("");
   const [showSignOutModal, setShowSignOutModal] = useState(false);
 
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    const user = localStorage.getItem("username");
+  const { logout } = useContext(AuthContext);
+  const { role } = useContext(AuthContext);
 
-    if (token != null && user != null) {
+  useEffect(() => {
+    // const token = localStorage.getItem("accessToken");
+    // const user = localStorage.getItem("username");
+
+    // console.log("Token:", token);
+    // console.log("Username:", user);
+
+    // if (token != null && user != null) {
+    //   setIsLoggedIn(true);
+    //   setUsername(user);
+    // } else {
+    //   setIsLoggedIn(false);
+    // }
+    if (role != "Khach") {
       setIsLoggedIn(true);
+      const user = localStorage.getItem("username");
       setUsername(user);
     } else {
       setIsLoggedIn(false);
     }
-  }, []);
+  }, [role]);
 
   const handleSignOut = () => {
     setShowSignOutModal(true);
   };
 
   const handleConfirmSignOut = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("username");
+    logout();
+    // localStorage.removeItem("accessToken");
+    // localStorage.removeItem("username");
+    // localStorage.setItem("role", "Khach");
     setIsLoggedIn(false);
+    console.log(localStorage.getItem("accessToken"));
     setShowSignOutModal(false);
-    router.push("/");
+    redirect("");
   };
 
   const handleCancelSignOut = () => {
     setShowSignOutModal(false);
   };
 
-  const handleMouseEnter = (index) => {
+  const handleMouseEnter = (index: any) => {
     setHoveredLinks((prevHoveredLinks) => {
       const updatedHoveredLinks = [...prevHoveredLinks];
       updatedHoveredLinks[index] = true;
@@ -67,7 +80,7 @@ const AppHeader = () => {
     });
   };
 
-  const handleMouseLeave = (index) => {
+  const handleMouseLeave = (index: any) => {
     setHoveredLinks((prevHoveredLinks) => {
       const updatedHoveredLinks = [...prevHoveredLinks];
       updatedHoveredLinks[index] = false;
@@ -201,7 +214,7 @@ const AppHeader = () => {
                       onMouseEnter={() => handleMouseEnter(6)}
                       onMouseLeave={() => handleMouseLeave(6)}
                     >
-                      Sign Out
+                      Đăng xuất
                     </Nav.Link>
                   </>
                 ) : (
@@ -245,10 +258,10 @@ const AppHeader = () => {
         <Modal.Body>Are you sure you want to sign out?</Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleCancelSignOut}>
-            Cancel
+            Hủy
           </Button>
           <Button variant="primary" onClick={handleConfirmSignOut}>
-            Sign Out
+            Đăng xuất
           </Button>
         </Modal.Footer>
       </Modal>
