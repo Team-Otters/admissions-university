@@ -125,7 +125,7 @@ const AppHeader = () => {
                   Trang Chủ
                 </Nav.Link>
                 <Nav.Link
-                  href="/store"
+                  href="/introduction"
                   style={{
                     color: hoveredLinks[1]
                       ? "var(--mainBlueColor)"
@@ -137,7 +137,7 @@ const AppHeader = () => {
                   Giới thiệu
                 </Nav.Link>
                 <Nav.Link
-                  href="/user/history"
+                  href="/achievement"
                   style={{
                     color: hoveredLinks[2]
                       ? "var(--mainBlueColor)"
