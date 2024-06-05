@@ -1,6 +1,7 @@
 "use-client";
 import React, { useState } from "react";
 import { Button, Form } from "react-bootstrap";
+import axios from "axios";
 
 const FormSubjectContainer: React.FC<{
   closeModal: () => void;
@@ -14,60 +15,11 @@ const FormSubjectContainer: React.FC<{
   const isEdt = isEdit || true;
   //const [formSubjectList, setFormSubjectList] = useState<String[]>(formState.subjectList);
   const [subject, setSubject] = React.useState<Subject[]>([
-    {
-        id: "SJ001",
-        name: "Toán ",
-        parameter:"aa",
-        time: "90",
-    },
-    {
-        id: "SJ002",
-        name: "Vật lý",
-        parameter:"aa",
-        time: "90",
-    },
-    {
-        id: "SJ003",
-        name: "Hóa học",
-        parameter:"aa",
-        time: "90",
-    },
-    {
-        id: "SJ004",
-        name: "Sinh học",
-        parameter:"aa",
-        time: "90",
-    },
-    {
-        id: "SJ005",
-        name: "Lịch sử",
-        parameter:"aa",
-        time: "90",
-    },
-    {
-        id: "SJ006",
-        name: "Địa lý",
-        parameter:"aa",
-        time: "90",
-    },
-    {
-        id: "SJ007",
-        name: "Giáo dục công dân",
-        parameter:"aa",
-        time: "90",
-    },
-    {
-        id: "SJ008",
-        name: "Văn học",
-        parameter:"aa",
-        time: "90",
-    }
 ]);
 const [selectedSubjects, setSelectedSubjects] = React.useState<string[]>(formState.subjectList);
 
   const validateForm = () => {
     if (
-      formState.id != "" &&
       formState.name != "" &&
       formState.subjectList.length != 0 
     ) {
@@ -87,9 +39,6 @@ const [selectedSubjects, setSelectedSubjects] = React.useState<string[]>(formSta
       for (const [key, value] of Object.entries(formState)) {
         if (value == "") {
           switch (key) {
-            case "id":
-              errorFields.push("Mã tổ hợp");
-              break;
             case "name":
               errorFields.push("Tên tổ hợp");
               break;
@@ -109,26 +58,48 @@ const [selectedSubjects, setSelectedSubjects] = React.useState<string[]>(formSta
     // Update selected subjects in formState based on checkbox changes
     const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
       const { checked, value } = event.target;
-  
+    
       const updateSelectedSubjects = () => {
-        const newSelectedSubjects = subject.filter((item) => {
-          return item.id === value ? checked : selectedSubjects.includes(item.id);
-        }).map((item) => item.id);
-        //console.log(newSelectedSubjects);
+        const newSelectedSubjects = checked
+          ? [...selectedSubjects, value] // Add ID to selectedSubjects if checked
+          : selectedSubjects.filter((id) => id !== value); // Remove ID if unchecked
+    
         setSelectedSubjects(newSelectedSubjects);
-        //console.log(`selected list: ${selectedSubjects}`)
-        setFormState({ ...formState, "subjectList" : newSelectedSubjects});
-        //console.log(`formstate list: ${formState.subjectList}`)
+        setFormState({ ...formState, subjectList: newSelectedSubjects });
       };
-  
+      console.log(formState)
       updateSelectedSubjects();
     };
-  
+
+    const getAllSubject = async () => {
+      try {       
+        let token = localStorage.getItem('accessToken');
+        let config = {
+          method: 'get',
+          maxBodyLength: Infinity,
+          url: 'http://localhost:8080/subject',
+          headers: { 
+            'Authorization': `Bearer ${token}`
+          }
+        };
+        const response = await axios.request(config);
+         //createUser(newUser);
+         setSubject(response.data.content);
+         console.log(`subject list: ${response.data.content}`);
+        // Handle successful login based on your API's response structure
+      } catch (error) {
+        console.error(error); // Handle errors appropriately (e.g., display error messages)
+      }
+
+    }
+
     // Pre-select checkboxes based on subjectList in defaultValue
     React.useEffect(() => {
+      getAllSubject();
       const preselectedSubjects = (defaultValue.subjectList || []).filter((id) =>
         subject.some((item) => item.id === id)
       );
+      //console.log(selectedSubjects)
       //setSelectedSubjects(preselectedSubjects);
       //console.log(selectedSubjects);
     }, [defaultValue.subjectList, selectedSubjects, subject]);
@@ -143,7 +114,28 @@ const [selectedSubjects, setSelectedSubjects] = React.useState<string[]>(formSta
 
     closeModal();
   };
-
+  const getAllSubjectIds = (subjectList) => {
+    if (Array.isArray(subjectList)) {
+      // If an array, map the IDs directly
+      return subjectList.map((subject) => subject.id);
+    } else if (subjectList && typeof subjectList === "object") {
+      // If an object (assuming it has an ID property), return an array with that ID
+      return [subjectList.id]; // Adjust based on your object structure
+    } else {
+      // Handle other cases (e.g., undefined subjectList)
+      console.error("subjectList is not an array or a valid object!");
+      return []; // Or return an empty array
+    }
+  };
+  const isSubjectSelected = (subjectId) => {
+    const subjectList = getAllSubjectIds(formState.subjectList    ); // Assert it's an array of strings
+    for (const subjectObject of subjectList) {
+      if (subjectObject.id === subjectId) {
+        return true;
+      }
+    }
+    return false;
+  };  
   return (
     <div
       //   className="w-1/2 h-1/2 bg-white border border-black font-notoSans justify-center p-2 "
@@ -154,7 +146,8 @@ const [selectedSubjects, setSelectedSubjects] = React.useState<string[]>(formSta
     >
       <form className="h-5/6 w-full items-center justify-around flex flex-col">
         <div className="flex flex-row w-4/6">
-          <label className="w-1/3 lg:w-1/2">Mã tổ hợp</label>
+          {isEdit? <div>
+            <label className="w-1/3 lg:w-1/2">Mã tổ hợp</label>
           <input
             className="border border-black w-1/2 p-2"
             name="id"
@@ -163,6 +156,7 @@ const [selectedSubjects, setSelectedSubjects] = React.useState<string[]>(formSta
             value={formState.id}
             disabled={isEdit}
           />
+          </div> : <></>}
         </div>
         <div className="flex flex-row w-4/6">
           <label className="w-1/3 lg:w-1/2">Tên tổ hợp</label>
@@ -183,8 +177,7 @@ const [selectedSubjects, setSelectedSubjects] = React.useState<string[]>(formSta
                 return(
                     <Form.Check key={index}
                       type={"checkbox"}
-                      defaultChecked={selectedSubjects.includes(item.id)}
-                      onChange={handleCheckboxChange}
+                      defaultChecked={isEdit ? isSubjectSelected(item.id) : false}                      onChange={handleCheckboxChange}
                       id={index.toString()}
                       value={item.id}
                       label={item.name}

@@ -10,97 +10,14 @@ import { FaSearch } from "react-icons/fa";
 import { FaPencil } from "react-icons/fa6";
 import { IoEye } from "react-icons/io5";
 import { MdOutlineFilterAlt, MdDelete } from "react-icons/md";
+import axios from "axios";
 
 
 export default function SubjectManagement() {
   const [currentPage, setCurrentPape] = React.useState<Number>(1);
-    const [subjectList, setSubjectList] = React.useState<Subject[]>([
-        {
-            id: "SJ001",
-            name: "Toán ",
-            parameter:"aa",
-            time: "90",
-        },
-        {
-            id: "SJ002",
-            name: "Vật lý",
-            parameter:"aa",
-            time: "90",
-        },
-        {
-            id: "SJ003",
-            name: "Hóa học",
-            parameter:"aa",
-            time: "90",
-        },
-        {
-            id: "SJ004",
-            name: "Sinh học",
-            parameter:"aa",
-            time: "90",
-        },
-        {
-            id: "SJ005",
-            name: "Lịch sử",
-            parameter:"aa",
-            time: "90",
-        },
-        {
-            id: "SJ006",
-            name: "Địa lý",
-            parameter:"aa",
-            time: "90",
-        },
-        {
-            id: "SJ007",
-            name: "Giáo dục công dân",
-            parameter:"aa",
-            time: "90",
-        },
-        {
-            id: "SJ008",
-            name: "Văn học",
-            parameter:"aa",
-            time: "90",
-        }
-    ]);
-    const [classList, setClassList] = React.useState<Class[]>([
-      {
-        id: "CL001",
-        name: "Chuyên Toán",
-        quotas: 30,
-        year: "2021"
-      },
-      {
-        id: "CL002",
-        name: "Chuyên Toán 2",
-        quotas: 30,
-        year: "2021"
-      },
-      {
-        id: "CL003",
-        name: "Chuyên Hóa",
-        quotas: 30,
-        year: "2021"
-      },
-    ]);
-    const [subjectSetList, setSubjectSetList] = React.useState<SubjectSets[]>([
-        {
-            id: "SJS001",
-            name: "A01",
-            subjectList: ["SJ001", "SJ002", "SJ003"]
-        },
-        {
-          id: "SJS002",
-          name: "A02",
-          subjectList: ["SJ004", "SJ005", "SJ006"]
-      },
-      {
-        id: "SJS003",
-        name: "D02",
-        subjectList: ["SJ002", "SJ006", "SJ007"]
-    }
-    ]);
+    const [subjectList, setSubjectList] = React.useState<Subject[]>([]);
+    const [classList, setClassList] = React.useState<Class[]>([]);
+    const [subjectSetList, setSubjectSetList] = React.useState<SubjectSets[]>([]);
 
     const [isInputFocused, setIsInputFocused] = React.useState<boolean>(false);
     const [isOpenForm, setIsOpenForm] = React.useState<boolean>(false);
@@ -112,42 +29,90 @@ export default function SubjectManagement() {
     const handleSearchText = (e: React.ChangeEvent<HTMLInputElement>): void => {
         setSearchText(e.target.value);
       };
-      const handleSubmit = (data: SubjectSets): void => {
-        let temp = [...subjectSetList];
-        temp.push(data);
-        setSubjectSetList(temp);
-      };
-    
-      const handleEdit = (data: SubjectSets): void => {
-        let idx: number = -1;
-        subjectSetList.map((item, index) => {
-          if (item.id == data.id) {
-            idx = index;
-          }
-        });
-    
-        if (idx != -1) {
-          let temp: SubjectSets[] = [...subjectSetList];
-          temp[idx] = data || {
-            id: "",
-            name: "",
-            subjectList: [],
+      const handleSubmit = async (data: SubjectSets)=> {
+        try {       
+          let token = localStorage.getItem('accessToken');
+          let dt = JSON.stringify({
+            "name": data.name,
+            "subjects": data.subjectList
+          })
+          let config = {
+            method: 'post',
+            maxBodyLength: Infinity,
+            url: 'http://localhost:8080/subjectSets',
+            headers: { 
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
+            },
+            data: dt
           };
-          setSubjectSetList(temp);
-          console.log(temp[idx]);
-        } else {
-          console.log("Lỗi update");
+          const response = await axios.request(config);
+           //createUser(newUser);
+           setSubjectList(response.data.content);
+           console.log(`subject list: ${response.data.content}`);
+           getAllSubjectSet();
+          // Handle successful login based on your API's response structure
+        } catch (error) {
+          console.error(error); // Handle errors appropriately (e.g., display error messages)
         }
-      };
-      const handleClearRow = (subjectSet: SubjectSets): void => {
 
-        let temp: SubjectSets[] = [...subjectSetList];
-        temp = temp.filter((value) => {
-          if (value.id !== subjectSet.id) {
-            return value;
-          }
-        });
-        setSubjectSetList(temp);
+      };
+    
+      const handleEdit = async (data: SubjectSets) => {
+        // try {       
+        //   let token = localStorage.getItem('accessToken');
+        //   let dt = JSON.stringify({
+        //     "name": data.name,
+        //     "subjects": data.subjectList
+        //   })
+        //   let config = {
+        //     method: 'post',
+        //     maxBodyLength: Infinity,
+        //     url: 'http://localhost:8080/subjectSets',
+        //     headers: { 
+        //       'Content-Type': 'application/json',
+        //       'Authorization': `Bearer ${token}`
+        //     },
+        //     data: dt
+        //   };
+        //   const response = await axios.request(config);
+        //    //createUser(newUser);
+        //    setSubjectList(response.data.content);
+        //    console.log(`subject list: ${response.data.content}`);
+        //    getAllSubjectSet();
+        //   // Handle successful login based on your API's response structure
+        // } catch (error) {
+        //   console.error(error); // Handle errors appropriately (e.g., display error messages)
+        // }
+        // thiếu hàm chỉnh sửa
+      };
+      const handleClearRow = async (data: SubjectSets)=> {
+
+        try {       
+          let token = localStorage.getItem('accessToken');
+          let dt = JSON.stringify({
+            "name": data.name,
+            "subjects": data.subjectList
+          })
+          let config = {
+            method: 'delete',
+            maxBodyLength: Infinity,
+            url: `http://localhost:8080/subjectSets/${data.id}`,
+            headers: { 
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
+            },
+            data: dt
+          };
+          const response = await axios.request(config);
+           //createUser(newUser);
+           setSubjectList(response.data.content);
+           console.log(`subject list: ${response.data.content}`);
+           getAllSubjectSet();
+          // Handle successful login based on your API's response structure
+        } catch (error) {
+          console.error(error); // Handle errors appropriately (e.g., display error messages)
+        }
       };
       const handleClassSubmit = (data: Class): void => {
         let temp = [...classList];
@@ -227,6 +192,7 @@ export default function SubjectManagement() {
       };
       const handleEditRow = (subs: SubjectSets): void => {
         setRowSubjectSetToEdit(subs);
+        console.log(subs);
         setIsOpenForm(true);
       };
       const handleClassEditRow = (subs: Class): void => {
@@ -237,6 +203,72 @@ export default function SubjectManagement() {
         setRowSubjectToEdit(subs);
         setIsOpenForm(true);
       };
+      const getAllSubject = async () => {
+        try {       
+          let token = localStorage.getItem('accessToken');
+          let config = {
+            method: 'get',
+            maxBodyLength: Infinity,
+            url: 'http://localhost:8080/subject',
+            headers: { 
+              'Authorization': `Bearer ${token}`
+            }
+          };
+          const response = await axios.request(config);
+           //createUser(newUser);
+           setSubjectList(response.data.content);
+           console.log(`subject list: ${response.data.content}`);
+          // Handle successful login based on your API's response structure
+        } catch (error) {
+          console.error(error); // Handle errors appropriately (e.g., display error messages)
+        }
+
+      }
+      const getAllClass = async () => {
+        try {       
+          let token = localStorage.getItem('accessToken');
+          let config = {
+            method: 'get',
+            maxBodyLength: Infinity,
+            url: 'http://localhost:8080/major_class',
+            headers: { 
+              'Authorization': `Bearer ${token}`
+            }
+          };
+          const response = await axios.request(config);
+           //createUser(newUser);
+           setClassList(response.data);
+           //console.log(response.data);
+          // Handle successful login based on your API's response structure
+        } catch (error) {
+          console.error(error); // Handle errors appropriately (e.g., display error messages)
+        }
+      }
+      const getAllSubjectSet = async () => {
+        try {       
+          let token = localStorage.getItem('accessToken');
+          let config = {
+            method: 'get',
+            maxBodyLength: Infinity,
+            url: 'http://localhost:8080/subjectSets',
+            headers: { 
+              'Authorization': `Bearer ${token}`
+            }
+          };
+          const response = await axios.request(config);
+           //createUser(newUser);
+           setSubjectSetList(response.data);
+           //console.log(response.data);
+          // Handle successful login based on your API's response structure
+        } catch (error) {
+          console.error(error); // Handle errors appropriately (e.g., display error messages)
+        }
+      }
+      React.useEffect(()=> {
+        getAllClass();
+        getAllSubject();
+        getAllSubjectSet();
+      },[])
   return (
     <Container
       fluid
@@ -495,7 +527,7 @@ export default function SubjectManagement() {
                   </tr>
                 </thead>
                 <tbody>
-                  {subjectList.map((item, index) => {
+                  {subjectList.map((item, index)  => {
                     return (
                       <tr
                         className="border-b border-gray rounded-b-lg last:border-none"

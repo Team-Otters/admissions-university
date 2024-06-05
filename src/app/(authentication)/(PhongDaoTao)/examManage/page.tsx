@@ -9,30 +9,10 @@ import { FaPencil } from "react-icons/fa6";
 import { IoEye } from "react-icons/io5";
 import { MdOutlineFilterAlt, MdDelete } from "react-icons/md";
 import { useRouter } from "next/navigation";
+import axios from "axios";
 
 export default function ExamManagement() { 
-    const [examList, setExamList] = React.useState<Exam[]>([
-        {
-            id: "EX001",
-            name: "Kỳ thi 2021",
-            year: "2021"
-        },
-        {
-            id: "EX002",
-            name: "Kỳ thi 2022",
-            year: "2022"
-        },        
-        {
-            id: "EX003",
-            name: "Kỳ thi 2023",
-            year: "2023"
-        },       
-        {
-            id: "EX004",
-            name: "Kỳ thi 2024",
-            year: "2024"
-        },
-    ]);
+    const [examList, setExamList] = React.useState<Exam[]>([]);
     const [isOpenForm, setIsOpenForm] = React.useState<boolean>(false);
     const [selectedExam, setSelectedExam] = React.useState<Exam>();
     const [isInputFocused, setIsInputFocused] = React.useState<boolean>(false);
@@ -41,10 +21,30 @@ export default function ExamManagement() {
     const handleSearchText = (e: React.ChangeEvent<HTMLInputElement>): void => {
         setSearchText(e.target.value);
       };
-      const handleSubmit = (data: Exam): void => {
-        let temp = [...examList];
-        temp.push(data);
-        setExamList(temp);
+      const handleSubmit = async (data: Exam) => {
+        let dt = JSON.stringify({
+            "name": data.name,
+            "year": data.year
+          });
+          let token = localStorage.getItem('accessToken');
+
+          let config = {
+            method: 'post',
+            maxBodyLength: Infinity,
+            url: 'http://localhost:8080/exam',
+            headers: { 
+              'Content-Type': 'application/json', 
+              'Authorization': `Bearer ${token}`
+            },
+            data : dt
+          };
+          try{
+            const response = await axios.request(config);
+            getAllExam();
+          }catch(error){
+            console.error(error); // Handle errors appropriately (e.g., display error messages)
+
+          }
       };
       const router = useRouter();
       const handleEdit = (data: Exam): void => {
@@ -68,20 +68,61 @@ export default function ExamManagement() {
           console.log("Lỗi update");
         }
       };
-      const handleClearRow = (data: Exam): void => {
+      const handleClearRow = async (data: Exam) => {
+          let token = localStorage.getItem('accessToken');
 
-        let temp: Exam[] = [...examList];
-        temp = temp.filter((value) => {
-          if (value.id !== data.id) {
-            return value;
+          let config = {
+            method: 'delete',
+            maxBodyLength: Infinity,
+            url: `http://localhost:8080/exam/${data.id}`,
+            headers: { 
+              'Authorization': `Bearer ${token}`
+            },
+            data : data
+          };
+          try{
+            const response = await axios.request(config);
+            getAllExam();
+          }catch(error){
+            console.error(error); // Handle errors appropriately (e.g., display error messages)
+
           }
-        });
-        setExamList(temp);
+
       };
       const handleEditRow = (subs: Exam): void => {
         setRowToEdit(subs);
       };
-  return (
+      const getAllExam = async () => {
+        try {       
+            let token = localStorage.getItem('accessToken');
+            let config = {
+              method: 'get',
+              maxBodyLength: Infinity,
+              url: 'http://localhost:8080/exam',
+              headers: { 
+                'Authorization': `Bearer ${token}`
+              }
+            };
+            const response = await axios.request(config);
+             //createUser(newUser);
+             setExamList(response.data);
+             console.log(response.data);
+            // Handle successful login based on your API's response structure
+          } catch (error) {
+            console.error(error); // Handle errors appropriately (e.g., display error messages)
+          }
+      }
+      React.useEffect(() => {
+        getAllExam();
+        // if (debounceSearch == ''){
+        //     setSearchExam({mostRelevant: [], albums: [], tracks: [], artists: []});
+        // }
+        // else {
+        //     executeSearchQuery(debounceSearch);
+        // }
+      },[]);
+    
+   return (
     <Container
       fluid
       style={{ height: "100vh", paddingTop: "50px" }}
