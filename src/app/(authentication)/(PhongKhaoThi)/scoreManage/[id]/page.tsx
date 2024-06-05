@@ -8,8 +8,8 @@ import { MdDelete } from "react-icons/md";
 import useDebounce from "@/hooks/useDebounce";
 import FormPaper from "@/components/formPaper";
 
-const ScoreManagePage: React.FC = () => {
-  //   const [id] = params || "";
+const ScoreManagePage: React.FC = ({ params}) => {
+  const {id} = params;
   const [isInputFocused, setIsInputFocused] = useState<boolean>(false);
   const [isOpenForm, setIsOpenForm] = useState<boolean>(false);
   const [rowToEdit, setRowToEdit] = React.useState<ScoreManageForm>();
@@ -23,6 +23,30 @@ const ScoreManagePage: React.FC = () => {
     "Ngày thi",
     "Điểm",
   ]);
+  const [paperContainers, setPaperContainers] = useState<ExamManageForm[]>([
+    {
+      paperContainerCode: "T001",
+      roomName: "B5.08",
+      subject: "Hóa Học",
+      date: "06/06/2024",
+      numberOfPapers: 40,
+    },
+    {
+      paperContainerCode: "T002",
+      roomName: "B1.14",
+      subject: "Hóa Học",
+      date: "06/06/2024",
+      numberOfPapers: 40,
+    },
+    {
+      paperContainerCode: "T002",
+      roomName: "B4.14",
+      subject: "Hóa Học",
+      date: "06/06/2024",
+      numberOfPapers: 40,
+    },
+  ]);
+  const [isValid, setIsValid] = React.useState<boolean>(false) 
   const [recentFilterGroupList, setRecentFilterGroupList] =
     useState(filterGroupList);
   const [searchText, setSearchText] = React.useState<string>("");
@@ -197,10 +221,11 @@ const ScoreManagePage: React.FC = () => {
     >
       <div className="p-1 mb-4">
         <h2 className="text-3xl">{"Quản lý chấm thi > Xem túi bài thi"}</h2>
-        <div className="w-11/12 mx-auto font-notoSans font-bold mt-6 align-center text-lg">
+        <div className=" w-11/12 mx-auto font-notoSans font-bold mt-6 align-center text-lg">
           Mã túi bài thi:
         </div>
-        <div className="w-11/12 mx-auto flex flex-row justify-between">
+        <div className="w-11/12 mx-auto flex flex-row ">
+          <div className=" flex-1 flex-row ">
           <div
             className={`w-1/3 bg-white overflow-hidden h-12 rounded-3xl px-2 border-black border ${
               isInputFocused ? "border-2" : "border-1"
@@ -219,7 +244,7 @@ const ScoreManagePage: React.FC = () => {
             ></input>
             <FaSearch className="w-2/12 lg:w-1/12 self-center" />
           </div>
-          <div className="flex flex-row">
+          <div className="flex">
             <MdOutlineFilterAlt className="self-center ml-2" size={24} />
             <select
               name="filter"
@@ -236,7 +261,9 @@ const ScoreManagePage: React.FC = () => {
               })}
             </select>
           </div>
-          <Button
+          </div>
+
+          <Button className={`${isScoreInput? ` bg-lime-700` : ``} mr-0`}
             onClick={() => {
               if (isScoreInput) {
                 handleUpdateScore();
@@ -246,15 +273,7 @@ const ScoreManagePage: React.FC = () => {
           >
             {isScoreInput ? "Lưu điểm" : "Nhập điểm"}
           </Button>
-          <Button
-            onClick={() => {
-              setRowToEdit(undefined);
-              setIsEdit(false);
-              setIsOpenForm(true);
-            }}
-          >
-            Thêm bài thi
-          </Button>
+
         </div>
         <div className="w-11/12 mx-auto font-notoSans font-bold mt-6 align-center text-lg">
           Tổng: {searchPapers.length}

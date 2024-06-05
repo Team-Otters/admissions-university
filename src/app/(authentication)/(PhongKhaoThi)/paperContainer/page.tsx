@@ -9,8 +9,10 @@ import FormExamRoom from "@/components/formExamRoom";
 import useDebounce from "@/hooks/useDebounce";
 import { IoEye } from "react-icons/io5";
 import FormPaperContainer from "@/components/formPaperContainer";
+import {useRouter} from "next/navigation";
 
 const ExamManagePage: React.FC = () => {
+  const router = useRouter();
   const [isInputFocused, setIsInputFocused] = useState<boolean>(false);
   const [isOpenForm, setIsOpenForm] = useState<boolean>(false);
   const [rowToEdit, setRowToEdit] = React.useState<ExamManageForm>();
@@ -284,6 +286,12 @@ const ExamManagePage: React.FC = () => {
                   <td className="flex flex-row justify-center h-9 mr-1 self-center justify-self-center">
                     <button
                       className="cursor-pointer"
+                      onClick={() => {
+                        handleEditRow(item);
+                        router.push(
+                            `/scoreManage/${item.paperContainerCode}`
+                          )
+                      }}
                       //   onClick={() => {
                       //     setIsEdit(true);
                       //     handleEditRow(item);

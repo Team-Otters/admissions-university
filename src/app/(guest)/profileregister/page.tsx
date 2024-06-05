@@ -309,9 +309,9 @@ const ProfileRegisterPage: React.FC = () => {
                     onChange={handleChange}
                     required
                   >
-                    <option value="">-- Chọn địa chỉ --</option>
-                    <option value="Address1">Địa chỉ 1</option>
-                    <option value="Address2">Địa chỉ 2</option>
+                      <option value="">-- Chọn nơi sinh --</option>
+                      <option value="Address1">Địa chỉ 1</option>
+                      <option value="Address2">Địa chỉ 2</option>
                   </Form.Control>
                 </Form.Group>
               </Col>

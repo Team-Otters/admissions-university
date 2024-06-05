@@ -6,6 +6,8 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import AppHeader from "@/components/appHeader";
 import Sidebar from "@/components/sidebar";
 import Container from "react-bootstrap/Container";
+import useRole from "@/hooks/useRole";
+import React from "react";
 //import './globals.css'
 
 const inter = Inter({ subsets: ["latin"] });
@@ -20,13 +22,30 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return (
-    <html lang="en" style={{ height: "100%" }}>
-      <body className={inter.className} style={{ height: "100%" }}>
-        <div className="app-wrapper">
-        <AppHeader />
+  const [currentRole, setCurrentRole] = React.useState(useRole()); // Initial role
 
-            {children}
+  React.useEffect(() => {
+    // Update the currentRole state whenever the role changes using the useRole hook
+    const handleRoleChange = () => {
+      setCurrentRole(useRole());
+    };
+
+    // Add event listener for storage changes (if not already implemented in useRole)
+    window.addEventListener("storage", handleRoleChange);
+
+    return () => {
+      window.removeEventListener("storage", handleRoleChange);
+    };
+  }, []);
+  return (
+    <html key={0} lang="en" style={{ height: "100%" }}>
+      <body key={1} className={inter.className} style={{ height: "100%" }}>
+        <div key={2} className="app-wrapper">
+          <AppHeader />
+          <div className="flex flex-1 main-content">
+            <Sidebar route={currentRole} />
+            <Container>{children}</Container>
+        </div>
         </div>
       </body>
     </html>
