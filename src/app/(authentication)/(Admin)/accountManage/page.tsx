@@ -10,6 +10,7 @@ import FormAccount from "@/components/formAccount";
 import { IoMdEye, IoMdEyeOff } from "react-icons/io";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import { host } from "@/constants/string";
 
 const AccountManagePage: React.FC = () => {
   const router = useRouter();
@@ -90,7 +91,7 @@ const AccountManagePage: React.FC = () => {
       let config = {
         method: 'post',
         maxBodyLength: Infinity,
-        url: 'http://localhost:8080/register',
+        url: `${host}register`,
         headers: { 
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
@@ -151,7 +152,7 @@ const AccountManagePage: React.FC = () => {
       let config = {
         method: 'get',
         maxBodyLength: Infinity,
-        url: 'http://localhost:8080/admin/user',
+        url: `${host}admin/user`,
         headers: { 
           'Authorization': `Bearer ${token}`
         }

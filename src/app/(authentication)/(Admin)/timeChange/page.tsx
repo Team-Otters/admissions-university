@@ -6,7 +6,7 @@ import Row from "react-bootstrap/Row";
 import Button from "react-bootstrap/Button";
 import { Container, Alert } from "react-bootstrap";
 import axios from "axios";
-
+import { host } from "@/constants/string";
 interface IFormData {
     wishChangeTime: string;
     registrationTime: string;
@@ -56,7 +56,7 @@ const TimeChangePage: React.FC = () => {
       let config = {
         method: "post",
         maxBodyLength: Infinity,
-        url: "http://localhost:8080/register/student",
+        url: `${host}register/student`,
         headers: {
           "Content-Type": "application/json",
         },
@@ -91,16 +91,7 @@ const TimeChangePage: React.FC = () => {
     // }
     try {
       let data = JSON.stringify({
-        fullName: formData.fullName,
-        gender: formData.gender,
-        dateOfBirth: formData.dateOfBirth,
-        phoneNumber: formData.phoneNumber,
-        email: formData.email,
-        placeOfBirth: formData.placeOfBirth,
-        ethnicType: formData.ethnicity,
-        houseHold: `${formData.householdAddress1}, ${formData.householdAddress4}, ${formData.householdAddress3}, ${formData.householdAddress2}`,
-        address: `${formData.permanentResidence1}, ${formData.permanentResidence4}, ${formData.permanentResidence3}, ${formData.permanentResidence2}`,
-        school: formData.secondSchool,
+
       });
       let config = {
         method: "post",

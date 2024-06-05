@@ -7,6 +7,7 @@ import Button from "react-bootstrap/Button";
 import { Container } from "react-bootstrap";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import { host } from "@/constants/string";
 interface IFormData {
   title: string;
   target: string;
@@ -28,7 +29,7 @@ const NotiAdjustPage: React.FC = ({params}) => {
       let config = {
         method: 'get',
         maxBodyLength: Infinity,
-        url: `http://localhost:8080/notification/${id}`,
+        url: `${host}notification/${id}`,
         headers: { 
           'Authorization': `Bearer ${token}`
         }
@@ -69,7 +70,7 @@ const NotiAdjustPage: React.FC = ({params}) => {
       let config = {
         method: 'put',
         maxBodyLength: Infinity,
-        url: `http://localhost:8080/admin/notification/${id}`,
+        url: `${host}admin/notification/${id}`,
         headers: { 
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`

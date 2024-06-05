@@ -11,7 +11,7 @@ import { FaPencil } from "react-icons/fa6";
 import { IoEye } from "react-icons/io5";
 import { MdOutlineFilterAlt, MdDelete } from "react-icons/md";
 import axios from "axios";
-
+import { host } from "@/constants/string";
 
 export default function SubjectManagement() {
   const [currentPage, setCurrentPape] = React.useState<Number>(1);
@@ -39,7 +39,7 @@ export default function SubjectManagement() {
           let config = {
             method: 'post',
             maxBodyLength: Infinity,
-            url: 'http://localhost:8080/subjectSets',
+            url: `${host}subjectSets`,
             headers: { 
               'Content-Type': 'application/json',
               'Authorization': `Bearer ${token}`
@@ -93,7 +93,7 @@ export default function SubjectManagement() {
           let config = {
             method: 'delete',
             maxBodyLength: Infinity,
-            url: `http://localhost:8080/subjectSets/${data.id}`,
+            url: `${host}subjectSets/${data.id}`,
             headers: { 
               'Authorization': `Bearer ${token}`
             },
@@ -119,7 +119,7 @@ export default function SubjectManagement() {
           let config = {
             method: 'post',
             maxBodyLength: Infinity,
-            url: `http://localhost:8080/major_class`,
+            url: `${host}major_class`,
             headers: { 
               'Content-Type': 'application/json',
               'Authorization': `Bearer ${token}`
@@ -147,7 +147,7 @@ export default function SubjectManagement() {
           let config = {
             method: 'put',
             maxBodyLength: Infinity,
-            url: `http://localhost:8080/major_class/${data.id}`,
+            url: `${host}major_class/${data.id}`,
             headers: { 
               'Content-Type': 'application/json',
               'Authorization': `Bearer ${token}`
@@ -169,7 +169,7 @@ export default function SubjectManagement() {
           let config = {
             method: 'delete',
             maxBodyLength: Infinity,
-            url: `http://localhost:8080/major_class/${data.id}`,
+            url: `${host}major_class/${data.id}`,
             headers: { 
               'Authorization': `Bearer ${token}`
             }
@@ -192,7 +192,7 @@ export default function SubjectManagement() {
           let config = {
             method: 'post',
             maxBodyLength: Infinity,
-            url: `http://localhost:8080/subject`,
+            url: `${host}subject`,
             headers: { 
               'Content-Type': 'application/json',
               'Authorization': `Bearer ${token}`
@@ -219,7 +219,7 @@ export default function SubjectManagement() {
           let config = {
             method: 'put',
             maxBodyLength: Infinity,
-            url: `http://localhost:8080/subject/${data.id}`,
+            url: `${host}subject/${data.id}`,
             headers: { 
               'Content-Type': 'application/json',
               'Authorization': `Bearer ${token}`
@@ -241,7 +241,7 @@ export default function SubjectManagement() {
           let config = {
             method: 'delete',
             maxBodyLength: Infinity,
-            url: `http://localhost:8080/subject/${data.id}`,
+            url: `${host}subject/${data.id}`,
             headers: { 
               'Authorization': `Bearer ${token}`
             },
@@ -273,7 +273,7 @@ export default function SubjectManagement() {
           let config = {
             method: 'get',
             maxBodyLength: Infinity,
-            url: 'http://localhost:8080/subject',
+            url: `${host}subject`,
             headers: { 
               'Authorization': `Bearer ${token}`
             }
@@ -294,7 +294,7 @@ export default function SubjectManagement() {
           let config = {
             method: 'get',
             maxBodyLength: Infinity,
-            url: 'http://localhost:8080/major_class',
+            url: `${host}major_class`,
             headers: { 
               'Authorization': `Bearer ${token}`
             }
@@ -314,7 +314,7 @@ export default function SubjectManagement() {
           let config = {
             method: 'get',
             maxBodyLength: Infinity,
-            url: 'http://localhost:8080/subjectSets',
+            url: `${host}subjectSets`,
             headers: { 
               'Authorization': `Bearer ${token}`
             }

@@ -6,6 +6,7 @@ import { MdOutlineFilterAlt } from "react-icons/md";
 import { FaSearch } from "react-icons/fa";
 import useDebounce from "@/hooks/useDebounce";
 import axios from "axios";
+import { host } from "@/constants/string";
 
 const FinanceStudentManagermentPage: React.FC = () => {
   const [isInputFocused, setIsInputFocused] = useState(false);
@@ -110,7 +111,7 @@ const FinanceStudentManagermentPage: React.FC = () => {
       let config = {
         method: "get",
         maxBodyLength: Infinity,
-        url: "http://localhost:8080/student/all",
+        url: `${host}student/all`,
         headers: {
           Authorization: `Bearer ${token}`,
         },

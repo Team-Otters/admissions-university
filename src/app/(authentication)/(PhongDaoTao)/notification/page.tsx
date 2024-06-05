@@ -4,6 +4,7 @@ import { Pagination } from "react-bootstrap";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import { host } from "@/constants/string";
 interface Post {
   title: string;
   date: string;
@@ -27,7 +28,7 @@ export default function Notice() {
     const config = {
       method: 'get',
       maxBodyLength: Infinity,
-      url: 'http://localhost:8080/notification',
+      url: `${host}notification`,
       headers: { 
         'Authorization': `Bearer ${token}`
       }
@@ -66,7 +67,7 @@ export default function Notice() {
       const token = localStorage.getItem("accessToken");
       
       // Make a DELETE request to the server endpoint with the specific ID and authorization token
-      await axios.delete(`http://localhost:8080/admin/notification/${id}`, {
+      await axios.delete(`${host}admin/notification/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }

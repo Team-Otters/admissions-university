@@ -7,7 +7,7 @@ import Row from "react-bootstrap/Row";
 import Button from "react-bootstrap/Button";
 import { Container } from "react-bootstrap";
 import { useRouter } from "next/navigation";
-
+import { host } from "@/constants/string";
 interface IFormData {
   title: string;
   target: string;
@@ -35,7 +35,7 @@ const router = useRouter()
     const token = localStorage.getItem("accessToken");
 
     try {
-      const response = await axios.post('http://localhost:8080/admin/notification', {
+      const response = await axios.post(`${host}admin/notification`, {
         ...formData,
         day: currentDate,
       }, {

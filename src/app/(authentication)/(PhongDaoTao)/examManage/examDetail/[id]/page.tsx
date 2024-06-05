@@ -9,6 +9,7 @@ import { FaPencil } from "react-icons/fa6";
 import { IoEye } from "react-icons/io5";
 import { MdOutlineFilterAlt, MdDelete } from "react-icons/md";
 import axios from "axios";
+import { host } from "@/constants/string";
 
 const ExamDetail  = ({ params }) => { 
   const {id} = params;
@@ -32,7 +33,7 @@ const ExamDetail  = ({ params }) => {
           let config = {
             method: 'get',
             maxBodyLength: Infinity,
-            url: 'http://localhost:8080/bench_mark',
+            url: `${host}bench_mark`,
             headers: { 
               'Authorization': `Bearer ${token}`
             }
@@ -52,7 +53,7 @@ const ExamDetail  = ({ params }) => {
           let config = {
             method: 'get',
             maxBodyLength: Infinity,
-            url: 'http://localhost:8080/major_class',
+            url: `${host}major_class`,
             headers: { 
               'Authorization': `Bearer ${token}`
             }
@@ -72,7 +73,7 @@ const ExamDetail  = ({ params }) => {
           let config = {
             method: 'get',
             maxBodyLength: Infinity,
-            url: `http://localhost:8080/exam/${id}`,
+            url: `${host}exam/${id}`,
             headers: { 
               'Authorization': `Bearer ${token}`
             }

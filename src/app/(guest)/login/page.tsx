@@ -13,6 +13,7 @@ import { useRouter } from "next/navigation";
 import type { NextRequest } from "next/server";
 import useRole from "@/hooks/useRole";
 import AuthContext from "@/context/AuthContext";
+import {host} from "@/constants/string.js";
 //import { promises as fs } from 'fs';
 interface user {
   username: string;
@@ -89,7 +90,7 @@ const LoginPage: React.FC = () => {
       let config = {
         method: "post",
         maxBodyLength: Infinity,
-        url: "http://localhost:8081/login",
+        url: `${host}login`,
         headers: {
           "Content-Type": "application/json",
         },

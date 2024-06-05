@@ -11,7 +11,7 @@ import { MdOutlineFilterAlt, MdDelete } from "react-icons/md";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import { redirect } from 'next/navigation'
-
+import { host } from "@/constants/string";
 export default function ExamManagement() { 
     const [examList, setExamList] = React.useState<Exam[]>([]);
     const [isOpenForm, setIsOpenForm] = React.useState<boolean>(false);
@@ -32,7 +32,7 @@ export default function ExamManagement() {
           let config = {
             method: 'post',
             maxBodyLength: Infinity,
-            url: 'http://localhost:8080/exam',
+            url: `${host}exam`,
             headers: { 
               'Content-Type': 'application/json', 
               'Authorization': `Bearer ${token}`
@@ -75,7 +75,7 @@ export default function ExamManagement() {
           let config = {
             method: 'delete',
             maxBodyLength: Infinity,
-            url: `http://localhost:8080/exam/${data.id}`,
+            url: `${host}exam/${data.id}`,
             headers: { 
               'Authorization': `Bearer ${token}`
             },
@@ -99,7 +99,7 @@ export default function ExamManagement() {
             let config = {
               method: 'get',
               maxBodyLength: Infinity,
-              url: 'http://localhost:8080/exam',
+              url: `${host}exam`,
               headers: { 
                 'Authorization': `Bearer ${token}`
               }
