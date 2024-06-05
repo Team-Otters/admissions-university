@@ -1,4 +1,4 @@
-"use client";
+'use client';
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
@@ -9,8 +9,9 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
 import ImageActionButton from "./ImageButton";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
+import Modal from "react-bootstrap/Modal";
 
 const AppHeader = () => {
   const path = usePathname();
@@ -26,14 +27,39 @@ const AppHeader = () => {
     false,
   ]);
   const [sidebarVisible, setSidebarVisible] = useState(false);
-  const handleButtonClick1 = () => {
-    if (!path.includes("user")) router.push("/user");
-  };
-  const handleButtonClick = () => {
-    setSidebarVisible(!sidebarVisible);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [username, setUsername] = useState('');
+  const [showSignOutModal, setShowSignOutModal] = useState(false);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    const user = localStorage.getItem("username");
+
+    if (token != null && user != null) {
+      setIsLoggedIn(true);
+      setUsername(user);
+    } else {
+      setIsLoggedIn(false);
+    }
+  }, []);
+
+  const handleSignOut = () => {
+    setShowSignOutModal(true);
   };
 
-  const handleMouseEnter = (index: number) => {
+  const handleConfirmSignOut = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("username");
+    setIsLoggedIn(false);
+    setShowSignOutModal(false);
+    router.push("/");
+  };
+
+  const handleCancelSignOut = () => {
+    setShowSignOutModal(false);
+  };
+
+  const handleMouseEnter = (index) => {
     setHoveredLinks((prevHoveredLinks) => {
       const updatedHoveredLinks = [...prevHoveredLinks];
       updatedHoveredLinks[index] = true;
@@ -41,13 +67,14 @@ const AppHeader = () => {
     });
   };
 
-  const handleMouseLeave = (index: number) => {
+  const handleMouseLeave = (index) => {
     setHoveredLinks((prevHoveredLinks) => {
       const updatedHoveredLinks = [...prevHoveredLinks];
       updatedHoveredLinks[index] = false;
       return updatedHoveredLinks;
     });
   };
+
   return (
     <div className="header-wrapper">
       <Navbar className="bg-white font-notoSans shadow-md" sticky="top">
@@ -98,7 +125,7 @@ const AppHeader = () => {
                   Trang Chủ
                 </Nav.Link>
                 <Nav.Link
-                  href="/store"
+                  href="/introduction"
                   style={{
                     color: hoveredLinks[1]
                       ? "var(--mainBlueColor)"
@@ -110,7 +137,7 @@ const AppHeader = () => {
                   Giới thiệu
                 </Nav.Link>
                 <Nav.Link
-                  href="/user/history"
+                  href="/achievement"
                   style={{
                     color: hoveredLinks[2]
                       ? "var(--mainBlueColor)"
@@ -149,35 +176,82 @@ const AppHeader = () => {
             </Col>
             <Col className="col-auto ml-auto">
               <Nav>
-                <Nav.Link
-                  href="/login"
-                  style={{
-                    color: hoveredLinks[5]
-                      ? "var(--mainBlueColor)"
-                      : "var(--dustyGray)",
-                  }}
-                  onMouseEnter={() => handleMouseEnter(5)}
-                  onMouseLeave={() => handleMouseLeave(5)}
-                >
-                  Đăng Nhập
-                </Nav.Link>
-                <Nav.Link
-                  href="/profileregister"
-                  style={{
-                    color: hoveredLinks[6]
-                      ? "var(--mainBlueColor)"
-                      : "var(--dustyGray)",
-                  }}
-                  onMouseEnter={() => handleMouseEnter(6)}
-                  onMouseLeave={() => handleMouseLeave(6)}
-                >
-                  Đăng Ký
-                </Nav.Link>
+                {isLoggedIn ? (
+                  <>
+                    <Nav.Link
+                      href="/profile"
+                      style={{
+                        color: hoveredLinks[5]
+                          ? "var(--mainBlueColor)"
+                          : "var(--dustyGray)",
+                      }}
+                      onMouseEnter={() => handleMouseEnter(5)}
+                      onMouseLeave={() => handleMouseLeave(5)}
+                    >
+                      {username}
+                    </Nav.Link>
+                    <Nav.Link
+                      href="#"
+                      onClick={handleSignOut}
+                      style={{
+                        color: hoveredLinks[6]
+                          ? "var(--mainBlueColor)"
+                          : "var(--dustyGray)",
+                      }}
+                      onMouseEnter={() => handleMouseEnter(6)}
+                      onMouseLeave={() => handleMouseLeave(6)}
+                    >
+                      Sign Out
+                    </Nav.Link>
+                  </>
+                ) : (
+                  <>
+                    <Nav.Link
+                      href="/login"
+                      style={{
+                        color: hoveredLinks[5]
+                          ? "var(--mainBlueColor)"
+                          : "var(--dustyGray)",
+                      }}
+                      onMouseEnter={() => handleMouseEnter(5)}
+                      onMouseLeave={() => handleMouseLeave(5)}
+                    >
+                      Đăng Nhập
+                    </Nav.Link>
+                    <Nav.Link
+                      href="/profileregister"
+                      style={{
+                        color: hoveredLinks[6]
+                          ? "var(--mainBlueColor)"
+                          : "var(--dustyGray)",
+                      }}
+                      onMouseEnter={() => handleMouseEnter(6)}
+                      onMouseLeave={() => handleMouseLeave(6)}
+                    >
+                      Đăng Ký Hồ Sơ
+                    </Nav.Link>
+                  </>
+                )}
               </Nav>
             </Col>
           </Row>
         </Container>
       </Navbar>
+
+      <Modal show={showSignOutModal} onHide={handleCancelSignOut}>
+        <Modal.Header closeButton>
+          <Modal.Title>Sign Out Confirmation</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>Are you sure you want to sign out?</Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleCancelSignOut}>
+            Cancel
+          </Button>
+          <Button variant="primary" onClick={handleConfirmSignOut}>
+            Sign Out
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </div>
   );
 };
