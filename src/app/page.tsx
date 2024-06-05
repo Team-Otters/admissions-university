@@ -105,12 +105,12 @@ export default function Home() {
           </Col>
           <Col>
             <Row>
-            <p className="text-center p-4 ">     <a className="no-underline ">Trường ĐH CNTT</a> là một trung tâm đào tạo đại học, sau đại học, cung cấp nguồn nhân lực, đội ngũ chuyên gia trình độ cao trong lĩnh vực Công nghệ thông tin và Truyền thông (CNTT&TT), có năng lực phát triển tự thân ngành CNTT&TT và năng lực triển khai ứng dụng CNTT&TT trong các ngành công nghệ cao, quản lý, kinh tế - tài chính, có năng lực sáng tạo, làm việc trong môi trường quốc tế. Trường ĐH CNTT thực hiện nghiên cứu khoa học và chuyển giao công nghệ CNTT&TT và các công nghệ liên quan, triển khai các ứng dụng CNTT&TT trong các lĩnh vực công nghệ cao, quản lý kinh tế, tài chính theo nhu cầu phát triển kinh tế của đất nước và phù hợp với xu thế phát triển của khu vực Đông Nam Á và thế giới.
+            <p className="text-center p-4 ">     <a className=" text-lime-700 no-underline ">Trường ĐH CNTT</a> là một trung tâm đào tạo đại học, sau đại học, cung cấp nguồn nhân lực, đội ngũ chuyên gia trình độ cao trong lĩnh vực Công nghệ thông tin và Truyền thông (CNTT&TT), có năng lực phát triển tự thân ngành CNTT&TT và năng lực triển khai ứng dụng CNTT&TT trong các ngành công nghệ cao, quản lý, kinh tế - tài chính, có năng lực sáng tạo, làm việc trong môi trường quốc tế. Trường ĐH CNTT thực hiện nghiên cứu khoa học và chuyển giao công nghệ CNTT&TT và các công nghệ liên quan, triển khai các ứng dụng CNTT&TT trong các lĩnh vực công nghệ cao, quản lý kinh tế, tài chính theo nhu cầu phát triển kinh tế của đất nước và phù hợp với xu thế phát triển của khu vực Đông Nam Á và thế giới.
             </p>
             </Row>
             <Row>
               <div  className=" flex justify-items-center justify-center">
-                <Button variant="primary" className=" w-50 ">Đăng ký hồ sơ</Button>{' '}
+                <Button className=" w-50 btn-custom ">Đăng ký hồ sơ</Button>{' '}
               </div>
             </Row>
           </Col>
@@ -144,30 +144,30 @@ export default function Home() {
         height: '50%',
       }}>
 
-        <motion.div whileHover={{ scale: 1.2}}  className=" bg-blue-800 h-40 w-80 mt-20 flex">
+        <motion.div whileHover={{ scale: 1.2}}  className=" btn-custom h-40 w-80 mt-20 flex">
           <IoMdSearch style={{height: 60, width: 60,}} className=" m-6"></IoMdSearch>
           <div className=" flex-row">
             <Link href={"#"} >
-              <p className=" font-bold mt-4 text-black no-underline">Điểm chuẩn hằng năm</p>
-              <p className=" text-left text-black no-underline">Xem điểm chuẩn hằng năm</p>
+              <p className=" font-bold mt-4 btn-custom text-black no-underline">Điểm chuẩn hằng năm</p>
+              <p className=" text-left btn-custom text-black no-underline">Xem điểm chuẩn hằng năm</p>
             </Link>
           </div>
         </motion.div>
-        <motion.div whileHover={{ scale: 1.2 }} className=" bg-blue-800 h-40 w-80 mt-20 flex">
+        <motion.div whileHover={{ scale: 1.2 }} className=" btn-custom h-40 w-80 mt-20 flex">
         <CgCalendar style={{height: 60, width: 60,}} className=" m-6"></CgCalendar>
           <div className=" flex-row">
           <Link href={"#"} >
-            <p className=" font-bold mt-4 text-black no-underline">Tin tức mới</p>
-            <p className=" text-left text-black no-underline">Tin tức mới cùng với sự kiện nổi bật</p>
+            <p className=" font-bold mt-4 text-black btn-custom no-underline">Tin tức mới</p>
+            <p className=" text-left btn-custom text-black no-underline">Tin tức mới cùng với sự kiện nổi bật</p>
             </Link>
           </div>
         </motion.div>
-        <motion.div whileHover={{ scale: 1.2 }} className=" bg-blue-800 h-40 w-80 mt-20 flex">
+        <motion.div whileHover={{ scale: 1.2 }} className=" btn-custom h-40 w-80 mt-20 flex">
         <GrAchievement href="#" style={{height: 60, width: 60,}} className=" m-6"></GrAchievement>
           <div className=" flex-row">
           <Link href={"#"} >
-            <p className=" font-bold mt-4 text-black no-underline">Thành tựu</p>
-            <p className=" text-left text-black no-underline">Các thanh tựu của trường</p>
+            <p className=" font-bold btn-custom mt-4 text-black no-underline">Thành tựu</p>
+            <p className=" text-left btn-custom text-black no-underline">Các thanh tựu của trường</p>
             </Link>
           </div>
         </motion.div>
@@ -191,7 +191,7 @@ export default function Home() {
             </Row>
             <Row>
               <div  className=" flex justify-items-center justify-center">
-                <Button variant="primary" className=" w-50 ">Gửi mail thắc mắc</Button>{' '}
+                <Button className="btn-custom w-50 ">Gửi mail thắc mắc</Button>{' '}
               </div>
             </Row>
           </Col>

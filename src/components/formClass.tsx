@@ -15,7 +15,7 @@ const FormClass: React.FC<{
 
   const validateForm = () => {
     if (
-      formState.id != "" &&
+      //formState.id != "" &&
       formState.name != "" &&
       formState.year != "" &&
       formState.quotas != 0 
@@ -36,9 +36,9 @@ const FormClass: React.FC<{
       for (const [key, value] of Object.entries(formState)) {
         if (value == "") {
           switch (key) {
-            case "id":
-              errorFields.push("Mã lớp");
-              break;
+            // case "id":
+            //   errorFields.push("Mã lớp");
+            //   break;
             case "name":
               errorFields.push("Tên lớp");
               break;
@@ -83,6 +83,7 @@ const FormClass: React.FC<{
       }}
     >
       <form className="h-5/6 w-full items-center justify-around flex flex-col">
+        { isEdit ? 
         <div className="flex flex-row w-4/6">
           <label className="w-1/3 lg:w-1/2">Mã lớp</label>
           <input
@@ -94,6 +95,7 @@ const FormClass: React.FC<{
             disabled={isEdit}
           />
         </div>
+        : <></> }
         <div className="flex flex-row w-4/6">
           <label className="w-1/3 lg:w-1/2">Tên lớp</label>
           <input

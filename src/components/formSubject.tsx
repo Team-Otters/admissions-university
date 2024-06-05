@@ -17,8 +17,8 @@ const FormSubject: React.FC<{
 
   const validateForm = () => {
     if (
-      formState.id != "" &&
-      formState.name != "" &&
+      //formState.id != "" &&
+      formState.name   != "" &&
       formState.parameter != "" &&
       formState.time != ""
     ) {
@@ -38,9 +38,6 @@ const FormSubject: React.FC<{
       for (const [key, value] of Object.entries(formState)) {
         if (value == "") {
           switch (key) {
-            case "id":
-              errorFields.push("Mã lớp");
-              break;
             case "name":
               errorFields.push("Tên lớp");
               break;
@@ -83,17 +80,20 @@ const FormSubject: React.FC<{
       }}
     >
       <form className="h-5/6 w-full items-center justify-around flex flex-col">
+        {isEdit?
         <div className="flex flex-row w-4/6">
-          <label className="w-1/3 lg:w-1/2">Mã môn</label>
-          <input
-            className="border border-black w-1/2 p-2"
-            name="id"
-            onChange={handleChange}
-            type="text"
-            value={formState.id}
-            disabled={isEdit}
-          />
-        </div>
+        <label className="w-1/3 lg:w-1/2">Mã môn</label>
+        <input
+          className="border border-black w-1/2 p-2"
+          name="id"
+          onChange={handleChange}
+          type="text"
+          value={formState.id}
+          disabled={isEdit}
+        />
+      </div>
+: <></>
+      }
         <div className="flex flex-row w-4/6">
           <label className="w-1/3 lg:w-1/2">Tên môn</label>
           <input
