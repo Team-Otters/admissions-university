@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import { Button } from "react-bootstrap";
 import { IoMdEye, IoMdEyeOff } from "react-icons/io";
+import axios from "axios";
 
 const FormAccount: React.FC<{
   closeModal: () => void;

@@ -78,6 +78,11 @@ const AccountManagePage: React.FC = () => {
   };
 
   const handleSubmit = (data: Account): void => {
+    try {
+      
+    } catch (error) {
+
+    }
     let temp = [...accounts];
     temp.push(data);
     setAccounts(temp);
