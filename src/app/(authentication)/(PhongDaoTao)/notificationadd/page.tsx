@@ -1,20 +1,22 @@
 "use client";
 import React from "react";
+import axios from "axios";
 import Form from "react-bootstrap/Form";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import Button from "react-bootstrap/Button";
 import { Container } from "react-bootstrap";
+
 interface IFormData {
-  notiTitle: string;
-  notiSubject: string;
+  title: string;
+  target: string;
   content: string;
 }
 
 const NotiAddPage: React.FC = () => {
   const [formData, setFormData] = React.useState<IFormData>({
-    notiTitle: "",
-    notiSubject: "",
+    title: "",
+    target: "",
     content: "",
   });
 
@@ -22,15 +24,32 @@ const NotiAddPage: React.FC = () => {
     setFormData({ ...formData, [event.target.name]: event.target.value });
   };
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    // handle form submission here
-    console.log(formData);
-    setFormData({
-      notiTitle: "",
-      notiSubject: "",
-      content: "",
-    });
+    
+    try {
+      const response = await axios.post('http://localhost:8080/admin/notification', {
+        title: formData.title,
+        target: formData.target,
+        content: formData.content,
+        day: new Date().toISOString()
+      }, {
+        headers: { 
+          'Content-Type': 'application/json'
+        },
+      });
+
+      console.log(response.data);
+      
+      setFormData({
+        title: "",
+        target: "",
+        content: "",
+      });
+      
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
@@ -43,13 +62,13 @@ const NotiAddPage: React.FC = () => {
       <Form onSubmit={handleSubmit}>
         <Row className="mb-3">
           <Col>
-            <Form.Group controlId="formNotiTitle">
+            <Form.Group controlId="formTitle">
               <Form.Label>Tiêu đề</Form.Label>
               <Form.Control
                 type="text"
-                name="notiTitle"
+                name="title"
                 placeholder="Nhập tiêu đề"
-                value={formData.notiTitle}
+                value={formData.title}
                 onChange={handleChange}
                 required
               />
@@ -58,13 +77,13 @@ const NotiAddPage: React.FC = () => {
         </Row>
         <Row className="mb-3">
           <Col>
-            <Form.Group controlId="formNotiSubject">
+            <Form.Group controlId="formTarget">
               <Form.Label>Đối tượng</Form.Label>
               <Form.Control
                 type="text"
-                name="NotiSubject"
+                name="target"
                 placeholder="Nhập đối tượng"
-                value={formData.notiSubject}
+                value={formData.target}
                 onChange={handleChange}
                 required
               />
@@ -73,10 +92,7 @@ const NotiAddPage: React.FC = () => {
         </Row>
         <Row className="mb-3">
           <Col>
-            <Form.Group
-              controlId="formContent"
-              className="flex-1 flex flex-col"
-            >
+            <Form.Group controlId="formContent" className="flex-1 flex flex-col">
               <Form.Label className="mb-2">Nội dung</Form.Label>
               <Form.Control
                 as="textarea"
