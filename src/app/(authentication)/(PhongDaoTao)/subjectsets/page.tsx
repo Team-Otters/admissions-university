@@ -112,7 +112,7 @@ export default function SubjectManagement() {
         try {       
           let token = localStorage.getItem('accessToken');
           let dt = JSON.stringify({
-            name: data.name,
+            "name": data.name,
             "year": data.year,
             "quotas": data.quotas
           })

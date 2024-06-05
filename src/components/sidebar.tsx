@@ -75,7 +75,7 @@ const Sidebar: React.FC<{ route: string }> = ({ route }) => {
             <li onClick={()=>handleNavigate("/examManage")} className="py-2 cursor-pointer hover:bg-gray">
               Quản lý kỳ thi
             </li>
-            <li onClick={()=>handleNavigate("/")} className="py-2 cursor-pointer hover:bg-gray">
+            <li onClick={()=>handleNavigate("/notification")} className="py-2 cursor-pointer hover:bg-gray">
               Bài viết và thông báo
             </li>
             <li className="py-2 cursor-pointer hover:bg-gray">

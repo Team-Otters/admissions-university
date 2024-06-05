@@ -27,6 +27,7 @@ interface Student {
   financeStatus: boolean;
 }
 interface std {
+    id:string;
     fullName: string,
     numberId: string, 
     gender: string,

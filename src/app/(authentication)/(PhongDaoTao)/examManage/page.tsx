@@ -10,6 +10,7 @@ import { IoEye } from "react-icons/io5";
 import { MdOutlineFilterAlt, MdDelete } from "react-icons/md";
 import { useRouter } from "next/navigation";
 import axios from "axios";
+import { redirect } from 'next/navigation'
 
 export default function ExamManagement() { 
     const [examList, setExamList] = React.useState<Exam[]>([]);
