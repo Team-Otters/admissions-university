@@ -5,6 +5,7 @@ import { FaPencil } from "react-icons/fa6";
 import { MdOutlineFilterAlt } from "react-icons/md";
 import { FaSearch } from "react-icons/fa";
 import useDebounce from "@/hooks/useDebounce";
+import axios from "axios";
 
 const FinanceStudentManagermentPage: React.FC = () => {
   const [isInputFocused, setIsInputFocused] = useState(false);
@@ -30,35 +31,6 @@ const FinanceStudentManagermentPage: React.FC = () => {
   const [searchStudentList, setSearchStudentList] =
     React.useState<std[]>(studentList);
 
-  // const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-  //   event.preventDefault();
-  //   // handle form submission here
-  //   console.log(formData);
-  //   setFormData({
-  //     fullName: "",
-  //     idNumber: "",
-  //     dateOfBirth: "",
-  //     gender: "",
-  //     permanentResidence1: "",
-  //     permanentResidence2: "",
-  //     permanentResidence3: "",
-  //     householdAddress1: "",
-  //     householdAddress2: "",
-  //     householdAddress3: "",
-  //     placeOfBirth: "",
-  //     ethnicity: "",
-  //     idImage: "",
-  //     secondSchool: "",
-  //     phoneNumber: "",
-  //     email: "",
-  //   });
-  // };
-
-  //   const handleSubmit = (newWish: Wish): void => {
-  //     let temp = wishlistData;
-  //     temp.push(newWish);
-  //     setWishlistData(temp);
-  //   };
 
   const handleEditRow = (w: std): void => {
     setRowToEdit(w);
@@ -132,6 +104,45 @@ const FinanceStudentManagermentPage: React.FC = () => {
     return temp;
   };
 
+  const getAllStudent = async () => {
+    try {
+      let token = localStorage.getItem("accessToken");
+      let config = {
+        method: "get",
+        maxBodyLength: Infinity,
+        url: "http://localhost:8080/student/all",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      const response = await axios.request(config);
+      const jsonData = response.data;
+      console.log("fj: ", jsonData);
+
+    // Alternative: Manual parsing with type safety (recommended)
+    const studentss: std[] = jsonData.content.map((studentData: any) => ({
+      id: studentData.id,
+      fullName: studentData.profile.fullName,
+      numberId: studentData.profile.numberId,
+      gender: studentData.profile.gender,
+      dateOfBirth: studentData.profile.dateOfBirth.toString(), // Assuming dateOfBirth is a number in milliseconds
+      phoneNumber: studentData.profile.phoneNumber,
+      email: studentData.profile.email,
+      placeOfBirth: studentData.profile.placeOfBirth,
+      ethnicType: studentData.profile.ethnicType,
+      houseHold: studentData.profile.houseHold,
+      address: studentData.profile.address,
+      school: studentData.profile.school,
+    }));
+
+      setStudentList(studentss);
+      console.log("sj: ", studentss);
+      // Handle successful login based on your API's response structure
+    } catch (error) {
+      console.error(error); // Handle errors appropriately (e.g., display error messages)
+    }
+
+  } 
   const debounceSearch = useDebounce(searchText, 500);
   useEffect(() => {
     // if (debounceSearch == ''){
@@ -140,7 +151,6 @@ const FinanceStudentManagermentPage: React.FC = () => {
     // else {
     //     executeSearchQuery(debounceSearch);
     // }
-    setSearchStudentList(search(searchText));
   }, [debounceSearch]);
 
   const applyFilter = (): void => {
@@ -153,10 +163,12 @@ const FinanceStudentManagermentPage: React.FC = () => {
   };
 
   React.useEffect(() => {
+    getAllStudent();
     console.log("abc: ", recentFilterGroupList);
     let temp = search(searchText);
     console.log("abc: ", temp);
     setSearchStudentList(temp);
+    setSearchStudentList(search(searchText));
   }, [recentFilterGroupList]);
 
   const handleSearchText = (e: React.ChangeEvent<HTMLInputElement>): void => {
@@ -213,14 +225,12 @@ const FinanceStudentManagermentPage: React.FC = () => {
           <thead>
             <tr className="text-center text-blueTitle border-b border-gray">
               <th className="w-4 rounded-t-lg p-2">STT</th>
-              <th className="border-l border-gray p-2 w-2/12">ID</th>
+              <th className="border-l border-gray p-2 w-2/12">Student ID</th>
               <th className="border-l border-gray p-2 w-2/12">Tên thí sinh</th>
               <th className="border-l border-gray p-2">Số điện thoại</th>
               <th className="border-l border-gray p-2 w-2/12">Email</th>
               <th className="border-l border-gray p-2">Ngày sinh</th>
               <th className="border-l border-gray p-2">Giới tính</th>
-              <th className="border-l border-gray p-2">CCCD</th>
-              <th className="border-l border-gray p-2">Tình trạng</th>
               <th className="w-8 border-gray p-2"></th>
             </tr>
           </thead>
@@ -234,24 +244,20 @@ const FinanceStudentManagermentPage: React.FC = () => {
                   <td className="px-2 py-1 text-center border-r">
                     {index + 1}
                   </td>
-                  <td className="px-2 py-1 border-r">{item.id}</td>
-                  <td className="px-2 py-1 border-r">{item.name}</td>
-                  <td className="px-2 py-1 border-r">{item.phone}</td>
+                  <td className="px-2 py-1 border-r">{item.numberId}</td>
+                  <td className="px-2 py-1 border-r">{item.fullName}</td>
+                  <td className="px-2 py-1 border-r">{item.phoneNumber}</td>
                   <td className="px-2 py-1 border-r">{item.email}</td>
-                  <td className="px-2 py-1 border-r">{item.birth}</td>
+                  <td className="px-2 py-1 border-r">{item.dateOfBirth}</td>
                   <td className="px-2 py-1 border-r">
-                    {item.gender ? "Nam" : "Nữ"}
-                  </td>
-                  <td className="px-2 py-1 border-r">{item.CCCD}</td>
-                  <td className="px-2 py-1">
-                    {item.financeStatus ? "Đã thu phí" : "Chưa thu phí"}
+                    {item.gender ==="male" ? "Nam" : "Nữ"}
                   </td>
                   <td className="flex flex-row justify-center h-9 self-center justify-self-center">
                     <button
                       className="cursor-pointer"
-                      // onClick={() => {
-                      //   handleEditRow(item);
-                      // }}
+                      onClick={() => {
+                        handleEditRow(item);
+                      }}
                     >
                       <FaPencil size={18} />
                     </button>

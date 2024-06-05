@@ -12,6 +12,7 @@ import ImageActionButton from "./ImageButton";
 import { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import Modal from "react-bootstrap/Modal";
+import { redirect } from 'next/navigation'
 
 const AppHeader = () => {
   const path = usePathname();
@@ -32,7 +33,7 @@ const AppHeader = () => {
   const [showSignOutModal, setShowSignOutModal] = useState(false);
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("accessToken");
     const user = localStorage.getItem("username");
 
     if (token != null && user != null) {
@@ -48,11 +49,14 @@ const AppHeader = () => {
   };
 
   const handleConfirmSignOut = () => {
-    localStorage.removeItem("token");
+    localStorage.removeItem("accessToken");
     localStorage.removeItem("username");
+    localStorage.setItem("role","Khach")
     setIsLoggedIn(false);
+    console.log(localStorage.getItem("accessToken"))
     setShowSignOutModal(false);
-    router.push("/");
+    redirect('');
+    
   };
 
   const handleCancelSignOut = () => {

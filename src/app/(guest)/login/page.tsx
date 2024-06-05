@@ -101,6 +101,7 @@ const LoginPage: React.FC = () => {
           await localStorage.setItem("accessToken", response.data.access_token);
           await localStorage.setItem("refreshToken", response.data.refresh_token);
           await localStorage.setItem("role" , response.data.role)
+          localStorage.setItem("username",username )
           const storedData = localStorage.getItem('accessToken')
           console.log(storedData);
           await router.refresh();
