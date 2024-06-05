@@ -41,9 +41,6 @@ const VenueManageScreen: React.FC = () => {
             console.log(text.toLowerCase());
             if (
               exam.room.name.toLowerCase().includes(text.toLowerCase()) ||
-              exam.paperContainersId
-                .toLowerCase()
-                .includes(text.toLowerCase()) ||
               exam.subject.toLowerCase().includes(text.toLowerCase()) ||
               exam.date.toLowerCase().includes(text.toLowerCase())
             ) {
@@ -350,7 +347,6 @@ const VenueManageScreen: React.FC = () => {
               <th className="border-l border-gray p-2 w-2/12">Phòng thi</th>
               <th className="border-l border-gray p-2">Môn thi</th>
               <th className="border-l border-gray p-2">Ngày thi</th>
-              <th className="border-l border-gray p-2">Mã túi bài thi</th>
               <th className="w-12 border-gray p-2"></th>
             </tr>
           </thead>
@@ -369,7 +365,6 @@ const VenueManageScreen: React.FC = () => {
                   <td className="px-2 py-1 border-r">
                     {formatDate(item.date)}
                   </td>
-                  <td className="px-2 py-1">{item.paperContainersId || ""}</td>
                   <td className="flex flex-row justify-center h-9 self-center justify-self-center">
                     <button
                       className="cursor-pointer"
@@ -380,7 +375,6 @@ const VenueManageScreen: React.FC = () => {
                           room: item.room.id,
                           subject: item.subject.id,
                           date: formatDate(item.date),
-                          paperContainersId: item.paperContainersId,
                         });
                       }}
                     >
@@ -413,10 +407,9 @@ const VenueManageScreen: React.FC = () => {
                 rowToEdit === undefined
                   ? {
                       id: "",
-                      room: rooms[0].id,
-                      subject: subjects[0].id,
+                      room: rooms[0]?.id || "",
+                      subject: subjects[0]?.id || "",
                       date: "",
-                      paperContainersId: "",
                     }
                   : rowToEdit
               }
