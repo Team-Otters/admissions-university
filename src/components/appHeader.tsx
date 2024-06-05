@@ -1,4 +1,4 @@
-'use client';
+"use client";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
@@ -6,42 +6,66 @@ import Modal from "react-bootstrap/Modal";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
+import { redirect } from "next/navigation";
+import AuthContext from "@/context/AuthContext";
 
 const AppHeader = () => {
   const path = usePathname();
   const router = useRouter();
-  const [hoveredLinks, setHoveredLinks] = useState([false, false, false, false, false, false, false, false]);
+  const [hoveredLinks, setHoveredLinks] = useState([
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+  ]);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [username, setUsername] = useState('');
+  const [username, setUsername] = useState("");
   const [showSignOutModal, setShowSignOutModal] = useState(false);
 
+  const { logout } = useContext(AuthContext);
+  const { role } = useContext(AuthContext);
+
   useEffect(() => {
-    const token = localStorage.getItem("accessToken");
-    const user = localStorage.getItem("username");
+    // const token = localStorage.getItem("accessToken");
+    // const user = localStorage.getItem("username");
 
-    console.log("Token:", token);
-    console.log("Username:", user);
+    // console.log("Token:", token);
+    // console.log("Username:", user);
 
-    if (token != null && user != null) {
+    // if (token != null && user != null) {
+    //   setIsLoggedIn(true);
+    //   setUsername(user);
+    // } else {
+    //   setIsLoggedIn(false);
+    // }
+    if (role != "Khach") {
       setIsLoggedIn(true);
+      const user = localStorage.getItem("username");
       setUsername(user);
     } else {
       setIsLoggedIn(false);
     }
-  }, []);
+  }, [role]);
 
   const handleSignOut = () => {
     setShowSignOutModal(true);
   };
 
   const handleConfirmSignOut = () => {
-    localStorage.removeItem("accessToken");
-    localStorage.removeItem("username");
+    logout();
+    // localStorage.removeItem("accessToken");
+    // localStorage.removeItem("username");
+    // localStorage.setItem("role", "Khach");
     setIsLoggedIn(false);
+    console.log(localStorage.getItem("accessToken"));
     setShowSignOutModal(false);
-    router.push("/");
+    redirect("");
   };
 
   const handleCancelSignOut = () => {
