@@ -1,4 +1,5 @@
 "use-client";
+import { formatDate } from "@/utils/something";
 import React, { useState } from "react";
 import { Button } from "react-bootstrap";
 
@@ -24,30 +25,19 @@ const FormExamRoom: React.FC<{
   const isEdt = isEdit || true;
 
   const validateForm = () => {
-    if (
-      formState.room != "" &&
-      formState.subject != "" &&
-      formState.date != ""
-    ) {
-      const isIdExists = examRooms.some(
-        (examRoom) => examRoom.room == formState.room
-      );
+    if (formState.date != "") {
       const isRoomUsable = examRooms.some(
         (examRoom) =>
-          examRoom.room == formState.room && examRoom.date == formState.date
+          examRoom.id != formState.id &&
+          examRoom.room.id == formState.room &&
+          formatDate(examRoom.date) == formState.date.toString()
       );
       // const isPaperContainerUsable = examRooms.some(
       //   (examRoom) =>
       //     examRoom.room !== formState.room &&
       //     examRoom.paperContainersId == formState.paperContainersId
       // );
-
-      if (!isEdit && isIdExists) {
-        setErrors(
-          "Mã phòng thi này đã tồn tại! Vui lòng nhập một mã phòng thi khác."
-        );
-        return false;
-      } else if (isRoomUsable) {
+      if (isRoomUsable) {
         setErrors("Phòng thi này đã được sử dụng vào ngày " + formState.date);
         return false;
       }
@@ -57,15 +47,15 @@ const FormExamRoom: React.FC<{
       for (const [key, value] of Object.entries(formState)) {
         if (key !== "paperContainersId" && value == "") {
           switch (key) {
-            case "room":
-              errorFields.push("Phòng thi");
-              break;
-            case "subject":
-              errorFields.push("Môn thi");
-              break;
-            // case "paperContainersId":
-            //   errorFields.push("Mã túi bài thi");
+            // case "room":
+            //   errorFields.push("Phòng thi");
             //   break;
+            // case "subject":
+            //   errorFields.push("Môn thi");
+            //   break;
+            // // case "paperContainersId":
+            // //   errorFields.push("Mã túi bài thi");
+            // //   break;
             case "date":
               errorFields.push("Ngày thi");
               break;
@@ -103,14 +93,13 @@ const FormExamRoom: React.FC<{
       {/* <div className="bg-mainBlue"> */}
       <form className="h-5/6 w-full items-center justify-around flex flex-col">
         <div className="flex flex-row w-4/6">
-          <label className="w-1/3 lg:w-1/2">Mã phòng thi</label>
+          <label className="w-1/3 lg:w-1/2">Phòng thi</label>
           <select
-            name="roomCode"
+            name="room"
             onChange={handleChange}
             className="border border-black w-1/2 p-2"
-            id="roomCode"
-            value={formState.roomCode}
-            disabled={isEdit}
+            id="room"
+            value={formState.room}
           >
             {rooms.map((item, index) => {
               return (
@@ -124,12 +113,12 @@ const FormExamRoom: React.FC<{
         <div className="flex flex-row w-4/6">
           <label className="w-1/3 lg:w-1/2">Môn thi</label>
           <select
-            name="subjectId"
+            name="subject"
             onChange={handleChange}
             className="border border-black w-1/2 p-2"
-            id="subjectId"
-            value={formState.subjectId}
-            disabled={isEdit}
+            id="subject"
+            defaultValue={subjects[0].id}
+            value={formState.subject}
           >
             {subjects.map((item, index) => {
               return (

@@ -8,6 +8,7 @@ import { MdDelete } from "react-icons/md";
 import FormExamRoom from "@/components/formExamRoom";
 import useDebounce from "@/hooks/useDebounce";
 import axios from "axios";
+import { formatDate } from "../../../../utils/something.js";
 
 const VenueManageScreen: React.FC = () => {
   const [isInputFocused, setIsInputFocused] = useState<boolean>(false);
@@ -16,8 +17,8 @@ const VenueManageScreen: React.FC = () => {
   const [isEdit, setIsEdit] = useState<boolean>(false);
   const [filterGroupList, setFilterGroupList] = useState([
     "All",
-    "Mã phòng thi",
-    "Mã môn thi",
+    "Phòng thi",
+    "Môn thi",
     "Mã túi bài thi",
     "Ngày thi",
   ]);
@@ -39,33 +40,30 @@ const VenueManageScreen: React.FC = () => {
           case "All":
             console.log(text.toLowerCase());
             if (
-              exam.roomCode.toLowerCase().includes(text.toLowerCase()) ||
+              exam.room.name.toLowerCase().includes(text.toLowerCase()) ||
               exam.paperContainersId
                 .toLowerCase()
                 .includes(text.toLowerCase()) ||
-              exam.subjectId.toLowerCase().includes(text.toLowerCase()) ||
+              exam.subject.toLowerCase().includes(text.toLowerCase()) ||
               exam.date.toLowerCase().includes(text.toLowerCase())
             ) {
               return exam;
             }
             break;
-          case "Mã phòng thi":
-            if (exam.roomCode.toLowerCase().includes(text.toLowerCase())) {
+          case "Phòng thi":
+            if (exam.room.name.toLowerCase().includes(text.toLowerCase())) {
               return exam;
             }
             break;
-          case "Mã môn thi":
-            if (exam.subjectId.toLowerCase().includes(text.toLowerCase())) {
-              return exam;
-            }
-            break;
-          case "Mã phòng thi":
-            if (exam.roomCode.toLowerCase().includes(text.toLowerCase())) {
+          case "Môn thi":
+            if (exam.subject.name.toLowerCase().includes(text.toLowerCase())) {
               return exam;
             }
             break;
           case "Ngày thi":
-            if (exam.date.toLowerCase().includes(text.toLowerCase())) {
+            if (
+              formatDate(exam.date).toLowerCase().includes(text.toLowerCase())
+            ) {
               return exam;
             }
             break;
@@ -170,14 +168,37 @@ const VenueManageScreen: React.FC = () => {
     setSearchText(e.target.value);
   };
 
-  const handleClearRow = (roomCode: string): void => {
-    let temp: ExamRoomManageForm[] = [...examRooms];
-    temp = temp.filter((value) => {
-      if (value.room !== roomCode) {
-        return value;
-      }
-    });
-    setExamRooms(temp);
+  const handleClearRow = async (roomCode: string) => {
+    try {
+      let token = localStorage.getItem("accessToken");
+      let dt = JSON.stringify({
+        id: roomCode,
+      });
+      let config = {
+        method: "delete",
+        maxBodyLength: Infinity,
+        url: `http://localhost:8081/exam_room/${roomCode}`,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        data: dt,
+      };
+      const response = await axios.request(config).then((response) => {
+        getAllExamRoom();
+      });
+      //createUser(newUser);
+      // Handle successful login based on your API's response structure
+    } catch (error) {
+      console.error(error); // Handle errors appropriately (e.g., display error messages)
+    }
+
+    // let temp: ExamRoomManageForm[] = [...examRooms];
+    // temp = temp.filter((value) => {
+    //   if (value.room !== roomCode) {
+    //     return value;
+    //   }
+    // });
+    // setExamRooms(temp);
   };
 
   const handleSubmit = async (data: ExamRoomManageForm) => {
@@ -187,7 +208,6 @@ const VenueManageScreen: React.FC = () => {
         examRoomId: data.room,
         subjectId: data.subject,
         date: data.date,
-        paperContainersId: "",
       });
       let config = {
         method: "post",
@@ -201,7 +221,6 @@ const VenueManageScreen: React.FC = () => {
       };
       const response = await axios.request(config).then((response) => {
         getAllExamRoom();
-        console.log(response.data);
       });
       //createUser(newUser);
       // Handle successful login based on your API's response structure
@@ -213,7 +232,7 @@ const VenueManageScreen: React.FC = () => {
   const handleEdit = async (data: ExamRoomManageForm) => {
     try {
       let dt = JSON.stringify({
-        roomCode: data.room,
+        examRoomId: data.room,
         subjectId: data.subject,
         date: data.date,
       });
@@ -228,8 +247,9 @@ const VenueManageScreen: React.FC = () => {
         },
         data: dt,
       };
-      const response = await axios.request(config);
-      getAllExamRoom();
+      const response = await axios.request(config).then((response) => {
+        getAllExamRoom();
+      });
     } catch (error) {
       console.error(error); // Handle errors appropriately (e.g., display error messages)
     }
@@ -327,8 +347,8 @@ const VenueManageScreen: React.FC = () => {
           <thead>
             <tr className="text-center text-blueTitle border-b border-gray">
               <th className="p-2 w-1/12">STT</th>
-              <th className="border-l border-gray p-2 w-2/12">Mã phòng thi</th>
-              <th className="border-l border-gray p-2">Mã môn thi</th>
+              <th className="border-l border-gray p-2 w-2/12">Phòng thi</th>
+              <th className="border-l border-gray p-2">Môn thi</th>
               <th className="border-l border-gray p-2">Ngày thi</th>
               <th className="border-l border-gray p-2">Mã túi bài thi</th>
               <th className="w-12 border-gray p-2"></th>
@@ -342,16 +362,26 @@ const VenueManageScreen: React.FC = () => {
                   key={index}
                 >
                   <td className="px-2 py-1 border-r">{index + 1}</td>
-                  <td className="px-2 py-1 border-r">{item.room}</td>
-                  <td className="px-2 py-1 border-r">{item.subject}</td>
-                  <td className="px-2 py-1 border-r">{item.date}</td>
+                  <td className="px-2 py-1 border-r">{item.room.name || ""}</td>
+                  <td className="px-2 py-1 border-r">
+                    {item.subject.name || ""}
+                  </td>
+                  <td className="px-2 py-1 border-r">
+                    {formatDate(item.date)}
+                  </td>
                   <td className="px-2 py-1">{item.paperContainersId || ""}</td>
                   <td className="flex flex-row justify-center h-9 self-center justify-self-center">
                     <button
                       className="cursor-pointer"
                       onClick={() => {
                         setIsEdit(true);
-                        handleEditRow(item);
+                        handleEditRow({
+                          id: item.id,
+                          room: item.room.id,
+                          subject: item.subject.id,
+                          date: formatDate(item.date),
+                          paperContainersId: item.paperContainersId,
+                        });
                       }}
                     >
                       <FaPencil size={18} />
@@ -359,7 +389,7 @@ const VenueManageScreen: React.FC = () => {
                     <button
                       className="cursor-pointer ml-1"
                       onClick={() => {
-                        handleClearRow(item.roomCode);
+                        handleClearRow(item.id);
                       }}
                     >
                       <MdDelete size={24} />
@@ -382,8 +412,9 @@ const VenueManageScreen: React.FC = () => {
               defaultValue={
                 rowToEdit === undefined
                   ? {
-                      roomCode: "",
-                      subjectId: "",
+                      id: "",
+                      room: rooms[0].id,
+                      subject: subjects[0].id,
                       date: "",
                       paperContainersId: "",
                     }
