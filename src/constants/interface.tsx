@@ -55,10 +55,9 @@ interface Account {
 }
 
 interface ExamManageForm {
-  paperContainerCode: string;
-  roomName: string;
-  subject: string;
-  date: string;
+  id: string;
+  examRoomId: string;
+  subjectId: string;
   numberOfPapers: number;
 }
 
@@ -111,4 +110,16 @@ interface PaperContainer {
   id: string;
   numberOfPapers: number;
   subject: string;
+}
+
+interface ExamRoomDetail {
+  student: Student;
+  examRoom: ExamRoomManageForm;
+}
+
+interface Paper {
+  id: string;
+  score: number;
+  subject: string;
+  student: string;
 }

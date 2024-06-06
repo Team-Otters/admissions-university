@@ -5,11 +5,13 @@ import { FaSearch } from "react-icons/fa";
 import { MdOutlineFilterAlt } from "react-icons/md";
 import { FaPencil } from "react-icons/fa6";
 import { MdDelete } from "react-icons/md";
-import FormExamRoom from "@/components/formExamRoom";
 import useDebounce from "@/hooks/useDebounce";
 import { IoEye } from "react-icons/io5";
 import FormPaperContainer from "@/components/formPaperContainer";
-import {useRouter} from "next/navigation";
+import { useRouter } from "next/navigation";
+import axios from "axios";
+import { formatDate } from "@/utils/something";
+import { host } from "@/constants/string.js";
 
 const ExamManagePage: React.FC = () => {
   const router = useRouter();
@@ -19,7 +21,6 @@ const ExamManagePage: React.FC = () => {
   const [isEdit, setIsEdit] = useState<boolean>(false);
   const [filterGroupList, setFilterGroupList] = useState([
     "All",
-    "Mã túi thi",
     "Phòng thi",
     "Môn thi",
     "Ngày thi",
@@ -27,29 +28,75 @@ const ExamManagePage: React.FC = () => {
   const [recentFilterGroupList, setRecentFilterGroupList] =
     useState(filterGroupList);
   const [searchText, setSearchText] = React.useState<string>("");
-  const [paperContainers, setPaperContainers] = useState<ExamManageForm[]>([
-    {
-      paperContainerCode: "T001",
-      roomName: "B5.08",
-      subject: "Hóa Học",
-      date: "06/06/2024",
-      numberOfPapers: 40,
-    },
-    {
-      paperContainerCode: "T002",
-      roomName: "B1.14",
-      subject: "Hóa Học",
-      date: "06/06/2024",
-      numberOfPapers: 40,
-    },
-    {
-      paperContainerCode: "T002",
-      roomName: "B4.14",
-      subject: "Hóa Học",
-      date: "06/06/2024",
-      numberOfPapers: 40,
-    },
-  ]);
+  const [examRooms, setExamRooms] = useState<ExamRoomManageForm[]>([]);
+  const [examRoomDetails, setExamRoomsDetails] = useState<ExamRoomDetail[]>([]);
+  const [paperContainers, setPaperContainers] = useState<ExamManageForm[]>([]);
+
+  const getAllPaperContainers = async () => {
+    console.log(localStorage.getItem("accessToken"));
+    try {
+      let token = localStorage.getItem("accessToken");
+      let config = {
+        method: "get",
+        maxBodyLength: Infinity,
+        url: `${host}paper-containers`,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      const response = await axios.request(config);
+      //createUser(newUser);
+      setPaperContainers(response.data);
+      console.log("pc: ", response.data);
+      // Handle successful login based on your API's response structure
+    } catch (error) {
+      console.error(error); // Handle errors appropriately (e.g., display error messages)
+    }
+  };
+
+  const getAllExamRoom = async () => {
+    console.log(localStorage.getItem("accessToken"));
+    try {
+      let token = localStorage.getItem("accessToken");
+      let config = {
+        method: "get",
+        maxBodyLength: Infinity,
+        url: `${host}exam_room`,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      const response = await axios.request(config);
+      //createUser(newUser);
+      setExamRooms(response.data);
+      console.log("er: ", response.data);
+      // Handle successful login based on your API's response structure
+    } catch (error) {
+      console.error(error); // Handle errors appropriately (e.g., display error messages)
+    }
+  };
+
+  const getAllExamDetail = async () => {
+    console.log(localStorage.getItem("accessToken"));
+    try {
+      let token = localStorage.getItem("accessToken");
+      let config = {
+        method: "get",
+        maxBodyLength: Infinity,
+        url: `${host}examRoomDetails`,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      const response = await axios.request(config);
+      //createUser(newUser);
+      setExamRoomsDetails(response.data);
+      console.log("pc: ", response.data);
+      // Handle successful login based on your API's response structure
+    } catch (error) {
+      console.error(error); // Handle errors appropriately (e.g., display error messages)
+    }
+  };
 
   const [searchPaperContainers, setSearchPaperContainers] =
     React.useState<ExamManageForm[]>(paperContainers);
@@ -61,23 +108,13 @@ const ExamManagePage: React.FC = () => {
           case "All":
             console.log(text.toLowerCase());
             if (
-              paperContainer.paperContainerCode
+              paperContainer.examRooms?.room.name
                 .toLowerCase()
                 .includes(text.toLowerCase()) ||
-              paperContainer.roomName
+              paperContainer.examRooms?.subject.name
                 .toLowerCase()
                 .includes(text.toLowerCase()) ||
-              paperContainer.subject
-                .toLowerCase()
-                .includes(text.toLowerCase()) ||
-              paperContainer.date.toLowerCase().includes(text.toLowerCase())
-            ) {
-              return paperContainer;
-            }
-            break;
-          case "Mã túi thi":
-            if (
-              paperContainer.paperContainerCode
+              formatDate(paperContainer.examRooms?.date)
                 .toLowerCase()
                 .includes(text.toLowerCase())
             ) {
@@ -86,21 +123,27 @@ const ExamManagePage: React.FC = () => {
             break;
           case "Phòng thi":
             if (
-              paperContainer.roomName.toLowerCase().includes(text.toLowerCase())
+              paperContainer.examRooms?.room.name
+                .toLowerCase()
+                .includes(text.toLowerCase())
             ) {
               return paperContainer;
             }
             break;
-          case "Tên môn thi":
+          case "Môn thi":
             if (
-              paperContainer.subject.toLowerCase().includes(text.toLowerCase())
+              paperContainer.examRooms?.subject.name
+                .toLowerCase()
+                .includes(text.toLowerCase())
             ) {
               return paperContainer;
             }
             break;
           case "Ngày thi":
             if (
-              paperContainer.date.toLowerCase().includes(text.toLowerCase())
+              formatDate(paperContainer.examRooms?.date)
+                .toLowerCase()
+                .includes(text.toLowerCase())
             ) {
               return paperContainer;
             }
@@ -149,55 +192,100 @@ const ExamManagePage: React.FC = () => {
     setSearchText(e.target.value);
   };
 
-  const handleClearRow = (paperContainer: ExamManageForm): void => {
+  const handleClearRow = async (paperContainer: ExamManageForm) => {
     if (paperContainer.numberOfPapers > 0) {
-      //in ra là không cho xóa
+      alert("Không thể xóa");
       return;
     }
 
-    let temp: ExamManageForm[] = [...paperContainers];
-    temp = temp.filter((value) => {
-      if (value.paperContainerCode !== paperContainer.paperContainerCode) {
-        return value;
-      }
-    });
-    setPaperContainers(temp);
-  };
-
-  const handleSubmit = (data: ExamManageForm): void => {
-    let temp = [...paperContainers];
-    temp.push(data);
-    setPaperContainers(temp);
-  };
-
-  const handleEdit = (data: ExamManageForm): void => {
-    let idx: number = -1;
-    paperContainers.map((paperContainer, index) => {
-      if (paperContainer.paperContainerCode == data.paperContainerCode) {
-        idx = index;
-      }
-    });
-
-    if (idx != -1) {
-      let temp: ExamManageForm[] = [...paperContainers];
-      temp[idx] = data || {
-        paperContainerCode: "",
-        roomName: "",
-        subjectName: "",
-        date: "",
-        numberOfPapers: 0,
+    try {
+      let token = localStorage.getItem("accessToken");
+      let dt = JSON.stringify({
+        id: paperContainer.id,
+      });
+      let config = {
+        method: "delete",
+        maxBodyLength: Infinity,
+        url: `${host}paper-containers/${paperContainer.id}`,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        data: dt,
       };
-      setPaperContainers(temp);
-      console.log(temp[idx]);
-    } else {
-      console.log("Lỗi update");
+      const response = await axios.request(config).then((response) => {
+        getAllPaperContainers();
+      });
+      //createUser(newUser);
+      // Handle successful login based on your API's response structure
+    } catch (error) {
+      console.error(error); // Handle errors appropriately (e.g., display error messages)
+    }
+  };
+
+  const handleSubmit = async (data: ExamManageForm) => {
+    try {
+      let token = localStorage.getItem("accessToken");
+      let dt = JSON.stringify({
+        examRoomId: data.examRoomId,
+        subjectId: data.subjectId,
+        numberOfPapers: data.numberOfPapers,
+      });
+      let config = {
+        method: "post",
+        maxBodyLength: Infinity,
+        url: `${host}paper-containers`,
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        data: dt,
+      };
+      const response = await axios.request(config).then((response) => {
+        getAllPaperContainers();
+      });
+      //createUser(newUser);
+      // Handle successful login based on your API's response structure
+    } catch (error) {
+      console.error(error); // Handle errors appropriately (e.g., display error messages)
+    }
+  };
+
+  const handleEdit = async (data: ExamManageForm) => {
+    try {
+      let dt = JSON.stringify({
+        examRoomId: data.examRoomId,
+        subjectId: data.subjectId,
+        numberOfPapers: data.numberOfPapers,
+      });
+      let token = localStorage.getItem("accessToken");
+      let config = {
+        method: "put",
+        maxBodyLength: Infinity,
+        url: `${host}paper-containers/${data.id}`,
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        data: dt,
+      };
+      const response = await axios.request(config).then((response) => {
+        getAllPaperContainers();
+      });
+    } catch (error) {
+      console.error(error); // Handle errors appropriately (e.g., display error messages)
     }
   };
 
   const handleEditRow = (exRoom: ExamManageForm): void => {
     setRowToEdit(exRoom);
-    setIsOpenForm(true);
+    // setIsOpenForm(true);
   };
+
+  useEffect(() => {
+    getAllPaperContainers();
+    getAllExamRoom();
+    getAllExamDetail();
+  }, []);
 
   return (
     <Container
@@ -254,15 +342,14 @@ const ExamManagePage: React.FC = () => {
           </Button>
         </div>
         <div className="w-11/12 mx-auto font-notoSans font-bold mt-6 align-center text-lg">
-          Tổng: {searchPaperContainers.length}
+          Tổng: {searchPaperContainers?.length || 0}
         </div>
         <table className="max-w-11/12 w-11/12 mx-auto text-lg shadow-tableShadow border-collapse rounded-3xl bg-white">
           <thead>
             <tr className="text-center text-blueTitle border-b border-gray">
               <th className="p-2 w-1/12">STT</th>
-              <th className="border-l border-gray p-2 w-2/12">Mã túi thi</th>
               <th className="border-l border-gray p-2">Phòng thi</th>
-              <th className="border-l border-gray p-2">Tên môn thi</th>
+              <th className="border-l border-gray p-2">Môn thi</th>
               <th className="border-l border-gray p-2">Ngày thi</th>
               <th className="border-l border-gray p-2 w-2/12">Số lượng</th>
               <th className="w-12 border-gray p-2"></th>
@@ -277,20 +364,21 @@ const ExamManagePage: React.FC = () => {
                 >
                   <td className="px-2 py-1 border-r">{index + 1}</td>
                   <td className="px-2 py-1 border-r">
-                    {item.paperContainerCode}
+                    {item.examRooms?.room.name || ""}
                   </td>
-                  <td className="px-2 py-1 border-r">{item.roomName}</td>
-                  <td className="px-2 py-1 border-r">{item.subject}</td>
-                  <td className="px-2 py-1 border-r">{item.date}</td>
+                  <td className="px-2 py-1 border-r">
+                    {item.examRooms?.subject.name || ""}
+                  </td>
+                  <td className="px-2 py-1 border-r">
+                    {formatDate(item.examRooms?.date) || ""}
+                  </td>
                   <td className="px-2 py-1">{item.numberOfPapers}</td>
                   <td className="flex flex-row justify-center h-9 mr-1 self-center justify-self-center">
                     <button
                       className="cursor-pointer"
                       onClick={() => {
                         handleEditRow(item);
-                        router.push(
-                            `/scoreManage/${item.paperContainerCode}`
-                          )
+                        router.push(`/scoreManage/${item.id}`);
                       }}
                       //   onClick={() => {
                       //     setIsEdit(true);
@@ -303,7 +391,13 @@ const ExamManagePage: React.FC = () => {
                       className="cursor-pointer"
                       onClick={() => {
                         setIsEdit(true);
-                        handleEditRow(item);
+                        handleEditRow({
+                          id: item.id,
+                          subjectId: item.examRooms.subject.id,
+                          examRoomId: item.examRooms.id,
+                          numberOfPapers: item.numberOfPapers,
+                        });
+                        setIsOpenForm(true);
                       }}
                     >
                       <FaPencil size={18} />
@@ -326,16 +420,16 @@ const ExamManagePage: React.FC = () => {
           <div className="absolute inset-0 flex justify-center items-center bg-black bg-opacity-50 z-50">
             <FormPaperContainer
               paperContainers={paperContainers}
+              examRooms={examRooms}
               closeModal={() => setIsOpenForm(false)}
               isEdit={isEdit}
               onSubmit={isEdit ? handleEdit : handleSubmit}
               defaultValue={
                 rowToEdit === undefined
                   ? {
-                      paperContainerCode: "",
-                      roomName: "",
-                      subject: "",
-                      date: "",
+                      id: "",
+                      examRoomId: examRooms[0]?.id || "",
+                      subjectId: examRooms[0]?.subject.id || "",
                       numberOfPapers: 0,
                     }
                   : rowToEdit
