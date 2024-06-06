@@ -5,49 +5,36 @@ import { Button } from "react-bootstrap";
 const FormPaper: React.FC<{
   closeModal: () => void;
   isEdit: boolean;
-  onSubmit: (data: ScoreManageForm) => void;
-  defaultValue: ScoreManageForm;
-  papers: ScoreManageForm[];
-}> = ({ closeModal, isEdit, onSubmit, defaultValue, papers }) => {
+  onSubmit: (data: Paper) => void;
+  defaultValue: Paper;
+  papers: Paper[];
+  students: Student[];
+}> = ({ closeModal, isEdit, onSubmit, defaultValue, papers, students }) => {
   const [formState, setFormState] = useState(defaultValue);
   const [errors, setErrors] = useState("");
   const isEdt = isEdit || true;
 
   const validateForm = () => {
-    if (
-      formState.paperCode != "" &&
-      formState.studentCode != "" &&
-      formState.date != ""
-    ) {
-      const isIdExists = papers.some(
-        (paper) => paper.paperCode == formState.paperCode
-      );
-
+    if (formState.student != "") {
       const isDuplication = papers.some(
         (paper) =>
-          paper.paperCode != formState.paperCode &&
-          paper.studentCode == formState.studentCode
+          paper.id != formState.id && paper.student == formState.student
       );
 
-      if (!isEdit && isIdExists) {
-        setErrors(
-          "Mã bài thi này đã tồn tại! Vui lòng nhập một mã bài thi khác."
-        );
-        return false;
-      } else if (isDuplication) {
+      if (isDuplication) {
         setErrors("Thí sinh đã có bài thi trong túi thi này.");
+        return false;
+      } else if (formState.score < 0 || formState.score > 10) {
+        setErrors("Điểm của thí sinh phải từ 0 đến 10.");
         return false;
       }
       return true;
     } else {
       let errorFields = [];
       for (const [key, value] of Object.entries(formState)) {
-        if (value == "") {
+        if ((key != "id" && value == "") || (key != "subject" && value == "")) {
           switch (key) {
-            case "paperCode":
-              errorFields.push("Mã túi thi");
-              break;
-            case "studentCode":
+            case "student":
               errorFields.push("Mã thí sinh");
               break;
             default:
@@ -59,7 +46,7 @@ const FormPaper: React.FC<{
     }
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e) => {
     setFormState({ ...formState, [e.target.name]: e.target.value });
   };
 
@@ -73,9 +60,9 @@ const FormPaper: React.FC<{
     closeModal();
   };
 
-  useEffect(() => {
-    //gọi api update lại tên thí sinh
-  }, [formState.studentCode]);
+  // useEffect(() => {
+  //   //gọi api update lại tên thí sinh
+  // }, [formState.studentCode]);
 
   return (
     <div
@@ -87,28 +74,46 @@ const FormPaper: React.FC<{
     >
       {/* <div className="bg-mainBlue"> */}
       <form className="h-5/6 w-full items-center justify-around flex flex-col">
-        <div className="flex flex-row w-4/6">
+        {/* <div className="flex flex-row w-4/6">
           <label className="w-1/3 lg:w-1/2">Mã bài thi</label>
           <input
             className="border border-black w-1/2 p-2"
             name="paperCode"
             onChange={handleChange}
             type="text"
-            value={formState.paperCode}
+            value={formState.id}
             disabled={isEdit}
           />
-        </div>
+        </div> */}
         <div className="flex flex-row w-4/6">
           <label className="w-1/3 lg:w-1/2">Mã thí sinh</label>
-          <input
-            className="border border-black w-1/2 p-2"
-            name="studentCode"
+          <select
+            name="student"
             onChange={handleChange}
-            type="text"
-            value={formState.studentCode}
-          />
+            className="border border-black w-1/2 p-2"
+            id="student"
+            value={formState.student}
+          >
+            {students?.map((item, index) => {
+              return (
+                <option key={index} value={item.id}>
+                  {item.id || ""}
+                </option>
+              );
+            })}
+          </select>
         </div>
         <div className="flex flex-row w-4/6">
+          <label className="w-1/3 lg:w-1/2">Điểm</label>
+          <input
+            className="border border-black w-1/2 p-2"
+            name="score"
+            onChange={handleChange}
+            type="text"
+            value={formState.score}
+          />
+        </div>
+        {/* <div className="flex flex-row w-4/6">
           <label className="w-1/3 lg:w-1/2">Tên thí sinh</label>
           <input
             className="border border-black w-1/2 p-2"
@@ -117,7 +122,7 @@ const FormPaper: React.FC<{
             disabled
             value={formState.studentName}
           />
-        </div>
+        </div> */}
         {errors && <div className="text-center">{errors}</div>}
         <div className="flex flex-row w-1/2 justify-around">
           <Button type="submit" className="mt-2" onClick={closeModal}>

@@ -27,17 +27,17 @@ interface Student {
   financeStatus: boolean;
 }
 interface std {
-    fullName: string,
-    numberId: string, 
-    gender: string,
-    dateOfBirth: string,
-    phoneNumber: string, 
-    email: string,
-    placeOfBirth: string,
-    ethnicType: string, 
-    houseHold: string, 
-    address: string, 
-    school: string 
+  fullName: string;
+  numberId: string;
+  gender: string;
+  dateOfBirth: string;
+  phoneNumber: string;
+  email: string;
+  placeOfBirth: string;
+  ethnicType: string;
+  houseHold: string;
+  address: string;
+  school: string;
 }
 interface ExamRoomManageForm {
   id: string;
@@ -54,10 +54,9 @@ interface Account {
 }
 
 interface ExamManageForm {
-  paperContainerCode: string;
-  roomName: string;
-  subject: string;
-  date: string;
+  id: string;
+  examRoomId: string;
+  subjectId: string;
   numberOfPapers: number;
 }
 
@@ -110,4 +109,16 @@ interface PaperContainer {
   id: string;
   numberOfPapers: number;
   subject: string;
+}
+
+interface ExamRoomDetail {
+  student: Student;
+  examRoom: ExamRoomManageForm;
+}
+
+interface Paper {
+  id: string;
+  score: number;
+  subject: string;
+  student: string;
 }

@@ -9,6 +9,7 @@ import FormExamRoom from "@/components/formExamRoom";
 import useDebounce from "@/hooks/useDebounce";
 import axios from "axios";
 import { formatDate } from "../../../../utils/something.js";
+import { host } from "@/constants/string.js";
 
 const VenueManageScreen: React.FC = () => {
   const [isInputFocused, setIsInputFocused] = useState<boolean>(false);
@@ -84,7 +85,7 @@ const VenueManageScreen: React.FC = () => {
       let config = {
         method: "get",
         maxBodyLength: Infinity,
-        url: "http://localhost:8080/exam_room",
+        url: `${host}exam_room`,
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -105,7 +106,7 @@ const VenueManageScreen: React.FC = () => {
       let config = {
         method: "get",
         maxBodyLength: Infinity,
-        url: "http://localhost:8080/room",
+        url: `${host}room`,
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -126,7 +127,7 @@ const VenueManageScreen: React.FC = () => {
       let config = {
         method: "get",
         maxBodyLength: Infinity,
-        url: "http://localhost:8080/subject",
+        url: `${host}subject`,
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -174,7 +175,7 @@ const VenueManageScreen: React.FC = () => {
       let config = {
         method: "delete",
         maxBodyLength: Infinity,
-        url: `http://localhost:8081/exam_room/${roomCode}`,
+        url: `${host}exam_room/${roomCode}`,
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -210,10 +211,10 @@ const VenueManageScreen: React.FC = () => {
       let config = {
         method: "post",
         maxBodyLength: Infinity,
-        url: "http://localhost:8080/exam_room",
+        url: `${host}exam_room`,
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
         data: dt,
       };
@@ -238,7 +239,7 @@ const VenueManageScreen: React.FC = () => {
       let config = {
         method: "put",
         maxBodyLength: Infinity,
-        url: `http://localhost:8080/exam_room/${data.id}`,
+        url: `${host}exam_room/${data.id}`,
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
