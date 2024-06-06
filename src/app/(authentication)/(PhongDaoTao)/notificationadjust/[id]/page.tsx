@@ -80,7 +80,7 @@ const NotiAdjustPage: React.FC = ({params}) => {
       };
       console.log(id);
       const response = await axios.request(config);
-      //router.back()
+      router.back()
       console.log('Notification updated successfully');
       console.log(fetchData())
     } catch (error) {

@@ -187,7 +187,7 @@ export default function SubjectManagement() {
           let dt = JSON.stringify({
             "name": data.name,
             "parameter": data.parameter,
-            "quotas": data.time
+            "time": data.time
           })
           let config = {
             method: 'post',

@@ -1254,7 +1254,6 @@ const ProfileRegisterPage: React.FC = () => {
                       required
                     >
                       <option value="">-- Chọn nơi sinh --</option>
-                      <option value="">-- Chọn địa chỉ --</option>
                       <option value="An Giang">An Giang</option>
                       <option value="Bà Rịa - Vũng Tàu">
                         Bà Rịa - Vũng Tàu
@@ -1367,7 +1366,7 @@ const ProfileRegisterPage: React.FC = () => {
                     required
                   >
                     <option value="">-- Chọn địa chỉ --</option>
-                    <option value="">-- Chọn địa chỉ --</option>
+
                     <option value="An Giang">An Giang</option>
                     <option value="Bà Rịa - Vũng Tàu">Bà Rịa - Vũng Tàu</option>
                     <option value="Bắc Giang">Bắc Giang</option>
@@ -1445,7 +1444,7 @@ const ProfileRegisterPage: React.FC = () => {
                     onChange={handleChange}
                     required
                   >
-                    <option value="">-- Chọn địa chỉ --</option>
+                    <option value="">Di linh</option>
                     {Object.keys(districts).map((city) => (
                   <option key={city} value={city}>
                     {city}
@@ -1464,7 +1463,7 @@ const ProfileRegisterPage: React.FC = () => {
                     onChange={handleChange}
                     required
                   >
-                    <option value="">-- Chọn địa chỉ --</option>
+                    <option value="">Liên Đầm</option>
                     {Object.keys(districts).map((city) => (
                   <option key={city} value={city}>
                     {city}
@@ -1578,7 +1577,7 @@ const ProfileRegisterPage: React.FC = () => {
                     onChange={handleChange}
                     required
                   >
-                    <option value="">-- Chọn địa chỉ --</option>
+                    <option value="">Liên Đầm</option>
                     {Object.keys(districts).map((city) => (
                   <option key={city} value={city}>
                     {city}
@@ -1597,7 +1596,7 @@ const ProfileRegisterPage: React.FC = () => {
                     onChange={handleChange}
                     required
                   >
-                    <option value="">-- Chọn địa chỉ --</option>
+                    <option value="">Hòa Ninh</option>
                     {Object.keys(districts).map((city) => (
                   <option key={city} value={city}>
                     {city}
