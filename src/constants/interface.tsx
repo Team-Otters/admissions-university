@@ -1,7 +1,7 @@
 interface Wish {
   id: string;
-  name: string;
-  priority: number;
+  subjectSetId : string;
+  classId: string;
 }
 interface Post {
   id: string;
