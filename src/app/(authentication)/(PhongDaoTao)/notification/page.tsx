@@ -20,6 +20,7 @@ export default function Notice() {
   const length = newListData.length;
   const pageNumber = Math.ceil(length / 10);
   const pageNumbers = Array.from({ length: pageNumber }, (_, i) => i + 1);
+  const index = -1;
  
 
   const getAllPost = async () => { 
@@ -130,7 +131,7 @@ export default function Notice() {
                 onClick={() => currentPageNumber === 1 ? null : setCurrentPageNumber(currentPageNumber - 1)}
                 className={`page-item ${currentPageNumber === 1 ? 'disabled' : ''}`}
               >
-                <a className="page-link" href="#" tabIndex="-1">Previous</a>
+                <a className="page-link" href="#" tabIndex={index}>Previous</a>
               </li>
               {pageNumbers.map((pageNum) => (
                 <li

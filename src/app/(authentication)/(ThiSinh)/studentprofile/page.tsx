@@ -166,7 +166,7 @@ const StudentProfilePage: React.FC = () => {
   };
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+    e: any
   ) => {
     const { name, value } = e.target;
     setFormData((prevState) => ({

@@ -8,20 +8,20 @@ import { Container, Alert } from "react-bootstrap";
 import axios from "axios";
 import { host } from "@/constants/string";
 interface IFormData {
-    wishChangeTime: string;
-    registrationTime: string;
-    admissionTime: string;
-    feePayTime: string;
-    personalInformationChangeTime: string;
-    resultTime: string;
+  wishChangeTime: string;
+  registrationTime: string;
+  admissionTime: string;
+  feePayTime: string;
+  personalInformationChangeTime: string;
+  resultTime: string;
 }
 
 const TimeChangePage: React.FC = () => {
   const [formData, setFormData] = useState<IFormData>({
-    wishChangeTime:"",
-    registrationTime:"",
-    admissionTime:"",
-    feePayTime:"",
+    wishChangeTime: "",
+    registrationTime: "",
+    admissionTime: "",
+    feePayTime: "",
     personalInformationChangeTime: "",
     resultTime: "",
   });
@@ -73,6 +73,7 @@ const TimeChangePage: React.FC = () => {
   };
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    const token = localStorage.getItem('accessToken');
 
     // const allFieldsFilled = Object.values(formData).every(
     //   (value) => value.trim() !== ""
@@ -91,14 +92,20 @@ const TimeChangePage: React.FC = () => {
     // }
     try {
       let data = JSON.stringify({
-
+        wishChangeTime: formData.wishChangeTime,
+        registrationTime: formData.registrationTime,
+        admissionTime: formData.admissionTime,
+        feePayTime: formData.feePayTime,
+        personalInformationChangeTime: formData.personalInformationChangeTime,
+        resultTime: "",
       });
       let config = {
         method: "post",
         maxBodyLength: Infinity,
-        url: "http://localhost:8081/register/student",
+        url: "http://localhost:8080/timeToChange",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
         data: data,
       };
@@ -118,12 +125,14 @@ const TimeChangePage: React.FC = () => {
     >
       <>
         <h1 className="text-center">Thay đổi các mốc thời gian</h1>
-        <Form onSubmit={handleSubmition}>
+        <Form onSubmit={handleSubmit}>
           <Row className="mb-3">
             <Col></Col>
             <Col xs={6}>
               <Form.Group controlId="formWishChangeTime">
-                <Form.Label className="pl-2">Thời gian thay đổi nguyện vọng</Form.Label>
+                <Form.Label className="pl-2">
+                  Thời gian thay đổi nguyện vọng
+                </Form.Label>
                 <Form.Control
                   type="date"
                   name="wishChangeTime"
@@ -188,7 +197,9 @@ const TimeChangePage: React.FC = () => {
             <Col></Col>
             <Col xs={6}>
               <Form.Group controlId="formPersonalInformationChangeTime">
-                <Form.Label className="pl-2">Thời gian thay đổi thông tin cá nhân</Form.Label>
+                <Form.Label className="pl-2">
+                  Thời gian thay đổi thông tin cá nhân
+                </Form.Label>
                 <Form.Control
                   type="date"
                   name="personalInformationChangeTime"

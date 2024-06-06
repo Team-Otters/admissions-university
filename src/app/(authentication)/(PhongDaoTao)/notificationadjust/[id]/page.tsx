@@ -51,6 +51,7 @@ const NotiAdjustPage: React.FC = ({params}) => {
   const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>): void => {
     const { name, value } = event.target;
     setFormData({ ...formData, [name]: value });
+    console.log(formData);
   };
   
 
