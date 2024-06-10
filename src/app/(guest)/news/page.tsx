@@ -4,6 +4,7 @@ import { Button, Col, Container, Row } from "react-bootstrap";
 import Pagination from "react-bootstrap/Pagination";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import { host } from "@/constants/string";
 
 interface Post {
   title: string;
@@ -23,7 +24,7 @@ export default function News() {
       let config = {
         method: 'get',
         maxBodyLength: Infinity,
-        url: 'http://localhost:8080/notification',
+        url: `${host}notification`,
         headers: {}
       };
 

@@ -6,6 +6,7 @@ import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import Button from "react-bootstrap/Button";
 import { Container, Alert } from "react-bootstrap";
+import Image from "next/image";
 
 interface IFormData {
   fullName: string;
@@ -291,44 +292,17 @@ const StudentProfilePage: React.FC = () => {
             </Row>
           </Col>
           <Col xs="auto" className="justify-center">
-            <Form.Group
-              controlId="formIDImage"
-              className="flex flex-col items-start"
-            >
-              {!formData.idImage ? (
-                <div className="mb-2.5">
-                  <Form.Label className="pl-2 justify-self-center">
-                    Ảnh Thẻ
-                  </Form.Label>
-                  <Form.Control
-                    type="file"
-                    disabled={!isEditable}
-                    accept="image/*"
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                      if (e.target.files && e.target.files[0]) {
-                        const reader = new FileReader();
-                        reader.onload = (e) => {
-                          setFormData((prevData) => ({
-                            ...prevData,
-                            idImage: e.target?.result as string,
-                          }));
-                        };
-                        reader.readAsDataURL(e.target.files[0]);
-                      }
-                    }}
-                  />
-                </div>
-              ) : (
-                <div className="mb-2.5">
-                  <Form.Label className="pl-2">Ảnh Thẻ</Form.Label>
-                  <img
-                    src={formData.idImage}
-                    alt="Uploaded Image"
-                    className="mt-2 max-w-36 max-h-36"
-                  />
-                </div>
-              )}
-            </Form.Group>
+
+                                 <Image
+                          src="/images/cach-chup-hinh-the-dep.jpeg"
+                          alt=""
+                          height={100}
+                          width={80}
+                          sizes="80%"
+                >
+                  
+                </Image> 
+
           </Col>
         </Row>
 

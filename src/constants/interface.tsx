@@ -1,7 +1,7 @@
 interface Wish {
   id: string;
-  name: string;
-  priority: number;
+  subjectSetId : string;
+  classId: string;
 }
 interface Post {
   id: string;
@@ -27,17 +27,18 @@ interface Student {
   financeStatus: boolean;
 }
 interface std {
-  fullName: string;
-  numberId: string;
-  gender: string;
-  dateOfBirth: string;
-  phoneNumber: string;
-  email: string;
-  placeOfBirth: string;
-  ethnicType: string;
-  houseHold: string;
-  address: string;
-  school: string;
+    id:string;
+    fullName: string,
+    numberId: string, 
+    gender: string,
+    dateOfBirth: string,
+    phoneNumber: string, 
+    email: string,
+    placeOfBirth: string,
+    ethnicType: string, 
+    houseHold: string, 
+    address: string, 
+    school: string 
 }
 interface ExamRoomManageForm {
   id: string;

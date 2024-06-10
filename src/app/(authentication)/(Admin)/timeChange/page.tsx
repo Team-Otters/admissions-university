@@ -6,7 +6,7 @@ import Row from "react-bootstrap/Row";
 import Button from "react-bootstrap/Button";
 import { Container, Alert } from "react-bootstrap";
 import axios from "axios";
-
+import { host } from "@/constants/string";
 interface IFormData {
   wishChangeTime: string;
   registrationTime: string;
@@ -56,7 +56,7 @@ const TimeChangePage: React.FC = () => {
       let config = {
         method: "post",
         maxBodyLength: Infinity,
-        url: "http://localhost:8080/register/student",
+        url: `${host}register/student`,
         headers: {
           "Content-Type": "application/json",
         },

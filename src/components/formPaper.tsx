@@ -109,7 +109,7 @@ const FormPaper: React.FC<{
             className="border border-black w-1/2 p-2"
             name="score"
             onChange={handleChange}
-            type="text"
+            type="number"
             value={formState.score}
           />
         </div>

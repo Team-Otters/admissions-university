@@ -3,7 +3,8 @@ import { Button, Col, Container, Row } from "react-bootstrap";
 import { Pagination } from "react-bootstrap";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-
+import { useRouter } from "next/navigation";
+import { host } from "@/constants/string";
 interface Post {
   title: string;
   date: string;
@@ -12,6 +13,7 @@ interface Post {
 }
 
 export default function Notice() {
+  const router= useRouter();
   const [newListData, setNewlistData] = useState<Post[]>([]);
   const [currentPageNumber, setCurrentPageNumber] = useState(1);
   const [searchQuery, setSearchQuery] = useState('');
@@ -21,24 +23,29 @@ export default function Notice() {
   const index = -1;
  
 
-  useEffect(() => {
-    const fetchNotifications = async () => {
-      const config = {
-        method: 'get',
-        maxBodyLength: Infinity,
-        url: 'http://localhost:8080/notification',
-        headers: { }
-      };
+  const getAllPost = async () => { 
+    let token = localStorage.getItem('accessToken');
 
-      try {
-        const response = await axios.request(config);
-        setNewlistData(response.data);
-      } catch (error) {
-        console.error("Error fetching notifications:", error);
+    const config = {
+      method: 'get',
+      maxBodyLength: Infinity,
+      url: `${host}notification`,
+      headers: { 
+        'Authorization': `Bearer ${token}`
       }
     };
 
-    fetchNotifications();
+    try {
+      const response = await axios.request(config);
+      setNewlistData(response.data);
+    } catch (error) {
+      console.error("Error fetching notifications:", error);
+    }
+  };
+
+  
+  React.useEffect(() => {
+    getAllPost();
   }, []);
 
   const handleSearch = (event : any) => {
@@ -51,7 +58,7 @@ export default function Notice() {
 
   const handleModify = (id: string) => {
     localStorage.setItem('notificationId', id);
-    window.location.href = `/notificationadjust`;
+    window.location.href = `/notificationadjust/${id}`;
   };
 
   const handleDelete = async (id: string) => {
@@ -61,7 +68,7 @@ export default function Notice() {
       const token = localStorage.getItem("accessToken");
       
       // Make a DELETE request to the server endpoint with the specific ID and authorization token
-      await axios.delete(`http://localhost:8080/admin/notification/${id}`, {
+      await axios.delete(`${host}admin/notification/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -96,7 +103,7 @@ export default function Notice() {
             onChange={handleSearch}
             className="p-2 border border-gray-400 rounded"
           />
-          <Button variant="primary">Thêm bài viết</Button>
+          <Button variant="primary" onClick={()=>{router.push("/notificationadd")}}>Thêm bài viết</Button>
         </div>
         <div className="ml-20">
           {filteredData.map((news, index) => {
