@@ -6,7 +6,8 @@ import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import Button from "react-bootstrap/Button";
 import { Container } from "react-bootstrap";
-
+import { useRouter } from "next/navigation";
+import { host } from "@/constants/string";
 interface IFormData {
   title: string;
   target: string;
@@ -19,7 +20,7 @@ const NotiAddPage: React.FC = () => {
     target: "",
     content: "",
   });
-
+const router = useRouter()
   const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>): void => {
     setFormData({ ...formData, [event.target.name]: event.target.value });
   };
@@ -34,7 +35,7 @@ const NotiAddPage: React.FC = () => {
     const token = localStorage.getItem("accessToken");
 
     try {
-      const response = await axios.post('http://localhost:8080/admin/notification', {
+      const response = await axios.post(`${host}admin/notification`, {
         ...formData,
         day: currentDate,
       }, {
@@ -52,6 +53,7 @@ const NotiAddPage: React.FC = () => {
         target: "",
         content: "",
       });
+router.push("/notification")
       
     } catch (error) {
       console.error(error);

@@ -192,7 +192,7 @@ const AppHeader = () => {
                 {isLoggedIn ? (
                   <>
                     <Nav.Link
-                      href="/profile"
+                      href="/studentprofile"
                       style={{
                         color: hoveredLinks[5]
                           ? "var(--mainBlueColor)"
@@ -215,6 +215,18 @@ const AppHeader = () => {
                       onMouseLeave={() => handleMouseLeave(6)}
                     >
                       Đăng xuất
+                    </Nav.Link>
+                    <Nav.Link
+                      href="/profileregister"
+                      style={{
+                        color: hoveredLinks[6]
+                          ? "var(--mainBlueColor)"
+                          : "var(--dustyGray)",
+                      }}
+                      onMouseEnter={() => handleMouseEnter(6)}
+                      onMouseLeave={() => handleMouseLeave(6)}
+                    >
+                      Đăng Ký Hồ Sơ
                     </Nav.Link>
                   </>
                 ) : (

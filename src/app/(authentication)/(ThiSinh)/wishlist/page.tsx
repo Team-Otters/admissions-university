@@ -4,24 +4,17 @@ import React, { useState } from "react";
 import { Button, Container } from "react-bootstrap";
 import { FaPencil } from "react-icons/fa6";
 import { MdDelete } from "react-icons/md";
-
+import { host } from "@/constants/string";
+import axios from "axios";
+import { useRouter } from "next/navigation";
 const WishlistPage: React.FC = () => {
   const [isOpenForm, setIsOpenForm] = React.useState<boolean>(false);
   const [isEdit, setIsEdit] = React.useState<boolean>(false);
   const [rowToEdit, setRowToEdit] = React.useState<Wish>();
   const [wishlistData, setWishlistData] = React.useState<Wish[]>([
-    {
-      id: "NV001",
-      name: "Toán",
-      priority: 1,
-    },
-    {
-      id: "NV002",
-      name: "Tin",
-      priority: 2,
-    },
   ]);
-
+  const [classData, setClassData] = React.useState<Class[]>([])
+  const [subjectSetData,setSubjectSetData] = React.useState<SubjectSets[]>([]);
   // const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
   //   setFormData({ ...formData, [event.target.name]: event.target.value });
   // };
@@ -59,6 +52,27 @@ const WishlistPage: React.FC = () => {
   //   });
   // };
 
+  const getWish = async () => {
+    try {       
+      let token = localStorage.getItem('accessToken');
+      let config = {
+        method: 'get',
+        maxBodyLength: Infinity,
+        url: `${host}major_class`,
+        headers: { 
+          'Authorization': `Bearer ${token}`
+        }
+      };
+      const response = await axios.request(config);
+       //createUser(newUser);
+       setClassList(response.data);
+       //console.log(response.data);
+      // Handle successful login based on your API's response structure
+    } catch (error) {
+      console.error(error); // Handle errors appropriately (e.g., display error messages)
+    }
+
+  }
   // const handleChangeWish;
   const handleClear = (): void => {
     setWishlistData([]);
@@ -93,7 +107,6 @@ const WishlistPage: React.FC = () => {
       <div className="p-4 mb-4">
         <h2 className="text-3xl">Danh sách nguyện vọng</h2>
         <div className="w-11/12 mx-auto font-notoSans font-bold mt-6 align-center text-lg">
-          Tổng: {wishlistData.length}
         </div>
         <table className="w-11/12 mx-auto text-lg shadow-tableShadow border-collapse rounded-3xl bg-white">
           <thead>
@@ -101,14 +114,13 @@ const WishlistPage: React.FC = () => {
               <th className="border-gray w-2/12 lg:w-1/12 rounded-t-lg p-2">
                 STT
               </th>
-              <th className="border-l border-gray p-2">Tên môn</th>
-              <th className="w-2/12 border-gray p-2"></th>
+              <th className="border-l border-gray p-2">Tên lớp</th>
+              <th className="border-l border-gray p-2">Tên tổ hợp</th>
+              <th className="w-2/12 border-gray p-2"> </th>
             </tr>
           </thead>
           <tbody>
-            {wishlistData
-              ?.sort((a, b) => b.priority - a.priority)
-              .map((item, index) => {
+            {wishlistData.map((item, index) => {
                 return (
                   <tr
                     className="border-b border-gray rounded-b-lg last:border-none"
@@ -117,7 +129,8 @@ const WishlistPage: React.FC = () => {
                     <td className="px-2 py-1 text-center border-r">
                       {index + 1}
                     </td>
-                    <td className="px-2 py-1">{item.name}</td>
+                    <td className="px-2 py-1">{item.classId}</td>
+                    <td className="px-2 py-1">{item.subjectSetId}</td>
                     <td className="flex flex-row justify-center h-9 self-center justify-self-center">
                       <button
                         className="cursor-pointer"

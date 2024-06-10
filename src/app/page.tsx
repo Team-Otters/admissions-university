@@ -8,6 +8,7 @@ import { CgCalendar } from "react-icons/cg";
 import { GrAchievement } from "react-icons/gr";
 import React from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useAuth } from "@/hooks/useAuth";
 
 const images = [
@@ -86,6 +87,7 @@ export default function Home() {
     },
   ]);
   const authContext = useAuth();
+  const router = useRouter();
   return (
     <Container
       fluid
@@ -125,7 +127,14 @@ export default function Home() {
             </Row>
             <Row>
               <div className=" flex justify-items-center justify-center">
-                <Button className=" w-50 btn-custom ">Đăng ký hồ sơ</Button>{" "}
+                <Button
+                  onClick={() => {
+                    router.push("profileregister");
+                  }}
+                  className=" w-50 btn-custom "
+                >
+                  Đăng ký hồ sơ
+                </Button>{" "}
               </div>
             </Row>
           </Col>

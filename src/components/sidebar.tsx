@@ -107,12 +107,12 @@ const Sidebar: React.FC = () => {
                   Quản lý kỳ thi
                 </li>
                 <li
-                  onClick={() => handleNavigate("/")}
+                  onClick={() => handleNavigate("/notification")}
                   className="py-2 cursor-pointer hover:bg-gray"
                 >
                   Bài viết và thông báo
                 </li>
-                <li className="py-2 cursor-pointer hover:bg-gray">
+                <li onClick={() => handleNavigate("/timeChange")} className="py-2 cursor-pointer hover:bg-gray">
                   Quản lý mốc thời gian
                 </li>
                 <li
@@ -151,7 +151,6 @@ const Sidebar: React.FC = () => {
                 >
                   Quản lý tài khoản
                 </li>
-                <li className="py-2 cursor-pointer hover:bg-gray">Quy định</li>
                 <li
                   onClick={handleLogout}
                   className="py-2 cursor-pointer hover:bg-gray"
@@ -251,7 +250,6 @@ const Sidebar: React.FC = () => {
                 <li className="py-2 cursor-pointer hover:bg-gray">
                   Quản lý tài khoản
                 </li>
-                <li className="py-2 cursor-pointer hover:bg-gray">Quy định</li>
                 <li
                   onClick={() => handleLogout}
                   className="py-2 cursor-pointer hover:bg-gray"
