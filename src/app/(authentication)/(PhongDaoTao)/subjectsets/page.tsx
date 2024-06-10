@@ -12,6 +12,7 @@ import { IoEye } from "react-icons/io5";
 import { MdOutlineFilterAlt, MdDelete } from "react-icons/md";
 import axios from "axios";
 import { host } from "@/constants/string";
+import APIFacade from "@/context/login";
 
 export default function SubjectManagement() {
   const [currentPage, setCurrentPape] = React.useState<Number>(1);
@@ -31,25 +32,10 @@ export default function SubjectManagement() {
       };
       const handleSubmit = async (data: SubjectSets)=> {
         try {       
-          let token = localStorage.getItem('accessToken');
-          let dt = JSON.stringify({
-            "name": data.name,
-            "subjects": data.subjectList
-          })
-          let config = {
-            method: 'post',
-            maxBodyLength: Infinity,
-            url: `${host}subjectSets`,
-            headers: { 
-              'Content-Type': 'application/json',
-              'Authorization': `Bearer ${token}`
-            },
-            data: dt
-          };
-          const response = await axios.request(config);
+          const response = await APIFacade.addSubjectSet(data);
            //createUser(newUser);
-           setSubjectList(response.data.content);
-           console.log(`subject list: ${response.data.content}`);
+           //setSubjectList(response.data.content);
+           //console.log(`subject list: ${response.data.content}`);
            getAllSubjectSet();
           // Handle successful login based on your API's response structure
         } catch (error) {
@@ -89,46 +75,19 @@ export default function SubjectManagement() {
       const handleClearRow = async (data: SubjectSets)=> {
 
         try {       
-          let token = localStorage.getItem('accessToken');
-          let config = {
-            method: 'delete',
-            maxBodyLength: Infinity,
-            url: `${host}subjectSets/${data.id}`,
-            headers: { 
-              'Authorization': `Bearer ${token}`
-            },
-            data:data
-          };
-          await axios.request(config);
+          await APIFacade.deleteSubjectSet(data.id);
            getAllSubjectSet();
           // Handle successful login based on your API's response structure
         } catch (error) {
           console.error(error); 
-          alert(`Bug because of constraint in database. Error code:${error.code}`)
+          alert(`Bug because of constraint in database. `)
           // Handle errors appropriately (e.g., display error messages)
         }
       };
       const handleClassSubmit = async (data: Class) => {
         try {       
-          let token = localStorage.getItem('accessToken');
-          let dt = JSON.stringify({
-            "name": data.name,
-            "year": data.year,
-            "quotas": data.quotas
-          })
-          let config = {
-            method: 'post',
-            maxBodyLength: Infinity,
-            url: `${host}major_class`,
-            headers: { 
-              'Content-Type': 'application/json',
-              'Authorization': `Bearer ${token}`
-            },
-            data: dt
-          };
-          const response = await axios.request(config);
+          const response = await APIFacade.addClass(data);
            //createUser(newUser);
-           console.log(`subject list: ${response.data.content}`);
            getAllClass();
           // Handle successful login based on your API's response structure
         } catch (error) {
@@ -138,23 +97,7 @@ export default function SubjectManagement() {
     
       const handleClassEdit = async (data: Class)=> {
         try {       
-          let token = localStorage.getItem('accessToken');
-          let dt = JSON.stringify({
-            "name": data.name,
-            "year": data.year,
-            "quotas": data.quotas
-          })
-          let config = {
-            method: 'put',
-            maxBodyLength: Infinity,
-            url: `${host}major_class/${data.id}`,
-            headers: { 
-              'Content-Type': 'application/json',
-              'Authorization': `Bearer ${token}`
-            },
-            data: dt
-          };
-          const response = await axios.request(config);
+          const response = await APIFacade.updateClass(data);
            //createUser(newUser);
            getAllClass();
           // Handle successful login based on your API's response structure
@@ -164,17 +107,7 @@ export default function SubjectManagement() {
       };
       const handleClassClearRow = async (data: Class) => {
         try {       
-          let token = localStorage.getItem('accessToken');
-
-          let config = {
-            method: 'delete',
-            maxBodyLength: Infinity,
-            url: `${host}major_class/${data.id}`,
-            headers: { 
-              'Authorization': `Bearer ${token}`
-            }
-          };
-          const response = await axios.request(config);
+          const response = await APIFacade.deleteClass(data.id);
            getAllClass();
           // Handle successful login based on your API's response structure
         } catch (error) {
@@ -183,23 +116,7 @@ export default function SubjectManagement() {
       };
       const handleSubjectSubmit = async (data: Subject)=> {
         try {       
-          let token = localStorage.getItem('accessToken');
-          let dt = JSON.stringify({
-            "name": data.name,
-            "parameter": data.parameter,
-            "time": data.time
-          })
-          let config = {
-            method: 'post',
-            maxBodyLength: Infinity,
-            url: `${host}subject`,
-            headers: { 
-              'Content-Type': 'application/json',
-              'Authorization': `Bearer ${token}`
-            },
-            data: dt
-          };
-          const response = await axios.request(config);
+          const response = await APIFacade.addSubject(data);
            //createUser(newUser);
            getAllSubject();
           // Handle successful login based on your API's response structure
@@ -210,23 +127,7 @@ export default function SubjectManagement() {
     
       const handleSubjectEdit = async (data: Subject) => {
         try {       
-          let token = localStorage.getItem('accessToken');
-          let dt = JSON.stringify({
-            "name": data.name,
-            "parameter": data.parameter,
-            "quotas": data.time
-          })
-          let config = {
-            method: 'put',
-            maxBodyLength: Infinity,
-            url: `${host}subject/${data.id}`,
-            headers: { 
-              'Content-Type': 'application/json',
-              'Authorization': `Bearer ${token}`
-            },
-            data: dt
-          };
-          const response = await axios.request(config);
+          const response = await APIFacade.updateSubject(data);
            //createUser(newUser);
            getAllSubject();
           // Handle successful login based on your API's response structure
@@ -236,17 +137,7 @@ export default function SubjectManagement() {
          };
       const handleSubjectClearRow = async (data: Subject) => {
         try {       
-          let token = localStorage.getItem('accessToken');
-
-          let config = {
-            method: 'delete',
-            maxBodyLength: Infinity,
-            url: `${host}subject/${data.id}`,
-            headers: { 
-              'Authorization': `Bearer ${token}`
-            },
-          };
-          const response = await axios.request(config);
+          const response = await APIFacade.deleteSubject(data.id);
            //createUser(newUser);
            getAllSubject();
           // Handle successful login based on your API's response structure
@@ -269,19 +160,9 @@ export default function SubjectManagement() {
       };
       const getAllSubject = async () => {
         try {       
-          let token = localStorage.getItem('accessToken');
-          let config = {
-            method: 'get',
-            maxBodyLength: Infinity,
-            url: `${host}subject`,
-            headers: { 
-              'Authorization': `Bearer ${token}`
-            }
-          };
-          const response = await axios.request(config);
+          const response = await APIFacade.getAllSubject();
            //createUser(newUser);
-           setSubjectList(response.data.content);
-           console.log(`subject list: ${response.data.content}`);
+           setSubjectList(response);
           // Handle successful login based on your API's response structure
         } catch (error) {
           console.error(error); // Handle errors appropriately (e.g., display error messages)
@@ -290,18 +171,9 @@ export default function SubjectManagement() {
       }
       const getAllClass = async () => {
         try {       
-          let token = localStorage.getItem('accessToken');
-          let config = {
-            method: 'get',
-            maxBodyLength: Infinity,
-            url: `${host}major_class`,
-            headers: { 
-              'Authorization': `Bearer ${token}`
-            }
-          };
-          const response = await axios.request(config);
+          const response = await APIFacade.getAllClass();
            //createUser(newUser);
-           setClassList(response.data);
+           setClassList(response);
            //console.log(response.data);
           // Handle successful login based on your API's response structure
         } catch (error) {
@@ -310,18 +182,9 @@ export default function SubjectManagement() {
       }
       const getAllSubjectSet = async () => {
         try {       
-          let token = localStorage.getItem('accessToken');
-          let config = {
-            method: 'get',
-            maxBodyLength: Infinity,
-            url: `${host}subjectSets`,
-            headers: { 
-              'Authorization': `Bearer ${token}`
-            }
-          };
-          const response = await axios.request(config);
+          const response = await APIFacade.getAllSubjectSet();
            //createUser(newUser);
-           setSubjectSetList(response.data);
+           setSubjectSetList(response);
            //console.log(response.data);
           // Handle successful login based on your API's response structure
         } catch (error) {

@@ -12,6 +12,7 @@ import { useRouter } from "next/navigation";
 import axios from "axios";
 import { formatDate } from "@/utils/something";
 import { host } from "@/constants/string.js";
+import APIFacade from "@/context/login";
 
 const ExamManagePage: React.FC = () => {
   const router = useRouter();
@@ -33,21 +34,11 @@ const ExamManagePage: React.FC = () => {
   const [paperContainers, setPaperContainers] = useState<ExamManageForm[]>([]);
 
   const getAllPaperContainers = async () => {
-    console.log(localStorage.getItem("accessToken"));
     try {
-      let token = localStorage.getItem("accessToken");
-      let config = {
-        method: "get",
-        maxBodyLength: Infinity,
-        url: `${host}paper-containers`,
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      };
-      const response = await axios.request(config);
+      const response = await APIFacade.getAllPaperContainers();
       //createUser(newUser);
-      setPaperContainers(response.data);
-      console.log("pc: ", response.data);
+      setPaperContainers(response);
+      console.log("pc: ", response);
       // Handle successful login based on your API's response structure
     } catch (error) {
       console.error(error); // Handle errors appropriately (e.g., display error messages)
@@ -55,21 +46,11 @@ const ExamManagePage: React.FC = () => {
   };
 
   const getAllExamRoom = async () => {
-    console.log(localStorage.getItem("accessToken"));
     try {
-      let token = localStorage.getItem("accessToken");
-      let config = {
-        method: "get",
-        maxBodyLength: Infinity,
-        url: `${host}exam_room`,
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      };
-      const response = await axios.request(config);
+      const response = await APIFacade.getAllExamRoom();
       //createUser(newUser);
-      setExamRooms(response.data);
-      console.log("er: ", response.data);
+      setExamRooms(response);
+      console.log("er: ", response);
       // Handle successful login based on your API's response structure
     } catch (error) {
       console.error(error); // Handle errors appropriately (e.g., display error messages)
@@ -77,21 +58,12 @@ const ExamManagePage: React.FC = () => {
   };
 
   const getAllExamDetail = async () => {
-    console.log(localStorage.getItem("accessToken"));
     try {
-      let token = localStorage.getItem("accessToken");
-      let config = {
-        method: "get",
-        maxBodyLength: Infinity,
-        url: `${host}examRoomDetails`,
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      };
-      const response = await axios.request(config);
+
+      const response = await APIFacade.getAllExamDetail();
       //createUser(newUser);
-      setExamRoomsDetails(response.data);
-      console.log("pc: ", response.data);
+      setExamRoomsDetails(response);
+      console.log("pc: ", response);
       // Handle successful login based on your API's response structure
     } catch (error) {
       console.error(error); // Handle errors appropriately (e.g., display error messages)
@@ -199,22 +171,8 @@ const ExamManagePage: React.FC = () => {
     }
 
     try {
-      let token = localStorage.getItem("accessToken");
-      let dt = JSON.stringify({
-        id: paperContainer.id,
-      });
-      let config = {
-        method: "delete",
-        maxBodyLength: Infinity,
-        url: `${host}paper-containers/${paperContainer.id}`,
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        data: dt,
-      };
-      const response = await axios.request(config).then((response) => {
+      const response = await APIFacade.deletePaperContainer(paperContainer);
         getAllPaperContainers();
-      });
       //createUser(newUser);
       // Handle successful login based on your API's response structure
     } catch (error) {
@@ -224,25 +182,8 @@ const ExamManagePage: React.FC = () => {
 
   const handleSubmit = async (data: ExamManageForm) => {
     try {
-      let token = localStorage.getItem("accessToken");
-      let dt = JSON.stringify({
-        examRoomId: data.examRoomId,
-        subjectId: data.subjectId,
-        numberOfPapers: data.numberOfPapers,
-      });
-      let config = {
-        method: "post",
-        maxBodyLength: Infinity,
-        url: `${host}paper-containers`,
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        data: dt,
-      };
-      const response = await axios.request(config).then((response) => {
+      const response = await APIFacade.addPaperContainer(data)
         getAllPaperContainers();
-      });
       //createUser(newUser);
       // Handle successful login based on your API's response structure
     } catch (error) {
@@ -252,25 +193,8 @@ const ExamManagePage: React.FC = () => {
 
   const handleEdit = async (data: ExamManageForm) => {
     try {
-      let dt = JSON.stringify({
-        examRoomId: data.examRoomId,
-        subjectId: data.subjectId,
-        numberOfPapers: data.numberOfPapers,
-      });
-      let token = localStorage.getItem("accessToken");
-      let config = {
-        method: "put",
-        maxBodyLength: Infinity,
-        url: `${host}paper-containers/${data.id}`,
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        data: dt,
-      };
-      const response = await axios.request(config).then((response) => {
+      const response = await APIFacade.updatePaperContainer(data);
         getAllPaperContainers();
-      });
     } catch (error) {
       console.error(error); // Handle errors appropriately (e.g., display error messages)
     }

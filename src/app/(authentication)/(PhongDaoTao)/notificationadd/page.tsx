@@ -8,17 +8,15 @@ import Button from "react-bootstrap/Button";
 import { Container } from "react-bootstrap";
 import { useRouter } from "next/navigation";
 import { host } from "@/constants/string";
-interface IFormData {
-  title: string;
-  target: string;
-  content: string;
-}
+import APIFacade from "@/context/login";
 
 const NotiAddPage: React.FC = () => {
-  const [formData, setFormData] = React.useState<IFormData>({
+  const [formData, setFormData] = React.useState<Post>({
+    id: "",
+    day: "",
     title: "",
-    target: "",
     content: "",
+    topic: "",
   });
 const router = useRouter()
   const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>): void => {
@@ -28,32 +26,22 @@ const router = useRouter()
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    // Capture the current date and time
-    const currentDate = new Date().toISOString();
-
-    // Get the token from local storage
-    const token = localStorage.getItem("accessToken");
 
     try {
-      const response = await axios.post(`${host}admin/notification`, {
-        ...formData,
-        day: currentDate,
-      }, {
-        headers: { 
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-      });
 
-      console.log(response.data);
+      const response = await APIFacade.addPost(formData);
+
+      console.log(response);
       
       // Reset form after successful submission
       setFormData({
+        id: "",
+        day: "",
         title: "",
-        target: "",
         content: "",
+        topic: "",
       });
-router.push("/notification")
+      router.push("/notification")
       
     } catch (error) {
       console.error(error);
@@ -86,12 +74,12 @@ router.push("/notification")
         <Row className="mb-3">
           <Col>
             <Form.Group controlId="formTarget">
-              <Form.Label>Đối tượng</Form.Label>
+              <Form.Label>Chủ đề</Form.Label>
               <Form.Control
                 type="text"
                 name="target"
                 placeholder="Nhập đối tượng"
-                value={formData.target}
+                value={formData.topic}
                 onChange={handleChange}
                 required
               />
