@@ -12,7 +12,7 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import type { NextRequest } from "next/server";
 import useRole from "@/hooks/useRole";
-import AuthContext from "@/context/AuthContext";
+import AuthContext from "@/contexts/AuthContext";
 //import { promises as fs } from 'fs';
 interface user {
   username: string;

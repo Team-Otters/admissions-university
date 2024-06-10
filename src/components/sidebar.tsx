@@ -1,39 +1,30 @@
 "use client";
-import { useContext, useState } from "react";
-import { Button } from "react-bootstrap";
+import { useState } from "react";
 import { FaWindowClose } from "react-icons/fa";
 import { TbMenu2 } from "react-icons/tb";
 import { useRouter } from "next/navigation";
-import useRole from "@/hooks/useRole";
 import React from "react";
-import AuthContext from "@/context/AuthContext";
+import { useAuth } from "@/hooks/useAuth";
 
-const Sidebar: React.FC<{ route: string }> = ({ route }) => {
+const Sidebar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [forceRender, setForceRender] = useState(0);
-  const { role } = useContext(AuthContext);
-  const { logout } = useContext(AuthContext);
-
+  const authContext = useAuth();
+  const role = authContext?.role;
   const router = useRouter();
+
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
   const handleLogout = () => {
-    logout();
-    // router.push("");
+    authContext?.logout();
   };
   const handleNavigate = (path: string) => {
-    router.push(path); // Use `router.push` for dynamic navigation
+    router.push(path);
   };
-  React.useEffect(() => {
-    // ... your existing logic for retrieving role from local storage
-
-    setForceRender(forceRender + 1); // Trigger re-render
-  }, []);
 
   return (
     <div>
-      {role == "Khach" ? (
+      {role == "Khach" || role == undefined ? (
         <div></div>
       ) : (
         <div className="text-black text-xl flex-col font-notoSans flex mr-0 lg:mr-52">

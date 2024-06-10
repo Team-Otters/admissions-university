@@ -9,7 +9,7 @@ import Button from "react-bootstrap/Button";
 import { useContext, useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { redirect } from "next/navigation";
-import AuthContext from "@/context/AuthContext";
+import AuthContext from "@/contexts/AuthContext";
 
 const AppHeader = () => {
   const path = usePathname();
