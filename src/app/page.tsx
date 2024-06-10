@@ -86,7 +86,7 @@ export default function Home() {
       content: "",
     },
   ]);
-  const authContext = useAuth();
+  // const authContext = useAuth();
   const router = useRouter();
   return (
     <Container

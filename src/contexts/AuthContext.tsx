@@ -26,7 +26,6 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
   const router = useRouter();
   const authInstance = AuthService.getInstance();
   const [role, setRole] = useState<string>(authInstance.getRole());
-  const [isMounted, setIsMounted] = useState<boolean>(false);
 
   useEffect(() => {
     const handleStorageChange = () => {
@@ -35,14 +34,13 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
 
     if (typeof window !== "undefined") {
       setRole(authInstance.getRole());
-      setIsMounted(true);
       window.addEventListener("storage", handleStorageChange);
     }
 
     return () => {
       window.removeEventListener("storage", handleStorageChange);
     };
-  }, [authInstance]);
+  }, []);
 
   const login = (role: string) => {
     authInstance.login(role);

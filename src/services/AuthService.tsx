@@ -4,11 +4,7 @@ class AuthService {
   private role: string;
 
   private constructor() {
-    if (typeof window !== "undefined") {
-      this.role = localStorage.getItem("role") || "Khach";
-    } else {
-      this.role = "Khach";
-    }
+    this.role = localStorage.getItem("role") || "Khach";
   }
 
   public static getInstance() {
@@ -27,11 +23,9 @@ class AuthService {
 
   public logout(): void {
     this.role = "Khach";
-    if (typeof window !== "undefined") {
-      localStorage.setItem("role", "Khach");
-      localStorage.removeItem("accessToken");
-      localStorage.removeItem("refreshToken");
-    }
+    localStorage.setItem("role", "Khach");
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("refreshToken");
   }
 
   public getRole(): string {

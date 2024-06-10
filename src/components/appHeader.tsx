@@ -6,10 +6,10 @@ import Modal from "react-bootstrap/Modal";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { redirect } from "next/navigation";
-import AuthContext from "@/contexts/AuthContext";
+import { useAuth } from "@/hooks/useAuth";
 
 const AppHeader = () => {
   const path = usePathname();
@@ -27,9 +27,8 @@ const AppHeader = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [username, setUsername] = useState("");
   const [showSignOutModal, setShowSignOutModal] = useState(false);
-
-  const { logout } = useContext(AuthContext);
-  const { role } = useContext(AuthContext);
+  const authContext = useAuth();
+  const role = authContext?.role;
 
   useEffect(() => {
     // const token = localStorage.getItem("accessToken");
@@ -58,7 +57,7 @@ const AppHeader = () => {
   };
 
   const handleConfirmSignOut = () => {
-    logout();
+    authContext?.logout();
     // localStorage.removeItem("accessToken");
     // localStorage.removeItem("username");
     // localStorage.setItem("role", "Khach");

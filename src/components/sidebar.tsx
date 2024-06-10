@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { FaWindowClose } from "react-icons/fa";
 import { TbMenu2 } from "react-icons/tb";
 import { useRouter } from "next/navigation";
@@ -25,7 +25,7 @@ const Sidebar: React.FC = () => {
   return (
     <div>
       {role == "Khach" || role == undefined ? (
-        <div></div>
+        <></>
       ) : (
         <div className="text-black text-xl flex-col font-notoSans flex mr-0 lg:mr-52">
           <div className="bg-white h-full lg:w-52 lg:mt-8 xl:mt-0 hidden lg:flex xl:flex 2xl:flex fixed top-20 bottom-0">
@@ -33,32 +33,34 @@ const Sidebar: React.FC = () => {
             {role == "Khach" ? (
               <></>
             ) : role === "STUDENT" ? (
-              <ul className="flex-1">
-                <li
-                  onClick={() => handleNavigate("/studentscore")}
-                  className="py-2 cursor-pointer hover:bg-gray"
-                >
-                  Tra cứu
-                </li>
-                <li
-                  onClick={() => handleNavigate("/studentprofile")}
-                  className="py-2 cursor-pointer hover:bg-gray"
-                >
-                  Hồ sơ
-                </li>
-                <li
-                  onClick={() => handleNavigate("/wishlist")}
-                  className="py-2 cursor-pointer hover:bg-gray"
-                >
-                  Nguyện vọng
-                </li>
-                <li
-                  onClick={handleLogout}
-                  className="py-2 cursor-pointer hover:bg-gray"
-                >
-                  Đăng xuất
-                </li>
-              </ul>
+              <div>
+                <ul className="flex-1">
+                  <li
+                    onClick={() => handleNavigate("/studentscore")}
+                    className="py-2 cursor-pointer hover:bg-gray"
+                  >
+                    Tra cứu
+                  </li>
+                  <li
+                    onClick={() => handleNavigate("/studentprofile")}
+                    className="py-2 cursor-pointer hover:bg-gray"
+                  >
+                    Hồ sơ
+                  </li>
+                  <li
+                    onClick={() => handleNavigate("/wishlist")}
+                    className="py-2 cursor-pointer hover:bg-gray"
+                  >
+                    Nguyện vọng
+                  </li>
+                  <li
+                    onClick={handleLogout}
+                    className="py-2 cursor-pointer hover:bg-gray"
+                  >
+                    Đăng xuất
+                  </li>
+                </ul>
+              </div>
             ) : role === "TAICHINH" ? (
               <ul className="flex-1">
                 <li
@@ -112,7 +114,10 @@ const Sidebar: React.FC = () => {
                 >
                   Bài viết và thông báo
                 </li>
-                <li onClick={() => handleNavigate("/timeChange")} className="py-2 cursor-pointer hover:bg-gray">
+                <li
+                  onClick={() => handleNavigate("/timeChange")}
+                  className="py-2 cursor-pointer hover:bg-gray"
+                >
                   Quản lý mốc thời gian
                 </li>
                 <li
@@ -144,20 +149,22 @@ const Sidebar: React.FC = () => {
                 </li>
               </ul>
             ) : role === "ADMIN" ? (
-              <ul className="flex-1">
-                <li
-                  onClick={() => handleNavigate("/accountManage")}
-                  className="py-2 cursor-pointer hover:bg-gray"
-                >
-                  Quản lý tài khoản
-                </li>
-                <li
-                  onClick={handleLogout}
-                  className="py-2 cursor-pointer hover:bg-gray"
-                >
-                  Đăng xuất
-                </li>
-              </ul>
+              <div>
+                <ul className="flex-1">
+                  <li
+                    onClick={() => handleNavigate("/accountManage")}
+                    className="py-2 cursor-pointer hover:bg-gray"
+                  >
+                    Quản lý tài khoản
+                  </li>
+                  <li
+                    onClick={handleLogout}
+                    className="py-2 cursor-pointer hover:bg-gray"
+                  >
+                    Đăng xuất
+                  </li>
+                </ul>
+              </div>
             ) : (
               <></>
             )}
