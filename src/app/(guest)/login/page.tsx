@@ -12,6 +12,7 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import type { NextRequest } from "next/server";
 import useRole from "@/hooks/useRole";
+import APIFacade from "@/context/login";
 import AuthContext from "@/context/AuthContext";
 import {host} from "@/constants/string.js";
 //import { promises as fs } from 'fs';
@@ -82,29 +83,14 @@ const LoginPage: React.FC = () => {
       //     'Access-Control-Allow-Origin': '(*)',
 
       //   };
-      let data = JSON.stringify({
-        username: username,
-        password: password,
-      });
-
-      let config = {
-        method: "post",
-        maxBodyLength: Infinity,
-        url: `${host}login`,
-        headers: {
-          "Content-Type": "application/json",
-        },
-        data: data,
-      };
-
-      const response = await axios.request(config);
+      const response = await APIFacade.login(username,password);
       //createUser(newUser);
       console.log(response.data);
       // Handle successful login based on your API's response structure
       login(response.data.role);
-      await localStorage.setItem("username", username);
-      await localStorage.setItem("accessToken", response.data.access_token);
-      await localStorage.setItem("refreshToken", response.data.refresh_token);
+      localStorage.setItem("username", username);
+      localStorage.setItem("accessToken", response.data.access_token);
+      localStorage.setItem("refreshToken", response.data.refresh_token);
       // await localStorage.setItem("role", response.data.role);
       const storedData = localStorage.getItem("accessToken");
       console.log(storedData);

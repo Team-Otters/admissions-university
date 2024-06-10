@@ -10,6 +10,7 @@ import { IoEye } from "react-icons/io5";
 import { MdOutlineFilterAlt, MdDelete } from "react-icons/md";
 import axios from "axios";
 import { host } from "@/constants/string";
+import APIFacade from "@/context/login";
 
 const ExamDetail  = ({ params }) => { 
   const {id} = params;
@@ -29,19 +30,8 @@ const ExamDetail  = ({ params }) => {
       };
       const getAllBenchmark = async () => {
         try {       
-          let token = localStorage.getItem('accessToken');
-          let config = {
-            method: 'get',
-            maxBodyLength: Infinity,
-            url: `${host}bench_mark`,
-            headers: { 
-              'Authorization': `Bearer ${token}`
-            }
-          };
-          const response = await axios.request(config);
-           //createUser(newUser);
-           setBenchmarkList(response.data);
-           console.log(response.data);
+          const response = await APIFacade.getAllBenchmark()
+          setBenchmarkList(response);
           // Handle successful login based on your API's response structure
         } catch (error) {
           console.error(error); // Handle errors appropriately (e.g., display error messages)
@@ -49,19 +39,8 @@ const ExamDetail  = ({ params }) => {
       }
       const getAllClass = async () => {
         try {       
-          let token = localStorage.getItem('accessToken');
-          let config = {
-            method: 'get',
-            maxBodyLength: Infinity,
-            url: `${host}major_class`,
-            headers: { 
-              'Authorization': `Bearer ${token}`
-            }
-          };
-          const response = await axios.request(config);
-           //createUser(newUser);
-           setClassList(response.data);
-           console.log(response.data);
+          const response = await APIFacade.getAllClass();
+          setClassList(response);
           // Handle successful login based on your API's response structure
         } catch (error) {
           console.error(error); // Handle errors appropriately (e.g., display error messages)
@@ -69,19 +48,9 @@ const ExamDetail  = ({ params }) => {
       }
       const changeName = async () => {
         try {       
-          let token = localStorage.getItem('accessToken');
-          let config = {
-            method: 'get',
-            maxBodyLength: Infinity,
-            url: `${host}exam/${id}`,
-            headers: { 
-              'Authorization': `Bearer ${token}`
-            }
-          };
-          const response = await axios.request(config);
+          const response = await APIFacade.getExam(id);
            //createUser(newUser);
-           setExamN(response.data.name);
-           console.log(response.data);
+           setExamN(response.name);
           // Handle successful login based on your API's response structure
         } catch (error) {
           console.error(error); // Handle errors appropriately (e.g., display error messages)
@@ -94,7 +63,7 @@ const ExamDetail  = ({ params }) => {
         // const sortList : Class[]  = classList.filter((item) =>{
         //   if (item.id == benchmarkList[0].class) return item;
         // });
-        const filtered = benchmarkList.filter((benchmark) => benchmark.examId === id); // Assuming 'examId' property exists in Benchmark
+        const filtered = benchmarkList.filter((benchmark) => benchmark.exam === id); // Assuming 'examId' property exists in Benchmark
         setFilteredBenchmarkList(filtered);
       }, [id, benchmarkList]);
       const findMatchingClass = (classId: string) => {

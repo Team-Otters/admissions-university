@@ -8,35 +8,23 @@ import { Container } from "react-bootstrap";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { host } from "@/constants/string";
-interface IFormData {
-  title: string;
-  target: string;
-  content: string;
-}
+import APIFacade from "@/context/login";
 
 const NotiAdjustPage: React.FC = ({params}) => {
   const {id} = params;
   const router = useRouter();
-  const [formData, setFormData] = React.useState<IFormData>({
+  const [formData, setFormData] = React.useState<Post>({
+    id: "",
+    day: "",
     title: "",
-    target: "",
     content: "",
+    topic: "",
   });
 
   const fetchData = async () => {
     try {
-      const token = localStorage.getItem("accessToken");
-      let config = {
-        method: 'get',
-        maxBodyLength: Infinity,
-        url: `${host}notification/${id}`,
-        headers: { 
-          'Authorization': `Bearer ${token}`
-        }
-      };
-      const response = await axios.request(config);
-      const { title, target, content } = response.data;
-      setFormData({title, target, content});
+      const response = await APIFacade.getPost(id);
+      setFormData(response);
     } catch (error) {
       console.error("Error fetching notification data:", error);
     }
@@ -57,29 +45,8 @@ const NotiAdjustPage: React.FC = ({params}) => {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const currentDate = new Date().toISOString();
-
-    // Get the token from local storage
-    const token = localStorage.getItem("accessToken");
-    const data = JSON.stringify({
-      "title":formData.title,
-      "target" : formData.target,
-      "content" : formData.content,
-      "day" : currentDate
-    })
     try {
-      let config = {
-        method: 'put',
-        maxBodyLength: Infinity,
-        url: `${host}admin/notification/${id}`,
-        headers: { 
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        data: data 
-      };
-      console.log(id);
-      const response = await axios.request(config);
+      const response = await APIFacade.updatePost(formData);
       router.back()
       console.log('Notification updated successfully');
       console.log(fetchData())

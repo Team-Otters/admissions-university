@@ -5,9 +5,10 @@ interface Wish {
 }
 interface Post {
   id: string;
-  date: string;
+  day: string;
   title: string;
   content: string;
+  topic: string;
 }
 interface Papers {
   id: string;

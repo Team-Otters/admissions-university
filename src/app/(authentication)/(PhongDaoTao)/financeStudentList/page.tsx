@@ -7,6 +7,7 @@ import { FaSearch } from "react-icons/fa";
 import useDebounce from "@/hooks/useDebounce";
 import axios from "axios";
 import { host } from "@/constants/string";
+import APIFacade from "@/context/login";
 
 const FinanceStudentManagermentPage: React.FC = () => {
   const [isInputFocused, setIsInputFocused] = useState(false);
@@ -27,7 +28,7 @@ const FinanceStudentManagermentPage: React.FC = () => {
   const [isOpenForm, setIsOpenForm] = React.useState<boolean>(false);
   const [isEdit, setIsEdit] = React.useState<boolean>(false);
   const [rowToEdit, setRowToEdit] = React.useState<std>();
-  const [studentList, setStudentList] = React.useState<std[]>([]);
+  const [studentList, setStudentList] = React.useState<std[] | undefined>([]);
 
   const [searchStudentList, setSearchStudentList] =
     React.useState<std[]>(studentList);
@@ -107,42 +108,13 @@ const FinanceStudentManagermentPage: React.FC = () => {
 
   const getAllStudent = async () => {
     try {
-      let token = localStorage.getItem("accessToken");
-      let config = {
-        method: "get",
-        maxBodyLength: Infinity,
-        url: `${host}student/all`,
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      };
-      const response = await axios.request(config);
-      const jsonData = response.data;
-      console.log("fj: ", jsonData);
-
-    // Alternative: Manual parsing with type safety (recommended)
-    const studentss: std[] = jsonData.content.map((studentData: any) => ({
-      id: studentData.id,
-      fullName: studentData.profile.fullName,
-      numberId: studentData.profile.numberId,
-      gender: studentData.profile.gender,
-      dateOfBirth: studentData.profile.dateOfBirth.toString(), // Assuming dateOfBirth is a number in milliseconds
-      phoneNumber: studentData.profile.phoneNumber,
-      email: studentData.profile.email,
-      placeOfBirth: studentData.profile.placeOfBirth,
-      ethnicType: studentData.profile.ethnicType,
-      houseHold: studentData.profile.houseHold,
-      address: studentData.profile.address,
-      school: studentData.profile.school,
-    }));
-
-      setStudentList(studentss);
-      console.log("sj: ", studentss);
+      const response = await APIFacade.getAllStudent();
+      setStudentList(response);
+      console.log("sj: ", response);
       // Handle successful login based on your API's response structure
     } catch (error) {
       console.error(error); // Handle errors appropriately (e.g., display error messages)
     }
-
   } 
   const debounceSearch = useDebounce(searchText, 500);
   useEffect(() => {
