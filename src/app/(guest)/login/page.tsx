@@ -90,12 +90,6 @@ const LoginPage: React.FC = () => {
       console.log(response.data);
       // Handle successful login based on your API's response structure
       authContext?.login(response.data.role);
-      await localStorage.setItem("username", username);
-      await localStorage.setItem("accessToken", response.data.access_token);
-      await localStorage.setItem("refreshToken", response.data.refresh_token);
-      // await localStorage.setItem("role", response.data.role);
-      const storedData = localStorage.getItem("accessToken");
-      console.log(storedData);
       await new Promise((resolve) =>
         router.push("/", undefined, { shallow: true }, resolve)
       );

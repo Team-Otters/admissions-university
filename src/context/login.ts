@@ -1,6 +1,7 @@
 import { NextApiResponse } from 'next';
 import axios from 'axios';
 import { host } from '@/constants/string';
+import { useAuth } from '@/hooks/useAuth';
 
 const APIFacade = {
   login : async (username: string, password: string) => {
@@ -23,6 +24,13 @@ const APIFacade = {
       const response = await axios.request(config);
       //createUser(newUser);
       console.log(response.data);
+      await localStorage.setItem("username", username);
+      await localStorage.setItem("accessToken", response.data.access_token);
+      await localStorage.setItem("refreshToken", response.data.refresh_token);
+      // await localStorage.setItem("role", response.data.role);
+      const storedData = localStorage.getItem("accessToken");
+      console.log(storedData);
+
       return response;
       // Handle successful login based on your API's response structure
       // You can use the response data to redirect the user to a different page, store authentication tokens, etc.
