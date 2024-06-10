@@ -1,40 +1,31 @@
 "use client";
 import { useContext, useState } from "react";
-import { Button } from "react-bootstrap";
 import { FaWindowClose } from "react-icons/fa";
 import { TbMenu2 } from "react-icons/tb";
 import { useRouter } from "next/navigation";
-import useRole from "@/hooks/useRole";
 import React from "react";
-import AuthContext from "@/context/AuthContext";
+import { useAuth } from "@/hooks/useAuth";
 
-const Sidebar: React.FC<{ route: string }> = ({ route }) => {
+const Sidebar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [forceRender, setForceRender] = useState(0);
-  const { role } = useContext(AuthContext);
-  const { logout } = useContext(AuthContext);
-
+  const authContext = useAuth();
+  const role = authContext?.role;
   const router = useRouter();
+
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
   const handleLogout = () => {
-    logout();
-    // router.push("");
+    authContext?.logout();
   };
   const handleNavigate = (path: string) => {
-    router.push(path); // Use `router.push` for dynamic navigation
+    router.push(path);
   };
-  React.useEffect(() => {
-    // ... your existing logic for retrieving role from local storage
-
-    setForceRender(forceRender + 1); // Trigger re-render
-  }, []);
 
   return (
     <div>
-      {role == "Khach" ? (
-        <div></div>
+      {role == "Khach" || role == undefined ? (
+        <></>
       ) : (
         <div className="text-black text-xl flex-col font-notoSans flex mr-0 lg:mr-52">
           <div className="bg-white h-full lg:w-52 lg:mt-8 xl:mt-0 hidden lg:flex xl:flex 2xl:flex fixed top-20 bottom-0">
@@ -42,32 +33,34 @@ const Sidebar: React.FC<{ route: string }> = ({ route }) => {
             {role == "Khach" ? (
               <></>
             ) : role === "STUDENT" ? (
-              <ul className="flex-1">
-                <li
-                  onClick={() => handleNavigate("/studentscore")}
-                  className="py-2 cursor-pointer hover:bg-gray"
-                >
-                  Tra cứu
-                </li>
-                <li
-                  onClick={() => handleNavigate("/studentprofile")}
-                  className="py-2 cursor-pointer hover:bg-gray"
-                >
-                  Hồ sơ
-                </li>
-                <li
-                  onClick={() => handleNavigate("/wishlist")}
-                  className="py-2 cursor-pointer hover:bg-gray"
-                >
-                  Nguyện vọng
-                </li>
-                <li
-                  onClick={handleLogout}
-                  className="py-2 cursor-pointer hover:bg-gray"
-                >
-                  Đăng xuất
-                </li>
-              </ul>
+              <div>
+                <ul className="flex-1">
+                  <li
+                    onClick={() => handleNavigate("/studentscore")}
+                    className="py-2 cursor-pointer hover:bg-gray"
+                  >
+                    Tra cứu
+                  </li>
+                  <li
+                    onClick={() => handleNavigate("/studentprofile")}
+                    className="py-2 cursor-pointer hover:bg-gray"
+                  >
+                    Hồ sơ
+                  </li>
+                  <li
+                    onClick={() => handleNavigate("/wishlist")}
+                    className="py-2 cursor-pointer hover:bg-gray"
+                  >
+                    Nguyện vọng
+                  </li>
+                  <li
+                    onClick={handleLogout}
+                    className="py-2 cursor-pointer hover:bg-gray"
+                  >
+                    Đăng xuất
+                  </li>
+                </ul>
+              </div>
             ) : role === "TAICHINH" ? (
               <ul className="flex-1">
                 <li
@@ -121,7 +114,10 @@ const Sidebar: React.FC<{ route: string }> = ({ route }) => {
                 >
                   Bài viết và thông báo
                 </li>
-                <li onClick={() => handleNavigate("/timeChange")} className="py-2 cursor-pointer hover:bg-gray">
+                <li
+                  onClick={() => handleNavigate("/timeChange")}
+                  className="py-2 cursor-pointer hover:bg-gray"
+                >
                   Quản lý mốc thời gian
                 </li>
                 <li
@@ -153,20 +149,22 @@ const Sidebar: React.FC<{ route: string }> = ({ route }) => {
                 </li>
               </ul>
             ) : role === "ADMIN" ? (
-              <ul className="flex-1">
-                <li
-                  onClick={() => handleNavigate("/accountManage")}
-                  className="py-2 cursor-pointer hover:bg-gray"
-                >
-                  Quản lý tài khoản
-                </li>
-                <li
-                  onClick={handleLogout}
-                  className="py-2 cursor-pointer hover:bg-gray"
-                >
-                  Đăng xuất
-                </li>
-              </ul>
+              <div>
+                <ul className="flex-1">
+                  <li
+                    onClick={() => handleNavigate("/accountManage")}
+                    className="py-2 cursor-pointer hover:bg-gray"
+                  >
+                    Quản lý tài khoản
+                  </li>
+                  <li
+                    onClick={handleLogout}
+                    className="py-2 cursor-pointer hover:bg-gray"
+                  >
+                    Đăng xuất
+                  </li>
+                </ul>
+              </div>
             ) : (
               <></>
             )}

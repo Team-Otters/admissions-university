@@ -908,11 +908,14 @@ const ProfileRegisterPage: React.FC = () => {
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
     setFormData({ ...formData, [event.target.name]: event.target.value });
-    if (event.target.name === "householdAddress4") 
-    {
+    if (event.target.name === "householdAddress4") {
       setDistrictOptions(districts[event.target.value] || []);
-      setFormData({ ...formData, householdAddress4: event.target.value, householdAddress3: "" });
-    console.log(event.target.name, event.target.value);
+      setFormData({
+        ...formData,
+        householdAddress4: event.target.value,
+        householdAddress3: "",
+      });
+      console.log(event.target.name, event.target.value);
     }
   };
 
@@ -1030,7 +1033,7 @@ const ProfileRegisterPage: React.FC = () => {
       let config = {
         method: "post",
         maxBodyLength: Infinity,
-        url: "http://localhost:8080/register/student",
+        url: `${host}register/student`,
         headers: {
           "Content-Type": "application/json",
         },
@@ -1071,8 +1074,6 @@ const ProfileRegisterPage: React.FC = () => {
       setShowAlert(true);
     }
   };
-
- 
 
   // const householdAddress4 = formData.householdAddress4;
   // const districtOptions =
@@ -1446,10 +1447,10 @@ const ProfileRegisterPage: React.FC = () => {
                   >
                     <option value="">Di linh</option>
                     {Object.keys(districts).map((city) => (
-                  <option key={city} value={city}>
-                    {city}
-                  </option>
-                ))}
+                      <option key={city} value={city}>
+                        {city}
+                      </option>
+                    ))}
                   </Form.Control>
                 </Form.Group>
               </Col>
@@ -1465,10 +1466,10 @@ const ProfileRegisterPage: React.FC = () => {
                   >
                     <option value="">Liên Đầm</option>
                     {Object.keys(districts).map((city) => (
-                  <option key={city} value={city}>
-                    {city}
-                  </option>
-                ))}
+                      <option key={city} value={city}>
+                        {city}
+                      </option>
+                    ))}
                   </Form.Control>
                 </Form.Group>
               </Col>
@@ -1579,10 +1580,10 @@ const ProfileRegisterPage: React.FC = () => {
                   >
                     <option value="">Liên Đầm</option>
                     {Object.keys(districts).map((city) => (
-                  <option key={city} value={city}>
-                    {city}
-                  </option>
-                ))}
+                      <option key={city} value={city}>
+                        {city}
+                      </option>
+                    ))}
                   </Form.Control>
                 </Form.Group>
               </Col>
@@ -1598,10 +1599,10 @@ const ProfileRegisterPage: React.FC = () => {
                   >
                     <option value="">Hòa Ninh</option>
                     {Object.keys(districts).map((city) => (
-                  <option key={city} value={city}>
-                    {city}
-                  </option>
-                ))}
+                      <option key={city} value={city}>
+                        {city}
+                      </option>
+                    ))}
                   </Form.Control>
                 </Form.Group>
               </Col>

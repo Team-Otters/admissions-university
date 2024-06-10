@@ -13,8 +13,9 @@ import { useRouter } from "next/navigation";
 import type { NextRequest } from "next/server";
 import useRole from "@/hooks/useRole";
 import APIFacade from "@/context/login";
-import AuthContext from "@/context/AuthContext";
-import {host} from "@/constants/string.js";
+import AuthContext from "@/contexts/AuthContext";
+import { host } from "@/constants/string.js";
+import { useAuth } from "@/hooks/useAuth";
 //import { promises as fs } from 'fs';
 interface user {
   username: string;
@@ -32,7 +33,8 @@ const LoginPage: React.FC = () => {
   const [userData, setUserData] = useState<user | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
-  const { login } = useContext(AuthContext);
+  const authContext = useAuth();
+  // const authContext = useAuth();
 
   // const readData = async () => {
   //     setIsLoading(true);
@@ -71,7 +73,7 @@ const LoginPage: React.FC = () => {
   //     readData();
   //   }, []);
   const toggleVisibility = () => setIsVisible(!isVisible);
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
     try {
       //  const url = 'http://localhost:8080/login'; // Replace with your actual login API endpoint
@@ -87,15 +89,15 @@ const LoginPage: React.FC = () => {
       //createUser(newUser);
       console.log(response.data);
       // Handle successful login based on your API's response structure
-      login(response.data.role);
-      localStorage.setItem("username", username);
-      localStorage.setItem("accessToken", response.data.access_token);
-      localStorage.setItem("refreshToken", response.data.refresh_token);
+      authContext?.login(response.data.role);
+      await localStorage.setItem("username", username);
+      await localStorage.setItem("accessToken", response.data.access_token);
+      await localStorage.setItem("refreshToken", response.data.refresh_token);
       // await localStorage.setItem("role", response.data.role);
       const storedData = localStorage.getItem("accessToken");
       console.log(storedData);
       await new Promise((resolve) =>
-        router.push("", undefined, { shallow: true }, resolve)
+        router.push("/", undefined, { shallow: true }, resolve)
       );
       // You can use the response data to redirect the user to a different page, store authentication tokens, etc.
     } catch (error) {

@@ -8,7 +8,7 @@ import Sidebar from "@/components/sidebar";
 import Container from "react-bootstrap/Container";
 import useRole from "@/hooks/useRole";
 import React from "react";
-import { AuthProvider } from "@/context/AuthContext";
+import { AuthProvider } from "@/contexts/AuthContext";
 //import './globals.css'
 
 const inter = Inter({ subsets: ["latin"] });
@@ -23,8 +23,6 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const [currentRole, setCurrentRole] = React.useState(useRole()); // Initial role
-
   // React.useEffect(() => {
   //   // Update the currentRole state whenever the role changes using the useRole hook
   //   const handleRoleChange = () => {
@@ -45,7 +43,7 @@ export default function RootLayout({
           <div key={2} className="app-wrapper">
             <AppHeader />
             <div className="flex flex-1 main-content">
-              <Sidebar route={currentRole} />
+              <Sidebar />
               <Container>{children}</Container>
             </div>
           </div>
