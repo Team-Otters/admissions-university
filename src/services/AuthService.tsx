@@ -1,10 +1,15 @@
 "use client";
 class AuthService {
   private static instance: AuthService | null = null;
-  private role: string;
+  private role: string | null;
+  private roleContext: RoleNa;
 
   private constructor() {
-    this.role = localStorage.getItem("role") || "Khach";
+    if (localStorage.getItem("role")) {
+      this.role = localStorage.getItem("role");
+    } else {
+      this.role = "Khach";
+    }
   }
 
   public static getInstance() {
