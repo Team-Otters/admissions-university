@@ -2,7 +2,6 @@
 class AuthService {
   private static instance: AuthService | null = null;
   private role: string | null;
-  private roleContext: RoleNa;
 
   private constructor() {
     if (localStorage.getItem("role")) {
