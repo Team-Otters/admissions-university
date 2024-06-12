@@ -12,6 +12,7 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import type { NextRequest } from "next/server";
 import useRole from "@/hooks/useRole";
+import APIFacade from "@/context/login";
 import AuthContext from "@/contexts/AuthContext";
 import { host } from "@/constants/string.js";
 import { useAuth } from "@/hooks/useAuth";
@@ -84,22 +85,7 @@ const LoginPage: React.FC = () => {
       //     'Access-Control-Allow-Origin': '(*)',
 
       //   };
-      let data = JSON.stringify({
-        username: username,
-        password: password,
-      });
-
-      let config = {
-        method: "post",
-        maxBodyLength: Infinity,
-        url: `${host}login`,
-        headers: {
-          "Content-Type": "application/json",
-        },
-        data: data,
-      };
-
-      const response = await axios.request(config);
+      const response = await APIFacade.login(username, password);
       //createUser(newUser);
       console.log(response.data);
       // Handle successful login based on your API's response structure

@@ -10,6 +10,7 @@ import useDebounce from "@/hooks/useDebounce";
 import axios from "axios";
 import { formatDate } from "../../../../utils/something.js";
 import { host } from "@/constants/string.js";
+import APIFacade from "@/context/login";
 
 const VenueManageScreen: React.FC = () => {
   const [isInputFocused, setIsInputFocused] = useState<boolean>(false);
@@ -81,18 +82,9 @@ const VenueManageScreen: React.FC = () => {
   const getAllExamRoom = async () => {
     console.log(localStorage.getItem("accessToken"));
     try {
-      let token = localStorage.getItem("accessToken");
-      let config = {
-        method: "get",
-        maxBodyLength: Infinity,
-        url: `${host}exam_room`,
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      };
-      const response = await axios.request(config);
+      const response = await APIFacade.getAllExamRoom();
       //createUser(newUser);
-      setExamRooms(response.data);
+      setExamRooms(response);
       console.log("er: ", response.data);
       // Handle successful login based on your API's response structure
     } catch (error) {
@@ -102,19 +94,10 @@ const VenueManageScreen: React.FC = () => {
 
   const getAllRooms = async () => {
     try {
-      let token = localStorage.getItem("accessToken");
-      let config = {
-        method: "get",
-        maxBodyLength: Infinity,
-        url: `${host}room`,
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      };
-      const response = await axios.request(config);
+      const response = await APIFacade.getAllRooms();
       //createUser(newUser);
-      setRooms(response.data);
-      console.log("r: ", response.data);
+      setRooms(response);
+      console.log("r: ", response);
       // Handle successful login based on your API's response structure
     } catch (error) {
       console.error(error); // Handle errors appropriately (e.g., display error messages)
@@ -123,19 +106,9 @@ const VenueManageScreen: React.FC = () => {
 
   const getAllSubjects = async () => {
     try {
-      let token = localStorage.getItem("accessToken");
-      let config = {
-        method: "get",
-        maxBodyLength: Infinity,
-        url: `${host}subject`,
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      };
-      const response = await axios.request(config);
+      const response = await APIFacade.getAllSubject();
       //createUser(newUser);
-      setSubjects(response.data.content);
-      console.log("sj: ", response.data.content);
+      setSubjects(response);
       // Handle successful login based on your API's response structure
     } catch (error) {
       console.error(error); // Handle errors appropriately (e.g., display error messages)
@@ -168,22 +141,8 @@ const VenueManageScreen: React.FC = () => {
 
   const handleClearRow = async (roomCode: string) => {
     try {
-      let token = localStorage.getItem("accessToken");
-      let dt = JSON.stringify({
-        id: roomCode,
-      });
-      let config = {
-        method: "delete",
-        maxBodyLength: Infinity,
-        url: `${host}exam_room/${roomCode}`,
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        data: dt,
-      };
-      const response = await axios.request(config).then((response) => {
-        getAllExamRoom();
-      });
+      const response = await APIFacade.deleteExamRoom(roomCode);
+
       //createUser(newUser);
       // Handle successful login based on your API's response structure
     } catch (error) {
@@ -201,26 +160,8 @@ const VenueManageScreen: React.FC = () => {
 
   const handleSubmit = async (data: ExamRoomManageForm) => {
     try {
-      let token = localStorage.getItem("accessToken");
-      let dt = JSON.stringify({
-        examRoomId: data.room,
-        subjectId: data.subject,
-        date: data.date,
-        paperContainersId: "AA001",
-      });
-      let config = {
-        method: "post",
-        maxBodyLength: Infinity,
-        url: `${host}exam_room`,
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        data: dt,
-      };
-      const response = await axios.request(config).then((response) => {
+      const response = await APIFacade.addExamRoom(data);
         getAllExamRoom();
-      });
       //createUser(newUser);
       // Handle successful login based on your API's response structure
     } catch (error) {
@@ -230,25 +171,8 @@ const VenueManageScreen: React.FC = () => {
 
   const handleEdit = async (data: ExamRoomManageForm) => {
     try {
-      let dt = JSON.stringify({
-        examRoomId: data.room,
-        subjectId: data.subject,
-        date: data.date,
-      });
-      let token = localStorage.getItem("accessToken");
-      let config = {
-        method: "put",
-        maxBodyLength: Infinity,
-        url: `${host}exam_room/${data.id}`,
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        data: dt,
-      };
-      const response = await axios.request(config).then((response) => {
+        const response = await APIFacade.updateExamRoom(data);
         getAllExamRoom();
-      });
     } catch (error) {
       console.error(error); // Handle errors appropriately (e.g., display error messages)
     }

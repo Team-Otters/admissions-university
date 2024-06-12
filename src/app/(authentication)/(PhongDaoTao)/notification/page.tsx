@@ -5,12 +5,8 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { host } from "@/constants/string";
-interface Post {
-  title: string;
-  date: string;
-  id: string;
-  content: string;
-}
+import APIFacade from "@/context/login";
+
 
 export default function Notice() {
   const router= useRouter();
@@ -24,20 +20,9 @@ export default function Notice() {
  
 
   const getAllPost = async () => { 
-    let token = localStorage.getItem('accessToken');
-
-    const config = {
-      method: 'get',
-      maxBodyLength: Infinity,
-      url: `${host}notification`,
-      headers: { 
-        'Authorization': `Bearer ${token}`
-      }
-    };
-
-    try {
-      const response = await axios.request(config);
-      setNewlistData(response.data);
+    try{
+      const response = await APIFacade.getAllPost();
+      setNewlistData(response);
     } catch (error) {
       console.error("Error fetching notifications:", error);
     }
@@ -63,27 +48,13 @@ export default function Notice() {
 
   const handleDelete = async (id: string) => {
     try {
-      console.log(id);
-      // Get the token from local storage
-      const token = localStorage.getItem("accessToken");
-      
-      // Make a DELETE request to the server endpoint with the specific ID and authorization token
-      await axios.delete(`${host}admin/notification/${id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      });
-      
-      // If deletion is successful, remove the deleted item from the local state
-      setNewlistData(prevData => prevData.filter(item => item.id !== id));
-      
+      await APIFacade.deletePost(id);
+      getAllPost();
       console.log('Successfully deleted notification with ID:', id);
     } catch (error) {
       console.error('Error deleting notification:', error);
     }
   };
-  
-
 
   return (
     <Container
@@ -112,7 +83,7 @@ export default function Notice() {
                 <div key={index} className="flex justify-between mb-2">
                   <div>
                     <a href="#" className="no-underline hover:underline" >{news.title}</a>
-                    <p>{news.date}</p>
+                    <p>{news.day}</p>
                   </div>
                   <div>
                     <Button variant="warning" onClick={() => handleModify(news.id)} className="mr-2">Modify</Button>

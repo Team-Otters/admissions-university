@@ -12,6 +12,7 @@ import { useRouter } from "next/navigation";
 import axios from "axios";
 import { redirect } from 'next/navigation'
 import { host } from "@/constants/string";
+import APIFacade from "@/context/login";
 export default function ExamManagement() { 
     const [examList, setExamList] = React.useState<Exam[]>([]);
     const [isOpenForm, setIsOpenForm] = React.useState<boolean>(false);
@@ -23,25 +24,9 @@ export default function ExamManagement() {
         setSearchText(e.target.value);
       };
       const handleSubmit = async (data: Exam) => {
-        let dt = JSON.stringify({
-            "name": data.name,
-            "year": data.year
-          });
-          let token = localStorage.getItem('accessToken');
-
-          let config = {
-            method: 'post',
-            maxBodyLength: Infinity,
-            url: `${host}exam`,
-            headers: { 
-              'Content-Type': 'application/json', 
-              'Authorization': `Bearer ${token}`
-            },
-            data : dt
-          };
           try{
-            const response = await axios.request(config);
-            getAllExam();
+            await APIFacade.addExam(data);
+            getAllExam(); 
           }catch(error){
             console.error(error); // Handle errors appropriately (e.g., display error messages)
 
@@ -70,19 +55,9 @@ export default function ExamManagement() {
         }
       };
       const handleClearRow = async (data: Exam) => {
-          let token = localStorage.getItem('accessToken');
 
-          let config = {
-            method: 'delete',
-            maxBodyLength: Infinity,
-            url: `${host}exam/${data.id}`,
-            headers: { 
-              'Authorization': `Bearer ${token}`
-            },
-            data : data
-          };
           try{
-            const response = await axios.request(config);
+            const response = await APIFacade.deleteExam(data.id);
             getAllExam();
           }catch(error){
             console.error(error); // Handle errors appropriately (e.g., display error messages)
@@ -95,19 +70,10 @@ export default function ExamManagement() {
       };
       const getAllExam = async () => {
         try {       
-            let token = localStorage.getItem('accessToken');
-            let config = {
-              method: 'get',
-              maxBodyLength: Infinity,
-              url: `${host}exam`,
-              headers: { 
-                'Authorization': `Bearer ${token}`
-              }
-            };
-            const response = await axios.request(config);
+            const response = await APIFacade.getAllExam();
              //createUser(newUser);
-             setExamList(response.data);
-             console.log(response.data);
+             setExamList(response);
+             console.log(response);
             // Handle successful login based on your API's response structure
           } catch (error) {
             console.error(error); // Handle errors appropriately (e.g., display error messages)

@@ -11,6 +11,7 @@ import { IoMdEye, IoMdEyeOff } from "react-icons/io";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { host } from "@/constants/string";
+import APIFacade from "@/context/login";
 
 const AccountManagePage: React.FC = () => {
   const router = useRouter();
@@ -82,23 +83,7 @@ const AccountManagePage: React.FC = () => {
 
   const handleSubmit = async (data: Account) => {
     try {
-      let dt = JSON.stringify({
-        "username": data.username,
-        "password": data.password,
-        "role": data.role
-      });
-      let token = localStorage.getItem('accessToken');
-      let config = {
-        method: 'post',
-        maxBodyLength: Infinity,
-        url: `${host}register`,
-        headers: { 
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        data : dt
-      };
-      const response = await axios.request(config);
+      await APIFacade.addUser(data);
       getAllUser();
     } catch (error) {
       console.error(error); // Handle errors appropriately (e.g., display error messages)
@@ -147,24 +132,8 @@ const AccountManagePage: React.FC = () => {
     setSearchText(e.target.value);
   };
   const getAllUser = async () => {
-    try {       
-      let token = localStorage.getItem('accessToken');
-      let config = {
-        method: 'get',
-        maxBodyLength: Infinity,
-        url: `${host}admin/user`,
-        headers: { 
-          'Authorization': `Bearer ${token}`
-        }
-      };
-      const response = await axios.request(config);
-       //createUser(newUser);
-       setAccounts(response.data);
-       console.log(response.data);
-      // Handle successful login based on your API's response structure
-    } catch (error) {
-      console.error(error); // Handle errors appropriately (e.g., display error messages)
-    }
+    const response = await APIFacade.getAllUser();
+    setAccounts(response);
   }
   const handleHiddenPass = (idx: number): void => {
     let temp: boolean[] = [...isHiddens];
