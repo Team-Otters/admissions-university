@@ -32,7 +32,7 @@ export default function SubjectManagement() {
       };
       const handleSubmit = async (data: SubjectSets)=> {
         try {       
-          const response = await APIFacade.addSubjectSet(data);
+          const response = await APIFacade.getInstance().addSubjectSet(data);
            //createUser(newUser);
            //setSubjectList(response.data.content);
            //console.log(`subject list: ${response.data.content}`);
@@ -75,7 +75,7 @@ export default function SubjectManagement() {
       const handleClearRow = async (data: SubjectSets)=> {
 
         try {       
-          await APIFacade.deleteSubjectSet(data.id);
+          await APIFacade.getInstance().deleteSubjectSet(data.id);
            getAllSubjectSet();
           // Handle successful login based on your API's response structure
         } catch (error) {
@@ -86,7 +86,7 @@ export default function SubjectManagement() {
       };
       const handleClassSubmit = async (data: Class) => {
         try {       
-          const response = await APIFacade.addClass(data);
+          const response = await APIFacade.getInstance().addClass(data);
            //createUser(newUser);
            getAllClass();
           // Handle successful login based on your API's response structure
@@ -97,7 +97,7 @@ export default function SubjectManagement() {
     
       const handleClassEdit = async (data: Class)=> {
         try {       
-          const response = await APIFacade.updateClass(data);
+          const response = await APIFacade.getInstance().updateClass(data);
            //createUser(newUser);
            getAllClass();
           // Handle successful login based on your API's response structure
@@ -107,7 +107,7 @@ export default function SubjectManagement() {
       };
       const handleClassClearRow = async (data: Class) => {
         try {       
-          const response = await APIFacade.deleteClass(data.id);
+          const response = await APIFacade.getInstance().deleteClass(data.id);
            getAllClass();
           // Handle successful login based on your API's response structure
         } catch (error) {
@@ -116,7 +116,7 @@ export default function SubjectManagement() {
       };
       const handleSubjectSubmit = async (data: Subject)=> {
         try {       
-          const response = await APIFacade.addSubject(data);
+          const response = await APIFacade.getInstance().addSubject(data);
            //createUser(newUser);
            getAllSubject();
           // Handle successful login based on your API's response structure
@@ -127,7 +127,7 @@ export default function SubjectManagement() {
     
       const handleSubjectEdit = async (data: Subject) => {
         try {       
-          const response = await APIFacade.updateSubject(data);
+          const response = await APIFacade.getInstance().updateSubject(data);
            //createUser(newUser);
            getAllSubject();
           // Handle successful login based on your API's response structure
@@ -137,7 +137,7 @@ export default function SubjectManagement() {
          };
       const handleSubjectClearRow = async (data: Subject) => {
         try {       
-          const response = await APIFacade.deleteSubject(data.id);
+          const response = await APIFacade.getInstance().deleteSubject(data.id);
            //createUser(newUser);
            getAllSubject();
           // Handle successful login based on your API's response structure
@@ -160,7 +160,7 @@ export default function SubjectManagement() {
       };
       const getAllSubject = async () => {
         try {       
-          const response = await APIFacade.getAllSubject();
+          const response = await APIFacade.getInstance().getAllSubject();
            //createUser(newUser);
            setSubjectList(response);
           // Handle successful login based on your API's response structure
@@ -171,7 +171,7 @@ export default function SubjectManagement() {
       }
       const getAllClass = async () => {
         try {       
-          const response = await APIFacade.getAllClass();
+          const response = await APIFacade.getInstance().getAllClass();
            //createUser(newUser);
            setClassList(response);
            //console.log(response.data);
@@ -182,7 +182,7 @@ export default function SubjectManagement() {
       }
       const getAllSubjectSet = async () => {
         try {       
-          const response = await APIFacade.getAllSubjectSet();
+          const response = await APIFacade.getInstance().getAllSubjectSet();
            //createUser(newUser);
            setSubjectSetList(response);
            //console.log(response.data);

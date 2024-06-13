@@ -1,22 +1,12 @@
 "use client";
 import React, { useContext, useState } from "react";
 import Form from "react-bootstrap/Form";
-import Col from "react-bootstrap/Col";
-import Row from "react-bootstrap/Row";
 import Button from "react-bootstrap/Button";
 import { Container } from "react-bootstrap";
 import Image from "next/image";
-import { IoIosEye, IoIosEyeOff } from "react-icons/io";
-import Input from "postcss/lib/input";
-import axios from "axios";
 import { useRouter } from "next/navigation";
-import type { NextRequest } from "next/server";
-import useRole from "@/hooks/useRole";
 import APIFacade from "@/context/login";
-import AuthContext from "@/contexts/AuthContext";
-import { host } from "@/constants/string.js";
 import { useAuth } from "@/hooks/useAuth";
-//import { promises as fs } from 'fs';
 interface user {
   username: string;
   accountName?: string;
@@ -24,7 +14,6 @@ interface user {
   role: string;
   token: string;
 }
-
 const LoginPage: React.FC = () => {
   const router = useRouter();
   const [username, setUsername] = useState("");
@@ -34,58 +23,11 @@ const LoginPage: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const authContext = useAuth();
-  // const authContext = useAuth();
-
-  // const readData = async () => {
-  //     setIsLoading(true);
-  //     setError(null);
-  //     const filePath = "@/src/data/user.json";
-  //     try {
-  //       const fileContent = await fs.readFile(filePath, 'utf-8');
-  //       const parsedData: user = JSON.parse(fileContent);
-  //       setUserData(parsedData);
-  //     } catch (err) {
-  //       if (err.code === 'ENOENT') {
-  //         // File not found, initialize with an empty object
-  //         await fs.writeFile(filePath, '{}', 'utf-8');
-  //         setUserData({});
-  //       } else {
-  //         setError(err.message);
-  //       }
-  //     } finally {
-  //       setIsLoading(false);
-  //     }
-  //   };
-
-  //   // Function to update the JSON file (overwrite existing user data)
-  //   const updateData = async (newData: user) => {
-  //     const filePath = './user.json';
-  //     try {
-  //       const jsonData = JSON.stringify(newData, null, 2);
-  //       await fs.writeFile(filePath, jsonData, 'utf-8');
-  //       setUserData(newData); // Update state for UI consistency
-  //     } catch (err) {
-  //       setError(err.message);
-  //     }
-  //   };
-
-  //   React.useEffect(() => {
-  //     readData();
-  //   }, []);
   const toggleVisibility = () => setIsVisible(!isVisible);
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     try {
-      //  const url = 'http://localhost:8080/login'; // Replace with your actual login API endpoint
-      //   const data = {
-      //     username,
-      //     password,
-      //   };
-      //   const headers = {
-      //     'Access-Control-Allow-Origin': '(*)',
-
-      //   };
-      const response = await APIFacade.login(username, password);
+      const response = await APIFacade.getInstance().login(username, password);
       //createUser(newUser);
       console.log(response.data);
       // Handle successful login based on your API's response structure

@@ -108,7 +108,7 @@ const FinanceStudentManagermentPage: React.FC = () => {
 
   const getAllStudent = async () => {
     try {
-      const response = await APIFacade.getAllStudent();
+      const response = await APIFacade.getInstance().getAllStudent();
       setStudentList(response);
       console.log("sj: ", response);
       // Handle successful login based on your API's response structure

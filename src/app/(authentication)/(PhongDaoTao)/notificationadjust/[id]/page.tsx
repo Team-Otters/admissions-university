@@ -23,7 +23,7 @@ const NotiAdjustPage: React.FC = ({params}) => {
 
   const fetchData = async () => {
     try {
-      const response = await APIFacade.getPost(id);
+      const response = await APIFacade.getInstance().getPost(id);
       setFormData(response);
     } catch (error) {
       console.error("Error fetching notification data:", error);
@@ -46,7 +46,7 @@ const NotiAdjustPage: React.FC = ({params}) => {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     try {
-      const response = await APIFacade.updatePost(formData);
+      const response = await APIFacade.getInstance().updatePost(formData);
       router.back()
       console.log('Notification updated successfully');
       console.log(fetchData())

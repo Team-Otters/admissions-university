@@ -82,7 +82,7 @@ const VenueManageScreen: React.FC = () => {
   const getAllExamRoom = async () => {
     console.log(localStorage.getItem("accessToken"));
     try {
-      const response = await APIFacade.getAllExamRoom();
+      const response = await APIFacade.getInstance().getAllExamRoom();
       //createUser(newUser);
       setExamRooms(response);
       console.log("er: ", response.data);
@@ -94,7 +94,7 @@ const VenueManageScreen: React.FC = () => {
 
   const getAllRooms = async () => {
     try {
-      const response = await APIFacade.getAllRooms();
+      const response = await APIFacade.getInstance().getAllRooms();
       //createUser(newUser);
       setRooms(response);
       console.log("r: ", response);
@@ -106,7 +106,7 @@ const VenueManageScreen: React.FC = () => {
 
   const getAllSubjects = async () => {
     try {
-      const response = await APIFacade.getAllSubject();
+      const response = await APIFacade.getInstance().getAllSubject();
       //createUser(newUser);
       setSubjects(response);
       // Handle successful login based on your API's response structure
@@ -141,7 +141,7 @@ const VenueManageScreen: React.FC = () => {
 
   const handleClearRow = async (roomCode: string) => {
     try {
-      const response = await APIFacade.deleteExamRoom(roomCode);
+      const response = await APIFacade.getInstance().deleteExamRoom(roomCode);
 
       //createUser(newUser);
       // Handle successful login based on your API's response structure
@@ -160,7 +160,7 @@ const VenueManageScreen: React.FC = () => {
 
   const handleSubmit = async (data: ExamRoomManageForm) => {
     try {
-      const response = await APIFacade.addExamRoom(data);
+      const response = await APIFacade.getInstance().addExamRoom(data);
         getAllExamRoom();
       //createUser(newUser);
       // Handle successful login based on your API's response structure
@@ -171,7 +171,7 @@ const VenueManageScreen: React.FC = () => {
 
   const handleEdit = async (data: ExamRoomManageForm) => {
     try {
-        const response = await APIFacade.updateExamRoom(data);
+        const response = await APIFacade.getInstance().updateExamRoom(data);
         getAllExamRoom();
     } catch (error) {
       console.error(error); // Handle errors appropriately (e.g., display error messages)
