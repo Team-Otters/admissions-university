@@ -21,7 +21,7 @@ export default function Notice() {
 
   const getAllPost = async () => { 
     try{
-      const response = await APIFacade.getAllPost();
+      const response = await APIFacade.getInstance().getAllPost();
       setNewlistData(response);
     } catch (error) {
       console.error("Error fetching notifications:", error);
@@ -48,7 +48,7 @@ export default function Notice() {
 
   const handleDelete = async (id: string) => {
     try {
-      await APIFacade.deletePost(id);
+      await APIFacade.getInstance().deletePost(id);
       getAllPost();
       console.log('Successfully deleted notification with ID:', id);
     } catch (error) {

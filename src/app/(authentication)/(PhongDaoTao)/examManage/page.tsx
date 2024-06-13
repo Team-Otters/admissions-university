@@ -25,7 +25,7 @@ export default function ExamManagement() {
       };
       const handleSubmit = async (data: Exam) => {
           try{
-            await APIFacade.addExam(data);
+            await APIFacade.getInstance().addExam(data);
             getAllExam(); 
           }catch(error){
             console.error(error); // Handle errors appropriately (e.g., display error messages)
@@ -57,7 +57,7 @@ export default function ExamManagement() {
       const handleClearRow = async (data: Exam) => {
 
           try{
-            const response = await APIFacade.deleteExam(data.id);
+            const response = await APIFacade.getInstance().deleteExam(data.id);
             getAllExam();
           }catch(error){
             console.error(error); // Handle errors appropriately (e.g., display error messages)
@@ -70,7 +70,7 @@ export default function ExamManagement() {
       };
       const getAllExam = async () => {
         try {       
-            const response = await APIFacade.getAllExam();
+            const response = await APIFacade.getInstance().getAllExam();
              //createUser(newUser);
              setExamList(response);
              console.log(response);

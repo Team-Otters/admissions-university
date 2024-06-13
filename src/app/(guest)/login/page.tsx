@@ -27,7 +27,7 @@ const LoginPage: React.FC = () => {
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     try {
-      const response = await APIFacade.login(username,password);
+      const response = await APIFacade.getInstance().login(username,password);
       //createUser(newUser);
       console.log(response.data);
       // Handle successful login based on your API's response structure

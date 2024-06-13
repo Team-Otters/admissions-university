@@ -83,7 +83,7 @@ const AccountManagePage: React.FC = () => {
 
   const handleSubmit = async (data: Account) => {
     try {
-      await APIFacade.addUser(data);
+      await APIFacade.getInstance().addUser(data);
       getAllUser();
     } catch (error) {
       console.error(error); // Handle errors appropriately (e.g., display error messages)
@@ -132,7 +132,7 @@ const AccountManagePage: React.FC = () => {
     setSearchText(e.target.value);
   };
   const getAllUser = async () => {
-    const response = await APIFacade.getAllUser();
+    const response = await APIFacade.getInstance().getAllUser();
     setAccounts(response);
   }
   const handleHiddenPass = (idx: number): void => {
@@ -218,6 +218,7 @@ const AccountManagePage: React.FC = () => {
             <MdOutlineFilterAlt className="self-center ml-2" size={24} />
             <select
               name="filter"
+              title="filter"
               id="filter"
               className="ml-2 rounded-xl border border-black"
               onChange={applyFilter}
