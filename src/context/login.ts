@@ -1,7 +1,5 @@
-import { NextApiResponse } from 'next';
 import axios from 'axios';
 import { host } from '@/constants/string';
-import { useAuth } from '@/hooks/useAuth';
 
 const APIFacade = {
   login : async (username: string, password: string) => {
@@ -656,7 +654,7 @@ const APIFacade = {
       });
     } catch (error) {
       console.error(error); // Handle errors appropriately (e.g., display error messages)
-    }},
+  }},
   getAllRooms : async () => {
     try {
       let token = localStorage.getItem("accessToken");
