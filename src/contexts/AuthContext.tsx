@@ -8,6 +8,7 @@ import React, {
 } from "react";
 import AuthService from "@/services/AuthService";
 import { useRouter } from "next/navigation";
+import { RoleNavContext } from "@/classes/roleNavContext";
 
 interface AuthContextProps {
   role: string;
@@ -26,6 +27,7 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
   const router = useRouter();
   const authInstance = AuthService.getInstance();
   const [role, setRole] = useState<string>(authInstance.getRole());
+  const roleContext = new RoleNavContext(router);
 
   useEffect(() => {
     const handleStorageChange = () => {
@@ -45,6 +47,7 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
   const login = (role: string) => {
     authInstance.login(role);
     setRole(role);
+    roleContext.Navigate(role);
   };
 
   const logout = () => {

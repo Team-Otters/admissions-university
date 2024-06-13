@@ -1,6 +1,6 @@
 interface Wish {
   id: string;
-  subjectSetId : string;
+  subjectSetId: string;
   classId: string;
 }
 interface Post {
@@ -28,18 +28,18 @@ interface Student {
   financeStatus: boolean;
 }
 interface std {
-    id:string;
-    fullName: string,
-    numberId: string, 
-    gender: string,
-    dateOfBirth: string,
-    phoneNumber: string, 
-    email: string,
-    placeOfBirth: string,
-    ethnicType: string, 
-    houseHold: string, 
-    address: string, 
-    school: string 
+  id: string;
+  fullName: string;
+  numberId: string;
+  gender: string;
+  dateOfBirth: string;
+  phoneNumber: string;
+  email: string;
+  placeOfBirth: string;
+  ethnicType: string;
+  houseHold: string;
+  address: string;
+  school: string;
 }
 interface ExamRoomManageForm {
   id: string;
@@ -123,4 +123,8 @@ interface Paper {
   score: number;
   subject: string;
   student: string;
+}
+
+interface RoleState {
+  getUrl(): string;
 }

@@ -27,14 +27,20 @@ const LoginPage: React.FC = () => {
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     try {
-      const response = await APIFacade.getInstance().login(username,password);
+      const response = await APIFacade.getInstance().login(username, password);
       //createUser(newUser);
       console.log(response.data);
       // Handle successful login based on your API's response structure
       authContext?.login(response.data.role);
-      await new Promise((resolve) =>
-        router.push("/", undefined)
-      );
+      await localStorage.setItem("username", username);
+      await localStorage.setItem("accessToken", response.data.access_token);
+      await localStorage.setItem("refreshToken", response.data.refresh_token);
+      // await localStorage.setItem("role", response.data.role);
+      const storedData = localStorage.getItem("accessToken");
+      console.log(storedData);
+      // await new Promise((resolve) =>
+      //   router.push("/", undefined, { shallow: true }, resolve)
+      // );
       // You can use the response data to redirect the user to a different page, store authentication tokens, etc.
     } catch (error) {
       console.error(error); // Handle errors appropriately (e.g., display error messages)
