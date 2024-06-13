@@ -30,7 +30,7 @@ const ExamDetail  = ({ params }) => {
       };
       const getAllBenchmark = async () => {
         try {       
-          const response = await APIFacade.getAllBenchmark()
+          const response = await APIFacade.getInstance().getAllBenchmark()
           setBenchmarkList(response);
           // Handle successful login based on your API's response structure
         } catch (error) {
@@ -39,7 +39,7 @@ const ExamDetail  = ({ params }) => {
       }
       const getAllClass = async () => {
         try {       
-          const response = await APIFacade.getAllClass();
+          const response = await APIFacade.getInstance().getAllClass();
           setClassList(response);
           // Handle successful login based on your API's response structure
         } catch (error) {
@@ -48,7 +48,7 @@ const ExamDetail  = ({ params }) => {
       }
       const changeName = async () => {
         try {       
-          const response = await APIFacade.getExam(id);
+          const response = await APIFacade.getInstance().getExam(id);
            //createUser(newUser);
            setExamN(response.name);
           // Handle successful login based on your API's response structure

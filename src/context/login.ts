@@ -1,10 +1,18 @@
-import { NextApiResponse } from 'next';
 import axios from 'axios';
 import { host } from '@/constants/string';
-import { useAuth } from '@/hooks/useAuth';
 
-const APIFacade = {
-  login : async (username: string, password: string) => {
+class APIFacade  {
+  private static _instance: APIFacade;
+
+  private constructor() {}
+
+  public static getInstance(): APIFacade {
+    if (!APIFacade._instance) {
+      APIFacade._instance = new APIFacade();
+    }
+    return APIFacade._instance;
+  }
+  public async login(username: string, password: string) {
     try{
       let data = JSON.stringify({
         username: username,
@@ -36,8 +44,8 @@ const APIFacade = {
       // You can use the response data to redirect the user to a different page, store authentication tokens, etc.
     } catch (error) {
       throw new Error("Failed to fetch user data."); 
-  }},
-  getAllUser : async () => {
+  }}
+  public async getAllUser() {
     try {
       let token = localStorage.getItem('accessToken');
       let config = {
@@ -52,8 +60,8 @@ const APIFacade = {
       console.log(response.data);
       return response.data;
     } catch (error) {throw new Error("Failed to fetch list user!")}
-  },
-  addUser : async (data: Account) => {
+  }
+  public async addUser(data: Account) {
     try {
       let dt = JSON.stringify({
         "username": data.username,
@@ -77,8 +85,8 @@ const APIFacade = {
       console.error(error); // Handle errors appropriately (e.g., display error messages)
     }
 
-  },
-  getAllBenchmark : async () => {
+  }
+  public async getAllBenchmark() {
     try {
       let token = localStorage.getItem('accessToken');
       let config = {
@@ -93,8 +101,8 @@ const APIFacade = {
       console.log(response.data);
       return response.data;
     } catch (error) {throw new Error("Failed to fetch list user!")}
-  },
-  getAllClass : async () => {
+  }
+  public async getAllClass() {
     try {       
       let token = localStorage.getItem('accessToken');
       let config = {
@@ -113,8 +121,8 @@ const APIFacade = {
     } catch (error) {
       console.error(error); // Handle errors appropriately (e.g., display error messages)
     }
-  },
-  addClass : async (data: Class) => {
+  }
+  public async addClass(data: Class) {
     try {       
       let token = localStorage.getItem('accessToken');
       let dt = JSON.stringify({
@@ -138,8 +146,8 @@ const APIFacade = {
       console.error(error); // Handle errors appropriately (e.g., display error messages)
     }      
 
-  },
-  updateClass : async (data: Class) => {
+  }
+  public async updateClass(data: Class) {
     try {       
       let token = localStorage.getItem('accessToken');
       let dt = JSON.stringify({
@@ -164,8 +172,8 @@ const APIFacade = {
       console.error(error); // Handle errors appropriately (e.g., display error messages)
     }      
 
-  },
-  deleteClass : async (id: string) => {
+  }
+  public async deleteClass(id: string) {
     try {       
       let token = localStorage.getItem('accessToken');
 
@@ -184,8 +192,8 @@ const APIFacade = {
       console.error(error); // Handle errors appropriately (e.g., display error messages)
     }      
 
-  },
-  getAllExam : async () => {
+  }
+  public async getAllExam()  {
     try {       
         let token = localStorage.getItem('accessToken');
         let config = {
@@ -204,8 +212,8 @@ const APIFacade = {
       } catch (error) {
         console.error(error); // Handle errors appropriately (e.g., display error messages)
       }
-  },
-  addExam: async (data: Exam) => {
+  }
+  public async addExam(data: Exam)  {
     let dt = JSON.stringify({
         "name": data.name,
         "year": data.year
@@ -228,8 +236,8 @@ const APIFacade = {
       }catch(error){
         console.error(error); // Handle errors appropriately (e.g., display error messages)
 
-  }},
-  deleteExam: async (id: string) => {
+  }}
+  public async deleteExam(id: string) {
     let token = localStorage.getItem('accessToken');
 
     let config = {
@@ -246,8 +254,8 @@ const APIFacade = {
     }catch(error){
       console.error(error); 
     }
-  },
-  getExam: async (id: string) => {
+  }
+  public async getExam(id: string) {
     try {       
       let token = localStorage.getItem('accessToken');
       let config = {
@@ -264,8 +272,8 @@ const APIFacade = {
     } catch (error) {
       console.error(error); // Handle errors appropriately (e.g., display error messages)
     }
-  },
-  getAllStudent : async () => {
+  }
+  public async getAllStudent() {
     try {
       let token = localStorage.getItem("accessToken");
       let config = {
@@ -303,8 +311,8 @@ const APIFacade = {
       console.error(error); // Handle errors appropriately (e.g., display error messages)
     }
 
-  },
-  getAllPost : async () => { 
+  }
+  public async getAllPost() { 
     let token = localStorage.getItem('accessToken');
 
     const config = {
@@ -322,8 +330,8 @@ const APIFacade = {
     } catch (error) {
       console.error("Error fetching notifications:", error);
     }
-  },
-  deletePost : async (id: string) => {
+  }
+  public async deletePost(id: string) {
     try {
       console.log(id);
       // Get the token from local storage
@@ -340,8 +348,8 @@ const APIFacade = {
     } catch (error) {
       console.error('Error deleting notification:', error);
     }
-  },
-  addPost : async (data: Post) => {
+  }
+  public async addPost(data: Post){
       console.log(data);
       const currentDate = new Date().toISOString();
 
@@ -366,8 +374,8 @@ const APIFacade = {
          } catch (error) {
       console.error(error);
     }
-  },
-  getPost : async (id: string) => {
+  }
+  public async getPost  (id: string) {
     try {
       console.log(id);
       // Get the token from local storage
@@ -387,8 +395,8 @@ const APIFacade = {
     } catch (error) {
       console.error('Error deleting notification:', error);
     }
-  },
-  updatePost : async (data: Post) => {
+  }
+  public async updatePost(data: Post) {
     const currentDate = new Date().toISOString();
 
     // Get the token from local storage
@@ -418,26 +426,26 @@ const APIFacade = {
        } catch (error) {
     console.error(error);
   }
-},
-  getAllSubject : async () => {
-  try {       
-    let token = localStorage.getItem('accessToken');
-    let config = {
-      method: 'get',
-      maxBodyLength: Infinity,
-      url: `${host}subject`,
-      headers: { 
-        'Authorization': `Bearer ${token}`
-      }
-    };
-    const response = await axios.request(config);
-     return response.data.content;
-    // Handle successful login based on your API's response structure
-  } catch (error) {
-    console.error(error); // Handle errors appropriately (e.g., display error messages)
+}
+  public async getAllSubject()  {
+    try {       
+      let token = localStorage.getItem('accessToken');
+      let config = {
+        method: 'get',
+        maxBodyLength: Infinity,
+        url: `${host}subject`,
+        headers: { 
+          'Authorization': `Bearer ${token}`
+        }
+      };
+      const response = await axios.request(config);
+      return response.data.content;
+      // Handle successful login based on your API's response structure
+    } catch (error) {
+      console.error(error); // Handle errors appropriately (e.g., display error messages)
+    }
   }
-  },
-  deleteSubject : async (id: string) => {
+  public async deleteSubject(id: string) {
     try {       
       let token = localStorage.getItem('accessToken');
 
@@ -456,8 +464,8 @@ const APIFacade = {
       console.error(error); // Handle errors appropriately (e.g., display error messages)
     }  
 
-  },
-  addSubject: async (data: Subject) => {
+  }
+  public async addSubject(data: Subject) {
     try {       
       let token = localStorage.getItem('accessToken');
       let dt = JSON.stringify({
@@ -481,8 +489,8 @@ const APIFacade = {
     } catch (error) {
       console.error(error); // Handle errors appropriately (e.g., display error messages)
     }      
-},
-  updateSubject: async (data: Subject) => {
+}
+public async updateSubject(data: Subject) {
     try {       
       let token = localStorage.getItem('accessToken');
       let dt = JSON.stringify({
@@ -506,8 +514,8 @@ const APIFacade = {
     } catch (error) {
       console.error(error); // Handle errors appropriately (e.g., display error messages)
     }        
-},
-  getAllSubjectSet : async () => {
+}
+public async getAllSubjectSet()  {
     try {       
       let token = localStorage.getItem('accessToken');
       let config = {
@@ -526,8 +534,8 @@ const APIFacade = {
     } catch (error) {
       console.error(error); // Handle errors appropriately (e.g., display error messages)
     }
-  },
-  addSubjectSet: async (data: SubjectSets) => {
+  }
+  public async addSubjectSet (data: SubjectSets) {
     try {       
       let token = localStorage.getItem('accessToken');
       let dt = JSON.stringify({
@@ -549,8 +557,8 @@ const APIFacade = {
     } catch (error) {
       console.error(error); // Handle errors appropriately (e.g., display error messages)
     }
-  },
-  deleteSubjectSet : async (id: string) => {
+  }
+  public async deleteSubjectSet(id: string) {
     try {       
       let token = localStorage.getItem('accessToken');
       let config = {
@@ -569,8 +577,8 @@ const APIFacade = {
       alert(`Bug because of constraint in database. Error code:${error}`)
       // Handle errors appropriately (e.g., display error messages)
     }
-  },
-  getAllExamRoom : async () => {
+  }
+  public async getAllExamRoom()  {
     try {
       let token = localStorage.getItem("accessToken");
       let config = {
@@ -588,8 +596,8 @@ const APIFacade = {
     } catch (error) {
       console.error(error); // Handle errors appropriately (e.g., display error messages)
     }
-  },
-  deleteExamRoom : async (id: string) => {
+  }
+  public async deleteExamRoom(id: string)  {
     try {
     let token = localStorage.getItem("accessToken");
     let config = {
@@ -608,8 +616,8 @@ const APIFacade = {
     console.error(error); // Handle errors appropriately (e.g., display error messages)
   }
 
-  },
-  addExamRoom: async (data: ExamRoomManageForm) => {
+  }
+  public async addExamRoom(data: ExamRoomManageForm) {
     let token = localStorage.getItem("accessToken");
     let dt = JSON.stringify({
       examRoomId: data.room,
@@ -632,8 +640,8 @@ const APIFacade = {
     });
     //createUser(newUser);
     // Handle successful login based on your API's response structure
-  },
-  updateExamRoom: async (data: ExamRoomManageForm) => {
+  }
+  public async updateExamRoom(data: ExamRoomManageForm) {
     try {
       let dt = JSON.stringify({
         examRoomId: data.room,
@@ -656,8 +664,8 @@ const APIFacade = {
       });
     } catch (error) {
       console.error(error); // Handle errors appropriately (e.g., display error messages)
-    }},
-  getAllRooms : async () => {
+  }}
+  public async getAllRooms ()  {
     try {
       let token = localStorage.getItem("accessToken");
       let config = {
@@ -674,8 +682,8 @@ const APIFacade = {
     } catch (error) {
       console.error(error); // Handle errors appropriately (e.g., display error messages)
     }
-  },
-  getAllPaperContainers : async () => {
+  }
+  public async getAllPaperContainers  (){
     try {
       let token = localStorage.getItem("accessToken");
       let config = {
@@ -694,8 +702,8 @@ const APIFacade = {
     } catch (error) {
       console.error(error); // Handle errors appropriately (e.g., display error messages)
     }
-  },
-  deletePaperContainer: async (paperContainer: ExamManageForm) => {
+  }
+  public async deletePaperContainer(paperContainer: ExamManageForm) {
     try {
       let token = localStorage.getItem("accessToken");
       let dt = JSON.stringify({
@@ -719,8 +727,8 @@ const APIFacade = {
       console.error(error); // Handle errors appropriately (e.g., display error messages)
     }
 
-  },
-  updatePaperContainer: async (data: ExamManageForm ) => {
+  }
+  public async updatePaperContainer (data: ExamManageForm )  {
     try {
       let dt = JSON.stringify({
         examRoomId: data.examRoomId,
@@ -745,8 +753,8 @@ const APIFacade = {
       console.error(error); // Handle errors appropriately (e.g., display error messages)
     }
 
-  },
-  addPaperContainer: async (data: ExamManageForm) => {
+  }
+  public async addPaperContainer (data: ExamManageForm){
     try {
       let token = localStorage.getItem("accessToken");
       let dt = JSON.stringify({
@@ -773,8 +781,8 @@ const APIFacade = {
       console.error(error); // Handle errors appropriately (e.g., display error messages)
     }
 
-  },
-  getAllExamDetail : async () => {
+  }
+  public async getAllExamDetail() {
     try {
       let token = localStorage.getItem("accessToken");
       let config = {
@@ -793,7 +801,7 @@ const APIFacade = {
     } catch (error) {
       console.error(error); // Handle errors appropriately (e.g., display error messages)
     }
-  },
-  
+  }
+ 
 }
 export default APIFacade;

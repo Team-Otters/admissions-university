@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import axios from "axios";
 import { Container } from "react-bootstrap";
 import { ok } from "assert";
+import APIFacade from "@/context/login";
 
 interface Notification {
   title: string;
@@ -19,17 +20,7 @@ const NotificationDetail = ({params}) => {
   const router = useRouter();
   const getPost = async (data:string) =>{
     try { 
-      let token = localStorage.getItem('accessToken');
-      let config = {
-        method: 'get',
-        maxBodyLength: Infinity,
-        url: `http://localhost:8080/notification/${data}`,
-        headers: { 
-          'Authorization': `Bearer ${token}`
-        }
-      };
-
-      const response = await axios.request(config);
+      const response = await APIFacade.getInstance().getPost(id);
        //createUser(newUser);
        setNotification(response.data);
        setLoading(false)

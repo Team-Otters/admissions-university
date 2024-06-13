@@ -29,7 +29,7 @@ const router = useRouter()
 
     try {
 
-      const response = await APIFacade.addPost(formData);
+      const response = await APIFacade.getInstance().addPost(formData);
 
       console.log(response);
       

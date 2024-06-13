@@ -35,7 +35,7 @@ const ExamManagePage: React.FC = () => {
 
   const getAllPaperContainers = async () => {
     try {
-      const response = await APIFacade.getAllPaperContainers();
+      const response = await APIFacade.getInstance().getAllPaperContainers();
       //createUser(newUser);
       setPaperContainers(response);
       console.log("pc: ", response);
@@ -47,7 +47,7 @@ const ExamManagePage: React.FC = () => {
 
   const getAllExamRoom = async () => {
     try {
-      const response = await APIFacade.getAllExamRoom();
+      const response = await APIFacade.getInstance().getAllExamRoom();
       //createUser(newUser);
       setExamRooms(response);
       console.log("er: ", response);
@@ -171,7 +171,7 @@ const ExamManagePage: React.FC = () => {
     }
 
     try {
-      const response = await APIFacade.deletePaperContainer(paperContainer);
+      const response = await APIFacade.getInstance().deletePaperContainer(paperContainer);
         getAllPaperContainers();
       //createUser(newUser);
       // Handle successful login based on your API's response structure
@@ -182,7 +182,7 @@ const ExamManagePage: React.FC = () => {
 
   const handleSubmit = async (data: ExamManageForm) => {
     try {
-      const response = await APIFacade.addPaperContainer(data)
+      const response = await APIFacade.getInstance().addPaperContainer(data)
         getAllPaperContainers();
       //createUser(newUser);
       // Handle successful login based on your API's response structure
@@ -193,7 +193,7 @@ const ExamManagePage: React.FC = () => {
 
   const handleEdit = async (data: ExamManageForm) => {
     try {
-      const response = await APIFacade.updatePaperContainer(data);
+      const response = await APIFacade.getInstance().updatePaperContainer(data);
         getAllPaperContainers();
     } catch (error) {
       console.error(error); // Handle errors appropriately (e.g., display error messages)
