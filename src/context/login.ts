@@ -1,10 +1,106 @@
 import axios from 'axios';
 import { host } from '@/constants/string';
+class AddConfigService {
+  constructor() {}
+
+  AddConfig(route: string, data: any): object {
+    const token = localStorage.getItem("accessToken");
+
+    return {
+      method: 'post',
+      maxBodyLength: Infinity,
+      url: `${host}${route}`,
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      data: data
+    };
+  }
+}
+class GetConfigService {
+  constructor() {}
+
+  GetConfig(route: string, data: any): object {
+    const token = localStorage.getItem("accessToken");
+
+    return {
+      method: 'get',
+      maxBodyLength: Infinity,
+      url: `${host}${route}/${data.id}`,
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    };
+  }
+}
+class GetAllConfigService {
+  constructor() {}
+
+  GetAllConfig(route: string): object {
+    const token = localStorage.getItem("accessToken");
+
+    return {
+      method: 'get',
+      maxBodyLength: Infinity,
+      url: `${host}${route}`,
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    };
+  }
+}
+class UpdateConfigService {
+  constructor() {}
+
+  UpdateConfig(route: string, data: any): object {
+    const token = localStorage.getItem("accessToken");
+
+    return {
+      method: 'put',
+      maxBodyLength: Infinity,
+      url: `${host}${route}/${data.id}`,
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      data: data
+    };
+  }
+}
+class DeleteConfigService {
+  constructor() {}
+
+  DeleteConfig(route: string, data: string): object {
+    const token = localStorage.getItem("accessToken");
+
+    return {
+      method: 'delete',
+      maxBodyLength: Infinity,
+      url: `${host}${route}/${data}`,
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    };
+  }
+}
+
 
 class APIFacade  {
   private static _instance: APIFacade;
+  private getAllConfigService: GetAllConfigService;
+  private getConfigService: GetConfigService;
+  private addConfigService: AddConfigService;
+  private updateConfigService: UpdateConfigService;
+  private deleteConfigService: DeleteConfigService;
 
-  private constructor() {}
+  constructor() {
+    this.getAllConfigService = new GetAllConfigService();
+    this.getConfigService = new GetConfigService();
+    this.addConfigService = new AddConfigService();
+    this.updateConfigService = new UpdateConfigService();
+    this.deleteConfigService = new DeleteConfigService();
+  }
 
   public static getInstance(): APIFacade {
     if (!APIFacade._instance) {
@@ -18,17 +114,7 @@ class APIFacade  {
         username: username,
         password: password,
       });
-
-      let config = {
-        method: "post",
-        maxBodyLength: Infinity,
-        url: `${host}login`,
-        headers: {
-          "Content-Type": "application/json",
-        },
-        data: data,
-      };
-
+      const config = this.addConfigService.AddConfig("login", data);
       const response = await axios.request(config);
       //createUser(newUser);
       console.log(response.data);
@@ -47,15 +133,7 @@ class APIFacade  {
   }}
   public async getAllUser() {
     try {
-      let token = localStorage.getItem('accessToken');
-      let config = {
-        method: 'get',
-        maxBodyLength: Infinity,
-        url: `${host}admin/user`,
-        headers: { 
-          'Authorization': `Bearer ${token}`
-        }
-      };
+      const config = this.getAllConfigService.GetAllConfig("admin/user");
       const response = await axios.request(config);
       console.log(response.data);
       return response.data;
@@ -68,17 +146,7 @@ class APIFacade  {
         "password": data.password,
         "role": data.role
       });
-      let token = localStorage.getItem('accessToken');
-      let config = {
-        method: 'post',
-        maxBodyLength: Infinity,
-        url: `${host}register`,
-        headers: { 
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        data : dt
-      };
+      const config = this.addConfigService.AddConfig("register",dt)
       const response = await axios.request(config);
       return response;
     } catch (error) {
@@ -103,95 +171,52 @@ class APIFacade  {
     } catch (error) {throw new Error("Failed to fetch list user!")}
   }
   public async getAllClass() {
-    try {       
-      let token = localStorage.getItem('accessToken');
-      let config = {
-        method: 'get',
-        maxBodyLength: Infinity,
-        url: `${host}major_class`,
-        headers: { 
-          'Authorization': `Bearer ${token}`
-        }
-      };
+    try {
+      const config = this.getAllConfigService.GetAllConfig('major_class');
       const response = await axios.request(config);
-       //createUser(newUser);
       return response.data;
-       console.log(response.data);
-      // Handle successful login based on your API's response structure
     } catch (error) {
       console.error(error); // Handle errors appropriately (e.g., display error messages)
     }
   }
+
   public async addClass(data: Class) {
-    try {       
-      let token = localStorage.getItem('accessToken');
-      let dt = JSON.stringify({
-        "name": data.name,
-        "year": data.year,
-        "quotas": data.quotas
-      })
-      let config = {
-        method: 'post',
-        maxBodyLength: Infinity,
-        url: `${host}major_class`,
-        headers: { 
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        data: dt
-      };
+    try {
+      const config = this.addConfigService.AddConfig('major_class', {
+        name: data.name,
+        year: data.year,
+        quotas: data.quotas
+      });
       const response = await axios.request(config);
       return response;
     } catch (error) {
       console.error(error); // Handle errors appropriately (e.g., display error messages)
-    }      
-
+    }
   }
+
   public async updateClass(data: Class) {
-    try {       
-      let token = localStorage.getItem('accessToken');
-      let dt = JSON.stringify({
-        "name": data.name,
-        "year": data.year,
-        "quotas": data.quotas
-      })
-      let config = {
-        method: 'put',
-        maxBodyLength: Infinity,
-        url: `${host}major_class/${data.id}`,
-        headers: { 
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        data: dt
-      };
+    try {
+      const config = this.updateConfigService.UpdateConfig('major_class',JSON.stringify({
+        id: data.id,
+        name: data.name,
+        year: data.year,
+        quotas: data.quotas
+      }));
       const response = await axios.request(config);
       return response;
-      // Handle successful login based on your API's response structure
     } catch (error) {
       console.error(error); // Handle errors appropriately (e.g., display error messages)
-    }      
-
+    }
   }
-  public async deleteClass(id: string) {
-    try {       
-      let token = localStorage.getItem('accessToken');
 
-      let config = {
-        method: 'delete',
-        maxBodyLength: Infinity,
-        url: `${host}major_class/${id}`,
-        headers: { 
-          'Authorization': `Bearer ${token}`
-        }
-      };
+  public async deleteClass(id: string) {
+    try {
+      const config = this.deleteConfigService.DeleteConfig('major_class', id);
       const response = await axios.request(config);
       return response;
-      // Handle successful login based on your API's response structure
     } catch (error) {
       console.error(error); // Handle errors appropriately (e.g., display error messages)
-    }      
-
+    }
   }
   public async getAllExam()  {
     try {       

@@ -919,10 +919,9 @@ const ProfileRegisterPage: React.FC = () => {
     }
   };
 
-  const host = "https://vapi-vnappmob.readthedocs.io/en/latest/index.html";
 
   useEffect(() => {
-    callAPI(`${host}`);
+    
   }, []);
 
   const callAPI = (api: string) => {
@@ -1054,9 +1053,7 @@ const ProfileRegisterPage: React.FC = () => {
 
       setShowAlert(true);
     } catch (error: any) {
-      console.error(error);
-      console.log(error.response);
-      console.log(error.response.status);
+
 
       // Handle errors appropriately (e.g., display error messages)
       if (axios.isAxiosError(error)) {
